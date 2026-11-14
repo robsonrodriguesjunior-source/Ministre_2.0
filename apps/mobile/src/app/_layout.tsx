@@ -97,6 +97,11 @@ function AppNavigator() {
       </Stack.Protected>
       <Stack.Protected guard={!!token && hasMinistry}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="escala/[id]" />
+        <Stack.Screen name="escala/nova" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="indisponibilidade" />
+        <Stack.Screen name="avisos" />
+        <Stack.Screen name="notificacoes" />
         <Stack.Screen name="_catalogo" />
       </Stack.Protected>
       <Stack.Screen name="convite/index" />

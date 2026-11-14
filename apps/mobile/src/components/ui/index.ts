@@ -20,3 +20,4 @@ export { Checkbox } from './Checkbox';
 export { Chip } from './Chip';
 export { Notice } from './Notice';
 export { TextField } from './TextField';
+export { Toast } from './Toast';

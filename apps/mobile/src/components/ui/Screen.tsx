@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ScrollView, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors, size, space } from '@/theme/tokens';
@@ -11,10 +11,23 @@ type Props = {
   /** Deixa espaço embaixo para a barra de abas e para um botão fixo. */
   bottomInset?: number;
   contentStyle?: StyleProp<ViewStyle>;
+  /** Puxar para atualizar. */
+  refreshing?: boolean;
+  onRefresh?: () => void;
+  /** Algo preso embaixo da tela (ex.: botão fixo acima da barra de abas). */
+  overlay?: ReactNode;
 };
 
 // Tela: fundo `bg`, padding horizontal 16, respeita a área segura (notch, barra de status).
-export function Screen({ children, scroll = true, bottomInset = size.tabBar + space.xxl, contentStyle }: Props) {
+export function Screen({
+  children,
+  scroll = true,
+  bottomInset = size.tabBar + space.xxl,
+  contentStyle,
+  refreshing,
+  onRefresh,
+  overlay,
+}: Props) {
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.safe}>
       {scroll ? (
@@ -22,12 +35,24 @@ export function Screen({ children, scroll = true, bottomInset = size.tabBar + sp
           style={styles.flex}
           contentContainerStyle={[styles.content, { paddingBottom: bottomInset }, contentStyle]}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            onRefresh ? (
+              <RefreshControl
+                refreshing={!!refreshing}
+                onRefresh={onRefresh}
+                tintColor={colors.orange}
+                colors={[colors.orange]}
+                progressBackgroundColor={colors.card}
+              />
+            ) : undefined
+          }
         >
           {children}
         </ScrollView>
       ) : (
         <View style={[styles.flex, styles.content, contentStyle]}>{children}</View>
       )}
+      {overlay}
     </SafeAreaView>
   );
 }
