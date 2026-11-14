@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ministre — escalas do seu ministério</title>
+  <meta name="description" content="As escalas do seu ministério, em ordem. Escalas, repertório com cifra, Modo Palco e avisos para a equipe de louvor.">
+  <meta name="theme-color" content="#0C0C0D">
+  <link rel="icon" href="/icon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0C0C0D; --card: #18181A; --card2: #222225; --line: #26262A;
+      --ink: #FFFFFF; --soft: #C9C9CE; --dim: #9B9BA1; --orange: #F7731C;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: 'Figtree', -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 48px; }
+    header { display: flex; align-items: center; gap: 12px; }
+    header img { width: 40px; height: 40px; border-radius: 12px; }
+    header strong { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; }
+    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; margin-top: 56px; }
+    h1 { font-size: clamp(34px, 6vw, 56px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.05; }
+    h1 span { color: var(--orange); }
+    .lead { color: var(--soft); font-size: 18px; margin-top: 18px; max-width: 34ch; }
+    .cta { display: inline-flex; align-items: center; justify-content: center; margin-top: 28px; min-height: 52px; padding: 0 28px; border-radius: 14px; background: var(--orange); color: var(--bg); font-weight: 800; font-size: 16px; text-decoration: none; }
+    .cta:focus-visible, a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+    .qr { background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 28px; text-align: center; }
+    .qr img { width: 100%; max-width: 240px; border-radius: 16px; background: #fff; display: block; margin: 0 auto; }
+    .qr p { color: var(--soft); margin-top: 16px; }
+    .qr small { display: block; color: var(--dim); margin-top: 6px; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 72px; }
+    .feature { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+    .feature b { display: block; font-size: 17px; margin-bottom: 6px; }
+    .feature span { color: var(--dim); font-size: 15px; }
+    h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-top: 72px; }
+    .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .step { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+    .step.here { border-color: var(--orange); }
+    .step h3 { font-size: 18px; margin-bottom: 12px; }
+    .step ol { padding-left: 20px; color: var(--soft); }
+    .step li { margin: 6px 0; }
+    .step li b { color: var(--ink); }
+    .tag { display: inline-block; font-size: 12px; font-weight: 700; color: var(--orange); border: 1px solid var(--orange); border-radius: 999px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
+    footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--dim); font-size: 14px; }
+    footer a { color: var(--soft); }
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; gap: 32px; margin-top: 36px; }
+      .qr { display: none; } /* no celular, o botão abre direto */
+      .features, .steps { grid-template-columns: 1fr; }
+      h2, .features { margin-top: 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="/icon.png" alt="">
+      <strong>Ministre</strong>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>As escalas do seu ministério, <span>em ordem.</span></h1>
+        <p class="lead">Quem serve em cada culto, o repertório com cifra no tom certo e os avisos da liderança, num app só.</p>
+        <a class="cta" href="https://app.ministreapp.com.br">Abrir o Ministre</a>
+      </div>
+      <div class="qr">
+        <img src="/qr-app.svg" alt="QR code para abrir o Ministre no celular" width="240" height="240">
+        <p>Aponte a câmera do celular</p>
+        <small>app.ministreapp.com.br</small>
+      </div>
+    </section>
+
+    <section class="features" aria-label="O que tem no Ministre">
+      <div class="feature"><b>Escalas</b><span>Confirme ou avise que não pode com um toque. O líder vê na hora quem falta responder.</span></div>
+      <div class="feature"><b>Repertório e Modo Palco</b><span>Cifra no tom da escala, letra grande, rolagem automática e funciona sem internet.</span></div>
+      <div class="feature"><b>Avisos</b><span>Notificações no celular quando você é escalado, lembretes do culto e recados do líder.</span></div>
+    </section>
+
+    <h2 id="instalar">Como instalar</h2>
+    <div class="steps">
+      <div class="step" id="ios">
+        <h3>iPhone e iPad</h3>
+        <ol>
+          <li>Abra <b>app.ministreapp.com.br</b> no <b>Safari</b>.</li>
+          <li>Toque em <b>Compartilhar</b> (o quadrado com a seta para cima).</li>
+          <li>Escolha <b>Adicionar à Tela de Início</b> e toque em <b>Adicionar</b>.</li>
+          <li>Abra o Ministre pelo ícone e, no sino, toque em <b>Ativar avisos</b>.</li>
+        </ol>
+      </div>
+      <div class="step" id="android">
+        <h3>Android</h3>
+        <ol>
+          <li>Abra <b>app.ministreapp.com.br</b> no <b>Chrome</b>.</li>
+          <li>Toque no menu <b>⋮</b> e escolha <b>Instalar app</b> (ou <b>Adicionar à tela inicial</b>).</li>
+          <li>Abra o Ministre pelo ícone e, no sino, toque em <b>Ativar avisos</b>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer>
+      <span>© 2026 Ministre</span>
+      <a href="https://app.ministreapp.com.br/privacidade">Política de Privacidade</a>
+      <a href="https://app.ministreapp.com.br/termos">Termos de Uso</a>
+      <a href="mailto:contato@ministreapp.com.br">contato@ministreapp.com.br</a>
+    </footer>
+  </div>
+  <script>
+    // Destaca o passo a passo do aparelho de quem está vendo.
+    (function () {
+      var ua = navigator.userAgent;
+      var ios = /iPhone|iPad|iPod/.test(ua) || (ua.indexOf('Macintosh') > -1 && navigator.maxTouchPoints > 1);
+      var el = document.getElementById(ios ? 'ios' : /Android/.test(ua) ? 'android' : '');
+      if (!el) return;
+      el.classList.add('here');
+      el.querySelector('h3').insertAdjacentHTML('beforeend', '<span class="tag">seu aparelho</span>');
+    })();
+  </script>
+</body>
+</html>

@@ -71,9 +71,14 @@ if (-not $SkipWeb) {
   } finally { Pop-Location }
 }
 
+Step 'Publicando a pagina de download (ministreapp.com.br)'
+robocopy (Join-Path $root 'apps\site') 'C:\Sites\ministre\site' /MIR /NFL /NDL /NJH /NJS /NP | Out-Null
+if ($LASTEXITCODE -ge 8) { throw "Falhou ao copiar a pagina de download (robocopy $LASTEXITCODE)" }
+$global:LASTEXITCODE = 0
+
 Step 'Conferindo se esta no ar'
 $ok = $true
-foreach ($url in @('https://api.ministreapp.com.br/api/v1/health', 'https://app.ministreapp.com.br/')) {
+foreach ($url in @('https://api.ministreapp.com.br/api/v1/health', 'https://app.ministreapp.com.br/', 'https://ministreapp.com.br/')) {
   $tries = 0
   while ($true) {
     try {
