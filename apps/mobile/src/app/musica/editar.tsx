@@ -12,6 +12,7 @@ import type { SongDetail, SongInput } from '@/features/songs/types';
 import { ApiError } from '@/lib/api';
 import { useActiveMembership } from '@/stores/session';
 import { colors, radius, size, space, type } from '@/theme/tokens';
+import { goBack } from '@/lib/nav';
 
 type Form = {
   title: string;
@@ -82,7 +83,7 @@ export default function EditarMusica() {
   if (membership && membership.role !== 'leader') {
     return (
       <SafeAreaView style={styles.safe}>
-        <EmptyState icon="music" message="Só líderes do ministério cadastram músicas." actionLabel="Voltar" onAction={() => router.back()} />
+        <EmptyState icon="music" message="Só líderes do ministério cadastram músicas." actionLabel="Voltar" onAction={() => goBack('/musicas')} />
       </SafeAreaView>
     );
   }
@@ -126,7 +127,7 @@ export default function EditarMusica() {
       const saved = editId ? (await songsApi.update(editId, body)).data : (await songsApi.create(body)).data;
       qc.invalidateQueries({ queryKey: songKeys.all });
       qc.invalidateQueries({ queryKey: ['songs-options'] });
-      if (editId) router.back();
+      if (editId) goBack('/musicas');
       else router.replace({ pathname: '/musica/[id]', params: { id: String(saved.id) } });
     } catch (e) {
       if (e instanceof ApiError && Object.keys(e.fieldErrors).length) {
@@ -142,7 +143,7 @@ export default function EditarMusica() {
     }
   };
 
-  const close = () => (dirty ? setConfirmClose(true) : router.back());
+  const close = () => (dirty ? setConfirmClose(true) : goBack('/musicas'));
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
@@ -156,7 +157,7 @@ export default function EditarMusica() {
         {!loaded ? (
           <View style={styles.loading}>
             {existing.isError ? (
-              <EmptyState icon="music" message="Não foi possível abrir esta música." actionLabel="Voltar" onAction={() => router.back()} />
+              <EmptyState icon="music" message="Não foi possível abrir esta música." actionLabel="Voltar" onAction={() => goBack('/musicas')} />
             ) : (
               <>
                 <Skeleton height={50} />
@@ -305,7 +306,7 @@ export default function EditarMusica() {
           O que você preencheu será perdido.
         </Text>
         <View style={styles.sheetActions}>
-          <Button label="Descartar" onPress={() => { setConfirmClose(false); router.back(); }} />
+          <Button label="Descartar" onPress={() => { setConfirmClose(false); goBack('/musicas'); }} />
           <Button label="Continuar editando" variant="secondary" onPress={() => setConfirmClose(false)} />
         </View>
       </BottomSheet>

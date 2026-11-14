@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /** Função no ministério (Vocal, Violão…). */
 class Position extends Model
@@ -26,5 +27,11 @@ class Position extends Model
     public function ministry(): BelongsTo
     {
         return $this->belongsTo(Ministry::class);
+    }
+
+    /** @return BelongsToMany<MinistryMember, $this> */
+    public function members(): BelongsToMany
+    {
+        return $this->belongsToMany(MinistryMember::class, 'member_positions');
     }
 }

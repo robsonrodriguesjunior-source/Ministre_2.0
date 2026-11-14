@@ -42,19 +42,20 @@ export async function api<T>(path: string, { method = 'GET', body, ministry = fa
 
   const { token, ministryId } = authProvider();
   const headers: Record<string, string> = { Accept: 'application/json' };
-  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  const isForm = typeof FormData !== 'undefined' && body instanceof FormData; // foto: o navegador monta o cabeçalho
+  if (body !== undefined && !isForm) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
   if (ministry && ministryId) headers['X-Ministry-Id'] = String(ministryId);
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
+  const timer = setTimeout(() => controller.abort(), isForm ? 60000 : 15000);
 
   let response: Response;
   try {
     response = await fetch(`${API_URL}/api/v1${path}`, {
       method,
       headers,
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      body: body === undefined ? undefined : isForm ? (body as FormData) : JSON.stringify(body),
       signal: controller.signal,
     });
   } catch {

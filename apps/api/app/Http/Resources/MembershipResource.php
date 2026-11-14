@@ -23,6 +23,7 @@ class MembershipResource extends JsonResource
                 'name' => $this->ministry->name,
                 'type' => $this->ministry->type,
                 'default_location' => $this->ministry->default_location,
+                'logo_url' => \App\Services\ImageStore::url($this->ministry->logo_path),
             ],
             'church' => [
                 'id' => $this->ministry->church->id,

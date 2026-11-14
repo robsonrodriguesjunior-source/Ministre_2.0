@@ -16,6 +16,7 @@ import { isoDay } from '@/lib/dates';
 import { useActiveMembership } from '@/stores/session';
 import { useReduceMotion } from '@/theme/motion';
 import { colors, motion, size, space } from '@/theme/tokens';
+import { goBack } from '@/lib/nav';
 
 const EMPTY_WHEN: WhenState = { date: null, time: '19:00', typeId: null, title: '', location: '', isRehearsal: false };
 
@@ -81,7 +82,7 @@ export default function NovaEscala() {
   if (membership && membership.role !== 'leader') {
     return (
       <SafeAreaView style={styles.safe}>
-        <EmptyState icon="calendar" message="Só líderes do ministério montam escalas." actionLabel="Voltar" onAction={() => router.back()} />
+        <EmptyState icon="calendar" message="Só líderes do ministério montam escalas." actionLabel="Voltar" onAction={() => goBack('/agenda')} />
       </SafeAreaView>
     );
   }
@@ -127,7 +128,7 @@ export default function NovaEscala() {
     }
   };
 
-  const close = () => (dirty ? setConfirmClose(true) : router.back());
+  const close = () => (dirty ? setConfirmClose(true) : goBack('/agenda'));
   const entering = reduce ? undefined : (direction === 1 ? SlideInRight : SlideInLeft).duration(motion.step);
   const change = <T,>(setter: (v: T) => void) => (v: T) => {
     setter(v);
@@ -195,7 +196,7 @@ export default function NovaEscala() {
           O que você preencheu será perdido.
         </Text>
         <View style={styles.sheetActions}>
-          <Button label="Descartar" onPress={() => { setConfirmClose(false); router.back(); }} />
+          <Button label="Descartar" onPress={() => { setConfirmClose(false); goBack('/agenda'); }} />
           <Button label="Continuar editando" variant="secondary" onPress={() => setConfirmClose(false)} />
         </View>
       </BottomSheet>

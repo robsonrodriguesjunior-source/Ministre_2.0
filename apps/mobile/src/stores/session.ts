@@ -22,6 +22,8 @@ type SessionState = {
 
   hydrate: () => Promise<void>;
   signIn: (token: string, user: User) => Promise<void>;
+  /** Depois de editar nome, celular ou foto. */
+  setUser: (user: User) => void;
   signOut: () => Promise<void>;
   refreshMemberships: () => Promise<Membership[]>;
   setActiveMinistry: (id: number) => Promise<void>;
@@ -61,6 +63,8 @@ export const useSession = create<SessionState>((set, get) => ({
     await get().refreshMemberships();
     refreshPushSubscription(); // celular que já aceitava avisos volta a receber, agora desta conta
   },
+
+  setUser: (user) => set({ user }),
 
   signOut: async () => {
     const hadToken = !!get().token;

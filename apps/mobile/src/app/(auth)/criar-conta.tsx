@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { router } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -125,8 +126,8 @@ export default function CriarConta() {
               accessibilityLabel="Li e aceito os Termos de Uso e a Política de Privacidade"
               label={
                 <Text variant="bodySm" color="inkSoft">
-                  Li e aceito os <Text variant="bodySm">Termos de Uso</Text> e a{' '}
-                  <Text variant="bodySm">Política de Privacidade</Text>.
+                  Li e aceito os <Text variant="bodySm" color="orange" onPress={() => router.push('/termos')} accessibilityRole="link">Termos de Uso</Text> e a{' '}
+                  <Text variant="bodySm" color="orange" onPress={() => router.push('/privacidade')} accessibilityRole="link">Política de Privacidade</Text>.
                 </Text>
               }
             />

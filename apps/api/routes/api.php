@@ -10,8 +10,10 @@ use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\InviteController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\MemberController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\PushController;
+use App\Http\Controllers\Api\V1\SetupController;
 use App\Http\Controllers\Api\V1\SongController;
 use App\Http\Controllers\Api\V1\UnavailabilityController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +39,9 @@ Route::prefix('v1')->group(function () {
         Route::get('/me/ministries', [MeController::class, 'ministries']);
         Route::get('/me/notifications', [MeController::class, 'notificationPrefs']);
         Route::patch('/me/notifications', [MeController::class, 'updateNotificationPrefs']);
+        Route::post('/me/avatar', [MeController::class, 'avatar'])->middleware('throttle:20,1');
+        Route::delete('/me/avatar', [MeController::class, 'removeAvatar']);
+        Route::delete('/me', [MeController::class, 'destroy'])->middleware('throttle:5,1');
 
         // Avisos no celular (Web Push)
         Route::get('/push/config', [PushController::class, 'config']);
@@ -54,6 +59,24 @@ Route::prefix('v1')->group(function () {
             Route::delete('/invites/{invite}', [InviteController::class, 'destroy'])->whereNumber('invite');
 
             Route::get('/home', HomeController::class);
+            Route::get('/me/stats', [MeController::class, 'stats']);
+
+            // Gestão do ministério (só líderes)
+            Route::get('/members', [MemberController::class, 'index']);
+            Route::patch('/members/{member}', [MemberController::class, 'update'])->whereNumber('member');
+            Route::delete('/members/{member}', [MemberController::class, 'destroy'])->whereNumber('member');
+            Route::get('/manage/positions', [SetupController::class, 'positions']);
+            Route::post('/manage/positions', [SetupController::class, 'storePosition']);
+            Route::put('/manage/positions/order', [SetupController::class, 'reorderPositions']);
+            Route::patch('/manage/positions/{position}', [SetupController::class, 'updatePosition'])->whereNumber('position');
+            Route::post('/manage/event-types', [SetupController::class, 'storeEventType']);
+            Route::patch('/manage/event-types/{eventType}', [SetupController::class, 'updateEventType'])->whereNumber('eventType');
+            Route::delete('/manage/event-types/{eventType}', [SetupController::class, 'destroyEventType'])->whereNumber('eventType');
+            Route::get('/manage/ministry', [SetupController::class, 'ministry']);
+            Route::patch('/manage/ministry', [SetupController::class, 'updateMinistry']);
+            Route::post('/manage/ministry/logo', [SetupController::class, 'ministryLogo'])->middleware('throttle:20,1');
+            Route::delete('/manage/ministry/logo', [SetupController::class, 'removeMinistryLogo']);
+            Route::get('/manage/unavailabilities', [SetupController::class, 'teamUnavailability']);
 
             // Escalas
             Route::get('/events/availability', [EventController::class, 'availability']);

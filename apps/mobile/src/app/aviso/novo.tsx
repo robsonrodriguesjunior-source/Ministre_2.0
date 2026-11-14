@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
@@ -9,6 +9,7 @@ import { notificationKeys, notificationsApi } from '@/features/notifications/api
 import { ApiError } from '@/lib/api';
 import { useActiveMembership } from '@/stores/session';
 import { colors, radius, space, type } from '@/theme/tokens';
+import { goBack } from '@/lib/nav';
 
 // Novo aviso (5.9): título, texto, "Fixar no topo" e "Enviar para o celular". Também edita (?id=).
 export default function NovoAviso() {
@@ -39,7 +40,7 @@ export default function NovoAviso() {
   if (!isLeader) {
     return (
       <FormScreen title="Novo aviso">
-        <EmptyState icon="megaphone" message="Só líderes do ministério mandam avisos." actionLabel="Voltar" onAction={() => router.back()} />
+        <EmptyState icon="megaphone" message="Só líderes do ministério mandam avisos." actionLabel="Voltar" onAction={() => goBack('/avisos')} />
       </FormScreen>
     );
   }
@@ -58,7 +59,7 @@ export default function NovoAviso() {
       else await notificationsApi.createAnnouncement({ title: title.trim(), body: body.trim(), pinned, send_push: push });
       qc.invalidateQueries({ queryKey: notificationKeys.announcements });
       qc.invalidateQueries({ queryKey: ['home'] });
-      router.back();
+      goBack('/avisos');
     } catch (e) {
       if (e instanceof ApiError && Object.keys(e.fieldErrors).length) {
         setErrors({ title: e.field('title') ?? '', body: e.field('body') ?? '' });

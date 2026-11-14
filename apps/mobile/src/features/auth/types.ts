@@ -11,7 +11,7 @@ export type Role = 'leader' | 'member';
 export type Membership = {
   id: number;
   role: Role;
-  ministry: { id: number; name: string; type: string; default_location: string | null };
+  ministry: { id: number; name: string; type: string; default_location: string | null; logo_url: string | null };
   church: { id: number; name: string; city: string | null };
   positions: { id: number; name: string }[];
 };

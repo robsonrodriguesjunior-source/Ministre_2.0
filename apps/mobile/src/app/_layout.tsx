@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { router, Stack, usePathname, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -56,14 +56,20 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <StatusBar style="light" />
-          {/* No computador o app fica numa coluna central com a largura de um celular. */}
-          <View style={styles.column}>
+          <Column>
             <AppNavigator />
-          </View>
+          </Column>
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
+}
+
+// No computador o app fica numa coluna central com a largura de um celular;
+// a Gestão do líder usa uma coluna larga (grade de atalhos e listas mais confortáveis).
+function Column({ children }: { children: ReactNode }) {
+  const wide = usePathname().startsWith('/gestao');
+  return <View style={[styles.column, Platform.OS === 'web' && { maxWidth: wide ? size.maxWideWidth : size.maxContentWidth }]}>{children}</View>;
 }
 
 // Quem vê o quê: sem login -> boas-vindas/entrar; logado sem ministério -> onboarding; com ministério -> abas.
@@ -77,7 +83,7 @@ function AppNavigator() {
   const area = segments[0] ?? '';
 
   useEffect(() => {
-    if (area === 'convite') return;
+    if (area === 'convite' || area === 'termos' || area === 'privacidade') return; // abertos sem login
     if (!token) {
       // Endereço principal ("/") ou qualquer tela fechada: começa pelas Boas-vindas.
       if (area !== '(auth)' || pathname === '/') router.replace('/boas-vindas');
@@ -114,10 +120,21 @@ function AppNavigator() {
         <Stack.Screen name="aviso/novo" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         <Stack.Screen name="ajustes-notificacoes" />
         <Stack.Screen name="notificacoes" />
+        <Stack.Screen name="perfil/dados" />
+        <Stack.Screen name="perfil/excluir" />
+        <Stack.Screen name="gestao/index" />
+        <Stack.Screen name="gestao/membros" />
+        <Stack.Screen name="gestao/convites" />
+        <Stack.Screen name="gestao/funcoes" />
+        <Stack.Screen name="gestao/tipos" />
+        <Stack.Screen name="gestao/ministerio" />
+        <Stack.Screen name="gestao/indisponibilidades" />
         <Stack.Screen name="_catalogo" />
       </Stack.Protected>
       <Stack.Screen name="convite/index" />
       <Stack.Screen name="convite/[code]" />
+      <Stack.Screen name="termos" />
+      <Stack.Screen name="privacidade" />
     </Stack>
   );
 }
@@ -130,7 +147,6 @@ const styles = StyleSheet.create({
   column: {
     flex: 1,
     width: '100%',
-    maxWidth: Platform.OS === 'web' ? size.maxContentWidth : undefined,
     alignSelf: 'center',
     backgroundColor: colors.bg,
   },

@@ -28,6 +28,7 @@ import { songsApi } from '@/features/songs/api';
 import { loadStageSet, saveStageSet, stageKey } from '@/features/songs/offline';
 import { hour, weekdayName } from '@/lib/dates';
 import { colors, size, space } from '@/theme/tokens';
+import { goBack } from '@/lib/nav';
 
 type Tab = 'equipe' | 'repertorio' | 'roteiro';
 const TABS: { value: Tab; label: string }[] = [
@@ -188,7 +189,7 @@ export default function Escala() {
     return (
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
         <View style={styles.bar}>
-          <IconButton icon="back" label="Voltar" onPress={() => router.back()} />
+          <IconButton icon="back" label="Voltar" onPress={() => goBack('/agenda')} />
           <Text variant="barTitle">Escala</Text>
           <View style={styles.spacer} />
         </View>
@@ -201,7 +202,7 @@ export default function Escala() {
               onAction={() => router.push({ pathname: '/palco', params: { event: String(id) } })}
             />
           ) : query.isError || query.fetchStatus === 'paused' ? (
-            <EmptyState icon="calendar" message="Não foi possível abrir esta escala." actionLabel="Voltar" onAction={() => router.back()} />
+            <EmptyState icon="calendar" message="Não foi possível abrir esta escala." actionLabel="Voltar" onAction={() => goBack('/agenda')} />
           ) : (
             <>
               <Skeleton height={60} />

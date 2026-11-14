@@ -137,6 +137,7 @@ export const size = {
   input: 50,
   checkbox: 24,
   maxContentWidth: 480, // no computador, o app fica numa coluna central
+  maxWideWidth: 1040, // Gestão do líder no computador
   stagePlay: 72, // play/pause do Modo Palco
   stageSide: 52, // ‹ › do Modo Palco
   stageFade: 60, // degradê no alto e embaixo da letra
