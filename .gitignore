@@ -49,3 +49,7 @@ desktop.ini
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Backup do sistema antigo (so referencia local, pode ter senhas)
+bkup1.0/
+
