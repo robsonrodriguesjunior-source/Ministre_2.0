@@ -1,0 +1,51 @@
+# ===== Segredos (nunca no GitHub) =====
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p8
+*.p12
+*.jks
+*.keystore
+*.mobileprovision
+credentials.json
+google-services.json
+GoogleService-Info.plist
+
+# ===== Backups e dumps de banco (dados pessoais, LGPD) =====
+*.sql
+*.sql.gz
+*.7z
+*.dump
+backups/
+ministre-backups/
+
+# ===== Dependências =====
+node_modules/
+vendor/
+
+# ===== Gerados =====
+.expo/
+dist/
+web-build/
+*.tsbuildinfo
+/apps/mobile/ios/
+/apps/mobile/android/
+/apps/api/storage/*.key
+/apps/api/public/storage
+/apps/api/public/hot
+/apps/api/.phpunit.cache
+/apps/api/database/*.sqlite
+
+# ===== Logs =====
+*.log
+npm-debug.log*
+
+# ===== Sistema e editores =====
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json

@@ -1,0 +1,94 @@
+<section id="escala" data-transition="fade" style="background:#0B0B0C;color:#F4F1EA;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center">
+<div style="width:900px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:24px;letter-spacing:3px;font-weight:700;color:#F97316;text-transform:uppercase">Escala</p>
+<h2 style="font-family:'Sora', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-2px">O culto inteiro numa tela</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:row;gap:28px;align-items:start">
+<div style="width:48px;height:48px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#0B0B0C">1</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:32px;font-weight:700;line-height:1.2">Abas em vez de páginas</h3><p style="font-size:26px;line-height:1.4;color:#A8A8AE">Equipe, Repertório e Roteiro na mesma tela. Troca com um toque ou deslizando o dedo.</p></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:28px;align-items:start">
+<div style="width:48px;height:48px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#0B0B0C">2</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:32px;font-weight:700;line-height:1.2">Status escrito</h3><p style="font-size:26px;line-height:1.4;color:#A8A8AE">“Confirmado” ou “Aguardando” por extenso, não só uma bolinha colorida.</p></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:28px;align-items:start">
+<div style="width:48px;height:48px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#0B0B0C">3</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:32px;font-weight:700;line-height:1.2">Um botão por aba</h3><p style="font-size:26px;line-height:1.4;color:#A8A8AE">Na equipe, lembrar quem falta confirmar. No repertório, abrir o Modo Palco.</p></div>
+</div>
+</div>
+</div>
+<x-embed style="position:absolute;left:1260px;top:120px;width:440px;height:840px"><!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:transparent;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#F4F1EA;height:840px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ph{width:400px;height:812px;border-radius:58px;background:#0B0B0C;border:9px solid #26262A;position:relative;overflow:hidden}
+.isl{position:absolute;top:14px;left:50%;margin-left:-55px;width:110px;height:32px;border-radius:20px;background:#000;z-index:30}
+.st{position:absolute;top:20px;left:34px;font-size:14px;font-weight:600}
+svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.n{position:absolute;width:26px;height:26px;border-radius:50%;background:#F97316;color:#0B0B0C;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:20;box-shadow:0 0 0 4px #0B0B0C}
+.in{padding:62px 24px 0}
+.hb{display:flex;justify-content:space-between;align-items:center}
+.bk{width:40px;height:40px;border-radius:50%;border:1px solid #2A2A2E;display:flex;align-items:center;justify-content:center}
+.bk svg{width:18px;height:18px}
+.mn{font-size:20px;color:#8C8C92;letter-spacing:2px}
+.g{font-size:14px;color:#8C8C92;margin-top:18px}
+.t{font-size:28px;font-weight:800;letter-spacing:-.7px;margin-top:2px}
+.tb{position:relative;display:flex;margin-top:18px;border-bottom:1px solid #222225}
+.tb span{flex:1;text-align:center;font-size:14px;font-weight:600;padding:12px 0;color:#77777D}
+.tb span:nth-child(1){animation:c1 8s infinite}
+.tb span:nth-child(2){animation:c2 8s infinite}
+.ind{position:absolute;bottom:-1px;left:0;width:33.33%;height:2px;background:#F97316;animation:in 8s infinite cubic-bezier(.2,.8,.2,1)}
+.pn{position:relative;height:420px;margin-top:6px}
+.p1,.p2{position:absolute;left:0;right:0;top:0}
+.p1{animation:a1 8s infinite}
+.p2{opacity:0;animation:a2 8s infinite}
+.r{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #1C1C1F}
+.av{width:40px;height:40px;border-radius:50%;background:#222226;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.nm{font-size:15px;font-weight:600}
+.fn{font-size:13px;color:#8C8C92}
+.ok{margin-left:auto;font-size:12px;font-weight:700;color:#F97316;display:flex;gap:4px;align-items:center}
+.ok svg{width:14px;height:14px;stroke-width:3}
+.wt{margin-left:auto;font-size:12px;color:#A8A8AE;border:1px solid #2A2A2E;border-radius:12px;padding:3px 8px}
+.s{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #1C1C1F}
+.no{font-size:22px;font-weight:800;color:#3A3A40;width:22px}
+.sn{font-size:16px;font-weight:600}
+.sa{font-size:13px;color:#8C8C92}
+.tom{margin-left:auto;font-size:13px;font-weight:700;border:1.5px solid #F97316;color:#F97316;border-radius:10px;padding:4px 9px}
+.cta{position:absolute;left:24px;right:24px;bottom:30px;height:58px;border-radius:29px;background:#F97316;color:#0B0B0C;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+.c1{animation:a1 8s infinite}
+.c2{opacity:0;animation:a2 8s infinite}
+@keyframes in{0%,42%{transform:translateX(0)}50%,92%{transform:translateX(100%)}100%{transform:translateX(0)}}
+@keyframes c1{0%,42%{color:#F4F1EA}50%,92%{color:#77777D}100%{color:#F4F1EA}}
+@keyframes c2{0%,42%{color:#77777D}50%,92%{color:#F4F1EA}100%{color:#77777D}}
+@keyframes a1{0%,42%{opacity:1;transform:none}50%,92%{opacity:0;transform:translateX(-30px)}100%{opacity:1;transform:none}}
+@keyframes a2{0%,44%{opacity:0;transform:translateX(30px)}52%,92%{opacity:1;transform:none}98%,100%{opacity:0}}
+</style></head><body>
+<svg style="display:none"><symbol id="l" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol><symbol id="k" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol></svg>
+<div class="ph"><div class="isl"></div><p class="st">19:42</p>
+<div class="in">
+<div class="hb"><span class="bk"><svg><use href="#l"/></svg></span><span class="mn">•••</span></div>
+<p class="g">Domingo, 26 out · 19h00</p>
+<p class="t">Culto da Família</p>
+<div class="tb"><span>Equipe</span><span>Repertório</span><span>Roteiro</span><i class="ind"></i><span class="n" style="right:-6px;top:-8px">1</span></div>
+<div class="pn">
+<div class="p1">
+<div class="r"><div class="av">PD</div><div><p class="nm">Pr. Daniel</p><p class="fn">Ministro</p></div><span class="ok"><svg><use href="#k"/></svg>Confirmado</span></div>
+<div class="r"><div class="av">AL</div><div><p class="nm">Ana Lima</p><p class="fn">Vocal</p></div><span class="ok"><svg><use href="#k"/></svg>Confirmado</span></div>
+<div class="r" style="position:relative"><div class="av">JP</div><div><p class="nm">João Pedro</p><p class="fn">Violão</p></div><span class="wt">Aguardando</span><span class="n" style="right:-12px;top:-4px">2</span></div>
+<div class="r"><div class="av">MC</div><div><p class="nm">Marina Costa</p><p class="fn">Teclado</p></div><span class="ok"><svg><use href="#k"/></svg>Confirmado</span></div>
+<div class="r"><div class="av">LR</div><div><p class="nm">Lucas Rocha</p><p class="fn">Bateria</p></div><span class="wt">Aguardando</span></div>
+</div>
+<div class="p2">
+<div class="s"><span class="no">1</span><div><p class="sn">Luz da Manhã</p><p class="sa">4 min · 72 bpm</p></div><span class="tom">G</span></div>
+<div class="s"><span class="no">2</span><div><p class="sn">Rio de Graça</p><p class="sa">5 min · 68 bpm</p></div><span class="tom">A</span></div>
+<div class="s"><span class="no">3</span><div><p class="sn">Fiel em Tudo</p><p class="sa">4 min · 80 bpm</p></div><span class="tom">D</span></div>
+<div class="s"><span class="no">4</span><div><p class="sn">Coroado</p><p class="sa">6 min · 64 bpm</p></div><span class="tom">E</span></div>
+</div>
+</div>
+</div>
+<div class="cta c1">Lembrar 2 pendentes</div>
+<div class="cta c2">Abrir Modo Palco</div>
+<span class="n" style="right:20px;bottom:78px">3</span>
+</div></body></html></x-embed>
+</section>

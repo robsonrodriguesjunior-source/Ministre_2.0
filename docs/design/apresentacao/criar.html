@@ -1,0 +1,122 @@
+<section id="criar" data-transition="fade" style="background:#0B0B0C;color:#F4F1EA;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center">
+<div style="width:900px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:24px;letter-spacing:3px;font-weight:700;color:#F97316;text-transform:uppercase">Criar escala · líder</p>
+<h2 style="font-family:'Sora', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.1;letter-spacing:-2px">Três perguntas, uma de cada vez</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:row;gap:28px;align-items:start">
+<div style="width:48px;height:48px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#0B0B0C">1</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:32px;font-weight:700;line-height:1.2">Uma pergunta por vez</h3><p style="font-size:26px;line-height:1.4;color:#A8A8AE">Quando, quem e o que tocar. A barra no topo mostra quanto falta.</p></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:28px;align-items:start">
+<div style="width:48px;height:48px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#0B0B0C">2</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:32px;font-weight:700;line-height:1.2">Escolher em vez de digitar</h3><p style="font-size:26px;line-height:1.4;color:#A8A8AE">Datas, horários e tipo de culto em botões grandes.</p></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:28px;align-items:start">
+<div style="width:48px;height:48px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#0B0B0C">3</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:32px;font-weight:700;line-height:1.2">Indisponibilidade à vista</h3><p style="font-size:26px;line-height:1.4;color:#A8A8AE">Quem marcou que não pode naquele dia aparece avisado antes de ser escalado.</p></div>
+</div>
+</div>
+</div>
+<x-embed style="position:absolute;left:1260px;top:120px;width:440px;height:840px"><!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:transparent;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#F4F1EA;height:840px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ph{width:400px;height:812px;border-radius:58px;background:#0B0B0C;border:9px solid #26262A;position:relative;overflow:hidden}
+.isl{position:absolute;top:14px;left:50%;margin-left:-55px;width:110px;height:32px;border-radius:20px;background:#000;z-index:30}
+.st{position:absolute;top:20px;left:34px;font-size:14px;font-weight:600}
+svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.n{position:absolute;width:26px;height:26px;border-radius:50%;background:#F97316;color:#0B0B0C;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:20;box-shadow:0 0 0 4px #0B0B0C}
+.in{padding:62px 24px 0}
+.hb{display:flex;justify-content:space-between;align-items:center}
+.hb b{font-size:16px}
+.cl{width:40px;height:40px;border-radius:50%;border:1px solid #2A2A2E;display:flex;align-items:center;justify-content:center}
+.cl svg{width:16px;height:16px}
+.pg{position:relative;display:flex;gap:6px;margin-top:16px}
+.pg i{flex:1;height:4px;border-radius:2px;background:#26262A;position:relative;overflow:hidden}
+.pg i b{position:absolute;left:0;top:0;bottom:0;width:100%;background:#F97316;transform-origin:left;transform:scaleX(0)}
+.pg i:nth-child(1) b{animation:b1 9s infinite}
+.pg i:nth-child(2) b{animation:b2 9s infinite}
+.pg i:nth-child(3) b{animation:b3 9s infinite}
+.vp{overflow:hidden;margin-top:26px;height:560px}
+.sp{display:flex;width:300%;animation:sl 9s infinite cubic-bezier(.2,.8,.2,1)}
+.sp>div{width:33.333%;position:relative;padding:0 2px}
+.q{font-size:26px;font-weight:800;letter-spacing:-.6px;line-height:1.15}
+.lb{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#77777D;font-weight:700;margin:22px 0 10px}
+.ch{position:relative;display:flex;gap:8px}
+.dy{flex:1;border:1px solid #2A2A2E;border-radius:18px;padding:12px 0;text-align:center}
+.dy small{display:block;font-size:12px;color:#8C8C92}
+.dy b{font-size:22px}
+.on{background:#F97316;border-color:#F97316;color:#0B0B0C}
+.on small{color:#0B0B0C}
+.hr{flex:1;border:1px solid #2A2A2E;border-radius:16px;padding:12px;text-align:center;font-weight:700;font-size:15px}
+.op{border:1px solid #2A2A2E;border-radius:16px;padding:14px 16px;font-size:15px;font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between}
+.op.sel{border-color:#F97316}
+.op.sel i{width:18px;height:18px;border-radius:50%;border:5px solid #F97316}
+.r{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #1C1C1F}
+.rl{font-size:13px;color:#8C8C92;width:68px}
+.av{width:36px;height:36px;border-radius:50%;background:#222226;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.nm{font-size:15px;font-weight:600}
+.es{margin-left:auto;font-size:13px;color:#F97316;font-weight:700;border:1px dashed #F97316;border-radius:12px;padding:6px 10px}
+.wa{position:relative;margin-top:16px;border:1px solid #2A2A2E;border-radius:16px;padding:14px;font-size:13px;color:#A8A8AE;line-height:1.4}
+.wa b{color:#F4F1EA}
+.s{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #1C1C1F}
+.ck{width:24px;height:24px;border-radius:50%;border:1.5px solid #3A3A40;display:flex;align-items:center;justify-content:center}
+.ck.y{background:#F97316;border-color:#F97316;color:#0B0B0C}
+.ck svg{width:14px;height:14px;stroke-width:3}
+.sn{font-size:15px;font-weight:600}
+.tom{margin-left:auto;font-size:12px;color:#8C8C92}
+.bs{margin-top:14px;color:#8C8C92;font-size:14px}
+.cta{position:absolute;left:24px;right:24px;bottom:30px;height:58px;border-radius:29px;background:#F97316;color:#0B0B0C;font-weight:800;font-size:16px;overflow:hidden}
+.cta span{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center}
+.x1{animation:x1 9s infinite}
+.x2{opacity:0;animation:x2 9s infinite}
+@keyframes b1{0%{transform:scaleX(0)}6%,100%{transform:scaleX(1)}}
+@keyframes b2{0%,32%{transform:scaleX(0)}38%,100%{transform:scaleX(1)}}
+@keyframes b3{0%,65%{transform:scaleX(0)}71%,100%{transform:scaleX(1)}}
+@keyframes sl{0%,30%{transform:translateX(0)}36%,63%{transform:translateX(-33.333%)}69%,96%{transform:translateX(-66.666%)}100%{transform:translateX(0)}}
+@keyframes x1{0%,64%{opacity:1}68%,97%{opacity:0}100%{opacity:1}}
+@keyframes x2{0%,65%{opacity:0}69%,96%{opacity:1}100%{opacity:0}}
+</style></head><body>
+<svg style="display:none"><symbol id="z" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="k" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol></svg>
+<div class="ph"><div class="isl"></div><p class="st">19:42</p>
+<div class="in">
+<div class="hb"><span class="cl"><svg><use href="#z"/></svg></span><b>Nova escala</b><span style="width:40px"></span></div>
+<div class="pg"><i><b></b></i><i><b></b></i><i><b></b></i><span class="n" style="right:-6px;top:-12px">1</span></div>
+<div class="vp"><div class="sp">
+<div>
+<p class="q">Quando vai ser?</p>
+<p class="lb">Data</p>
+<div class="ch"><div class="dy on"><small>DOM</small><b>26</b></div><div class="dy"><small>QUA</small><b>29</b></div><div class="dy"><small>SÁB</small><b>1</b></div><div class="dy"><small>DOM</small><b>2</b></div><span class="n" style="right:-6px;top:-12px">2</span></div>
+<p class="lb">Horário</p>
+<div class="ch"><div class="hr">09h00</div><div class="hr on">19h00</div><div class="hr">Outro</div></div>
+<p class="lb">Tipo de culto</p>
+<div class="op sel">Culto da Família<i></i></div>
+<div class="op">Culto de Oração</div>
+<div class="op">Santa Ceia</div>
+</div>
+<div>
+<p class="q">Quem vai servir?</p>
+<p class="lb">Equipe · Dom, 26 out</p>
+<div class="r"><span class="rl">Ministro</span><div class="av">PD</div><p class="nm">Pr. Daniel</p></div>
+<div class="r"><span class="rl">Vocal</span><div class="av">AL</div><p class="nm">Ana Lima</p></div>
+<div class="r"><span class="rl">Violão</span><div class="av">JP</div><p class="nm">João Pedro</p></div>
+<div class="r"><span class="rl">Teclado</span><span class="es">+ Escolher</span></div>
+<div class="r"><span class="rl">Bateria</span><div class="av">LR</div><p class="nm">Lucas Rocha</p></div>
+<div class="wa"><b>Marina Costa</b> marcou que não pode neste dia. Ela não aparece na lista do teclado.<span class="n" style="right:-6px;top:-12px">3</span></div>
+</div>
+<div>
+<p class="q">O que vamos tocar?</p>
+<p class="lb">Repertório · 3 escolhidas</p>
+<div class="s"><span class="ck y"><svg><use href="#k"/></svg></span><p class="sn">Luz da Manhã</p><span class="tom">Tom G</span></div>
+<div class="s"><span class="ck y"><svg><use href="#k"/></svg></span><p class="sn">Rio de Graça</p><span class="tom">Tom A</span></div>
+<div class="s"><span class="ck"></span><p class="sn">Fiel em Tudo</p><span class="tom">Tom D</span></div>
+<div class="s"><span class="ck y"><svg><use href="#k"/></svg></span><p class="sn">Coroado</p><span class="tom">Tom E</span></div>
+<div class="s"><span class="ck"></span><p class="sn">Santo Lugar</p><span class="tom">Tom C</span></div>
+<p class="bs">Buscar outra música…</p>
+</div>
+</div></div>
+</div>
+<div class="cta"><span class="x1">Continuar</span><span class="x2">Publicar escala</span></div>
+</div></body></html></x-embed>
+</section>
