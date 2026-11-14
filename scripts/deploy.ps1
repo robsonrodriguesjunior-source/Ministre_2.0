@@ -1,4 +1,4 @@
-<#
+﻿<#
   Publica o Ministre na VPS a partir do GitHub (seção 9.1 da especificação).
 
   Produção fica em C:\ministre (clone do GitHub). Rode como Administrador:

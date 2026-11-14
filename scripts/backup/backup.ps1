@@ -1,4 +1,4 @@
-<#
+﻿<#
   Backup diário do Ministre (seção 9.2 da especificação). Tarefa do Windows "Ministre Backup", todo dia às 4h.
 
   1. Copia o banco (mysqldump), as fotos enviadas (storage/app/public) e a configuração (.env);

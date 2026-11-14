@@ -64,8 +64,10 @@ if ($mode === 'check') {
     for ($i = 0; $i < $zip->numFiles; $i++) {
         $name = $zip->getNameIndex($i);
         $stat = $zip->statIndex($i);
+        // Com AES a própria criptografia confere a integridade (se mudou um byte, não abre);
+        // arquivos pequenos nem guardam o CRC (fica 0), então só conferimos quando existe.
         $content = $zip->getFromIndex($i);
-        if ($content === false || strlen($content) !== $stat['size'] || crc32($content) !== $stat['crc']) {
+        if ($content === false || strlen($content) !== $stat['size'] || ($stat['crc'] !== 0 && crc32($content) !== $stat['crc'])) {
             fwrite(STDERR, "Não abriu ou está corrompido: {$name} (senha errada?)\n");
             exit(6);
         }

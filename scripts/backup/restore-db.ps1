@@ -1,4 +1,4 @@
-<#
+﻿<#
   Restaura um backup do Ministre (seção 9.2). Rode como Administrador.
 
   TESTE (padrão, não toca na produção): abre o backup, sobe um MariaDB temporário separado (porta 3399),
