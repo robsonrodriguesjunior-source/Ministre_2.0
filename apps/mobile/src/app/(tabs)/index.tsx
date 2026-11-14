@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import {
@@ -18,6 +19,7 @@ import {
 import { eventKeys, eventsApi } from '@/features/events/api';
 import { NextEventCard } from '@/features/events/NextEventCard';
 import { ago, greeting, hour, weekdayName } from '@/lib/dates';
+import { setAppBadge } from '@/lib/push';
 import { useSession } from '@/stores/session';
 import { colors, radius, space } from '@/theme/tokens';
 
@@ -46,6 +48,12 @@ export default function Inicio() {
   const firstName = user?.name.split(' ')[0] ?? '';
   const home = useQuery({ queryKey: eventKeys.home, queryFn: eventsApi.home });
   const data = home.data;
+  const unread = data?.unread_notifications;
+
+  // Número de notificações novas no ícone do app (Tela de Início).
+  useEffect(() => {
+    if (unread !== undefined) setAppBadge(unread);
+  }, [unread]);
 
   return (
     <Screen refreshing={home.isRefetching} onRefresh={() => home.refetch()}>

@@ -111,6 +111,8 @@ function AppNavigator() {
         <Stack.Screen name="palco" options={{ animation: 'fade', contentStyle: { backgroundColor: colors.stageBg } }} />
         <Stack.Screen name="indisponibilidade" />
         <Stack.Screen name="avisos" />
+        <Stack.Screen name="aviso/novo" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="ajustes-notificacoes" />
         <Stack.Screen name="notificacoes" />
         <Stack.Screen name="_catalogo" />
       </Stack.Protected>

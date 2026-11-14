@@ -14,11 +14,17 @@ class EventAssignment extends Model
 
     protected $fillable = [
         'event_id', 'ministry_member_id', 'position_id', 'status', 'decline_reason', 'responded_at', 'reminded_at',
+        'pending_reminded_at', 'day_reminded_at',
     ];
 
     protected function casts(): array
     {
-        return ['responded_at' => 'datetime', 'reminded_at' => 'datetime'];
+        return [
+            'responded_at' => 'datetime',
+            'reminded_at' => 'datetime',
+            'pending_reminded_at' => 'datetime',
+            'day_reminded_at' => 'datetime',
+        ];
     }
 
     /** @return BelongsTo<Event, $this> */

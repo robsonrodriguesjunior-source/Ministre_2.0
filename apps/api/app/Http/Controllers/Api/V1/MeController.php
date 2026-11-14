@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateMeRequest;
 use App\Http\Resources\MembershipResource;
 use App\Http\Resources\UserResource;
 use App\Models\MinistryMember;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -23,6 +25,23 @@ class MeController extends Controller
         $user->update($request->validated());
 
         return new UserResource($user);
+    }
+
+    /** Quais avisos chegam no celular (Perfil › Notificações). */
+    public function notificationPrefs(Request $request): JsonResponse
+    {
+        return response()->json(['data' => $request->user()->pushPrefs()]);
+    }
+
+    public function updateNotificationPrefs(Request $request): JsonResponse
+    {
+        $rules = collect(User::PUSH_PREFS)->mapWithKeys(fn ($key) => [$key => ['sometimes', 'boolean']])->all();
+        $changes = collect($request->validate($rules))->map(fn ($v) => (bool) $v)->all();
+
+        $user = $request->user();
+        $user->update(['push_prefs' => [...$user->pushPrefs(), ...$changes]]);
+
+        return response()->json(['data' => $user->pushPrefs()]);
     }
 
     /** Ministérios de que a pessoa participa (alimenta o seletor de ministério). */

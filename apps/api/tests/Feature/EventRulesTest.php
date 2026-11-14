@@ -75,7 +75,7 @@ it('drafts are hidden from members and publishing notifies the team', function (
     actor($this->daniel, $this)->putJson("/api/v1/events/{$draft['id']}/assignments", [
         'team' => [['member_id' => ($this->member)($this->marcos)->id, 'position_id' => ($this->position)('Violão')->id]],
     ])->assertOk();
-    expect(AppNotification::where('user_id', $this->marcos->id)->count())->toBe(0); // rascunho não notifica
+    expect(AppNotification::where('user_id', $this->marcos->id)->where('data->route', "/escala/{$draft['id']}")->count())->toBe(0); // rascunho não notifica
 
     actor($this->marcos, $this)->getJson("/api/v1/events/{$draft['id']}")->assertForbidden();
     $titles = collect(actor($this->marcos, $this)->getJson('/api/v1/events')->json('data'))->pluck('title');

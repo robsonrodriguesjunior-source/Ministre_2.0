@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 're
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { IconButton, Text } from '@/components/ui';
-import { colors, space } from '@/theme/tokens';
+import { colors, size, space } from '@/theme/tokens';
 
 type Props = {
   title?: string;
@@ -15,10 +15,12 @@ type Props = {
   /** Botões presos embaixo (ação principal). */
   footer?: ReactNode;
   back?: boolean;
+  /** Botão à direita do título (ex.: "Novo aviso"). */
+  action?: ReactNode;
 };
 
 // Molde das telas de formulário: voltar, pergunta, campos rolando e a ação principal embaixo.
-export function FormScreen({ title, question, subtitle, children, footer, back = true }: Props) {
+export function FormScreen({ title, question, subtitle, children, footer, back = true, action }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -33,7 +35,7 @@ export function FormScreen({ title, question, subtitle, children, footer, back =
             <View style={styles.barSpacer} />
           )}
           {!!title && <Text variant="barTitle">{title}</Text>}
-          <View style={styles.barSpacer} />
+          {action ?? <View style={styles.barSpacer} />}
         </View>
         <ScrollView
           style={styles.flex}
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
     paddingTop: 14,
   },
   barSpacer: {
-    width: 38,
+    width: size.iconButton,
   },
   content: {
     paddingHorizontal: space.lg,

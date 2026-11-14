@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Actions\CreateChurchWithMinistry;
 use App\Models\Announcement;
+use App\Models\AppNotification;
 use App\Models\Event;
 use App\Models\EventAssignment;
 use App\Models\EventType;
@@ -12,6 +13,7 @@ use App\Models\Position;
 use App\Models\Song;
 use App\Models\Unavailability;
 use App\Models\User;
+use App\Services\Notifier;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
 
@@ -198,13 +200,45 @@ class DemoSeeder extends Seeder
             'reason' => 'Viagem',
         ]);
 
-        Announcement::create([
+        // Avisos: um fixado e um mais antigo, já lido por parte da equipe.
+        $ensaio = Announcement::create([
+            'ministry_id' => $ministry->id,
+            'author_id' => $users['daniel']->id,
+            'title' => 'Cifras novas no repertório',
+            'body' => 'Coloquei "Santo Lugar" no repertório. Deem uma ouvida antes do ensaio de sábado.',
+            'pinned' => false,
+            'push_sent_at' => now()->subDays(2),
+        ]);
+        $ensaio->forceFill(['created_at' => now()->subDays(2), 'updated_at' => now()->subDays(2)])->save();
+        foreach (['ana', 'clara', 'joao'] as $key) {
+            $ensaio->reads()->create(['user_id' => $users[$key]->id, 'read_at' => now()->subDay()]);
+        }
+
+        $domingo = Announcement::create([
             'ministry_id' => $ministry->id,
             'author_id' => $users['daniel']->id,
             'title' => 'Domingo',
             'body' => 'Chegar 30 minutos antes no domingo.',
             'pinned' => true,
+            'push_sent_at' => now()->subHours(2),
         ]);
+        $domingo->forceFill(['created_at' => now()->subHours(2), 'updated_at' => now()->subHours(2)])->save();
+        $domingo->reads()->create(['user_id' => $users['ana']->id, 'read_at' => now()->subHour()]);
+
+        // Sino: o que cada um já teria recebido (sem mandar nada para o celular).
+        $bell = function (string $key, string $type, string $title, string $body, string $route, int $hoursAgo, bool $read, array $extra = []) use ($users, $ministry) {
+            $n = AppNotification::create([
+                'user_id' => $users[$key]->id, 'ministry_id' => $ministry->id, 'type' => $type,
+                'title' => $title, 'body' => $body, 'data' => ['route' => $route, ...$extra],
+                'read_at' => $read ? now()->subHours(max(0, $hoursAgo - 1)) : null,
+            ]);
+            $n->forceFill(['created_at' => now()->subHours($hoursAgo)])->save();
+        };
+        $bell('marcos', 'announcement', 'Domingo', 'Chegar 30 minutos antes no domingo.', '/avisos', 2, false, ['announcement_id' => $domingo->id]);
+        $bell('marcos', 'scheduled', 'Você foi escalado no Violão', 'Culto da Família · '.Notifier::when($familia), "/escala/{$familia->id}", 20, false, ['event_id' => $familia->id]);
+        $bell('marcos', 'scheduled', 'Você foi escalado no Violão', 'Santa Ceia · '.Notifier::when($ceia), "/escala/{$ceia->id}", 30, true, ['event_id' => $ceia->id]);
+        $bell('marcos', 'announcement', 'Cifras novas no repertório', 'Coloquei "Santo Lugar" no repertório.', '/avisos', 48, true, ['announcement_id' => $ensaio->id]);
+        $bell('daniel', 'weekly', '3 escalas esta semana', '2 pessoas pendentes.', '/agenda', 5, false);
     }
 
     /**

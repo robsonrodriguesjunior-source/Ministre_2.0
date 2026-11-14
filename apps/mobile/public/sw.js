@@ -1,8 +1,9 @@
 // Guarda o app no aparelho para ele abrir mesmo sem internet (Modo Palco no altar).
 // Com internet, as telas vêm sempre do servidor (versão nova); sem internet, da cópia guardada.
 // Só cuida dos arquivos do próprio app: a API (api.ministreapp.com.br) não passa por aqui.
+// Também mostra os avisos que chegam no celular (Web Push) e abre a tela certa ao tocar.
 
-const CACHE = 'ministre-app-v1';
+const CACHE = 'ministre-app-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -65,6 +66,45 @@ self.addEventListener('fetch', (event) => {
         }
         throw error;
       }
+    })(),
+  );
+});
+
+// ---- Avisos no celular ----
+
+self.addEventListener('push', (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch {
+    data = { title: 'Ministre', body: event.data ? event.data.text() : '' };
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'Ministre', {
+      body: data.body || '',
+      icon: '/app-icons/icon-192.png',
+      badge: '/app-icons/icon-192.png',
+      tag: data.tag || undefined,
+      data: { url: data.url || '/' },
+    }),
+  );
+});
+
+// Tocar no aviso: volta para o app aberto (na tela certa) ou abre um novo.
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = new URL(event.notification.data?.url || '/', self.location.origin).href;
+  event.waitUntil(
+    (async () => {
+      const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      for (const client of windows) {
+        if (new URL(client.url).origin === self.location.origin && 'focus' in client) {
+          await client.focus();
+          if ('navigate' in client) return client.navigate(url);
+          return client.postMessage({ type: 'open', url });
+        }
+      }
+      return self.clients.openWindow(url);
     })(),
   );
 });

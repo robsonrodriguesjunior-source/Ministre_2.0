@@ -64,4 +64,29 @@ class User extends Authenticatable
     {
         return $this->hasMany(DeviceToken::class);
     }
+
+    /** @return HasMany<WebPushSubscription, $this> */
+    public function webPushSubscriptions(): HasMany
+    {
+        return $this->hasMany(WebPushSubscription::class);
+    }
+
+    /**
+     * Quais avisos chegam no celular (Perfil › Notificações). Tudo ligado até a pessoa desligar.
+     * O sino do app registra tudo de qualquer jeito.
+     */
+    public const PUSH_PREFS = ['escalas', 'lembretes', 'avisos', 'indisponibilidade', 'resumo'];
+
+    /** @return array<string, bool> */
+    public function pushPrefs(): array
+    {
+        $saved = $this->push_prefs ?? [];
+
+        return collect(self::PUSH_PREFS)->mapWithKeys(fn ($key) => [$key => (bool) ($saved[$key] ?? true)])->all();
+    }
+
+    public function wantsPush(string $pref): bool
+    {
+        return $this->pushPrefs()[$pref] ?? true;
+    }
 }

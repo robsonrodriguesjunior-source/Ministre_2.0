@@ -68,6 +68,7 @@ export default function PerfilScreen() {
       )}
 
       <View style={styles.actions}>
+        <Button label="Notificações" variant="secondary" onPress={() => router.push('/ajustes-notificacoes')} />
         <Button label="Entrar em outro ministério" variant="secondary" onPress={() => router.push('/convite')} />
         <Button label="Sair" variant="secondary" onPress={signOut} />
       </View>

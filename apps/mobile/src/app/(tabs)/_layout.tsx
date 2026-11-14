@@ -5,12 +5,12 @@ import type { QuickActionId } from '@/components/nav/ActionSheet';
 import { TabBar } from '@/components/nav/TabBar';
 import { useActiveMembership } from '@/stores/session';
 
-// Ações do botão +. Novo aviso chega na Etapa 5.
+// Ações do botão +.
 function handleQuickAction(id: QuickActionId) {
   if (id === 'new-event') router.push('/escala/nova');
   else if (id === 'unavailable') router.push('/indisponibilidade');
   else if (id === 'my-events') router.navigate({ pathname: '/agenda', params: { mine: '1' } });
-  else if (id === 'new-announcement') router.push('/avisos');
+  else if (id === 'new-announcement') router.push('/aviso/novo');
   else router.push('/musica/editar');
 }
 

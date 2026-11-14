@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { authApi } from '@/features/auth/api';
 import type { Membership, User } from '@/features/auth/types';
 import { configureApi } from '@/lib/api';
+import { forgetPushOnServer, refreshPushSubscription } from '@/lib/push';
 import { getItem, setItem } from '@/lib/storage';
 
 const TOKEN_KEY = 'ministre.token';
@@ -58,11 +59,13 @@ export const useSession = create<SessionState>((set, get) => ({
     await setItem(TOKEN_KEY, token);
     set({ token, user });
     await get().refreshMemberships();
+    refreshPushSubscription(); // celular que já aceitava avisos volta a receber, agora desta conta
   },
 
   signOut: async () => {
     const hadToken = !!get().token;
-    if (hadToken) authApi.logout().catch(() => undefined);
+    // Antes de sair, este celular deixa de receber os avisos desta conta.
+    if (hadToken) forgetPushOnServer().finally(() => authApi.logout().catch(() => undefined));
     await Promise.all([setItem(TOKEN_KEY, null), setItem(MINISTRY_KEY, null)]);
     set({ token: null, user: null, memberships: [], activeMinistryId: null });
   },

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AnnouncementController;
 use App\Http\Controllers\Api\V1\AssignmentController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CatalogController;
@@ -9,6 +10,8 @@ use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\InviteController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\PushController;
 use App\Http\Controllers\Api\V1\SongController;
 use App\Http\Controllers\Api\V1\UnavailabilityController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +35,14 @@ Route::prefix('v1')->group(function () {
         Route::get('/me', [MeController::class, 'show']);
         Route::patch('/me', [MeController::class, 'update']);
         Route::get('/me/ministries', [MeController::class, 'ministries']);
+        Route::get('/me/notifications', [MeController::class, 'notificationPrefs']);
+        Route::patch('/me/notifications', [MeController::class, 'updateNotificationPrefs']);
+
+        // Avisos no celular (Web Push)
+        Route::get('/push/config', [PushController::class, 'config']);
+        Route::post('/push/subscriptions', [PushController::class, 'subscribe'])->middleware('throttle:20,1');
+        Route::delete('/push/subscriptions', [PushController::class, 'unsubscribe']);
+        Route::post('/push/test', [PushController::class, 'test'])->middleware('throttle:5,1');
 
         Route::post('/churches', [ChurchController::class, 'store']);
         Route::post('/invites/{code}/accept', [InviteController::class, 'accept']);
@@ -72,6 +83,16 @@ Route::prefix('v1')->group(function () {
             // Listas de apoio
             Route::get('/positions', [CatalogController::class, 'positions']);
             Route::get('/event-types', [CatalogController::class, 'eventTypes']);
+
+            // Avisos e sino
+            Route::get('/announcements', [AnnouncementController::class, 'index']);
+            Route::post('/announcements', [AnnouncementController::class, 'store']);
+            Route::post('/announcements/read-all', [AnnouncementController::class, 'readAll']);
+            Route::patch('/announcements/{announcement}', [AnnouncementController::class, 'update'])->whereNumber('announcement');
+            Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->whereNumber('announcement');
+            Route::get('/notifications', [NotificationController::class, 'index']);
+            Route::post('/notifications/read-all', [NotificationController::class, 'readAll']);
+            Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->whereNumber('notification');
 
             // Repertório
             Route::get('/songs', [SongController::class, 'index']);
