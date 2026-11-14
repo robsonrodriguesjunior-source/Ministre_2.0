@@ -2,6 +2,5 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Quem abrir api.ministreapp.com.br no navegador vai para o app.
+Route::redirect('/', rtrim((string) config('ministre.app_url'), '/'));
