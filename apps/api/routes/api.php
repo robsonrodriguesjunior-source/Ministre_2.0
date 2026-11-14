@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\InviteController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\SongController;
 use App\Http\Controllers\Api\V1\UnavailabilityController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,7 @@ Route::prefix('v1')->group(function () {
             Route::put('/events/{event}/assignments', [EventController::class, 'assignments'])->whereNumber('event');
             Route::put('/events/{event}/songs', [EventController::class, 'songs'])->whereNumber('event');
             Route::put('/events/{event}/rundown', [EventController::class, 'rundown'])->whereNumber('event');
+            Route::get('/events/{event}/stage', [EventController::class, 'stage'])->whereNumber('event');
 
             Route::post('/assignments/{assignment}/confirm', [AssignmentController::class, 'confirm'])->whereNumber('assignment');
             Route::post('/assignments/{assignment}/decline', [AssignmentController::class, 'decline'])->whereNumber('assignment');
@@ -70,7 +72,14 @@ Route::prefix('v1')->group(function () {
             // Listas de apoio
             Route::get('/positions', [CatalogController::class, 'positions']);
             Route::get('/event-types', [CatalogController::class, 'eventTypes']);
-            Route::get('/songs', [CatalogController::class, 'songs']);
+
+            // Repertório
+            Route::get('/songs', [SongController::class, 'index']);
+            Route::get('/songs/tags', [SongController::class, 'tags']);
+            Route::post('/songs', [SongController::class, 'store']);
+            Route::get('/songs/{song}', [SongController::class, 'show'])->whereNumber('song');
+            Route::patch('/songs/{song}', [SongController::class, 'update'])->whereNumber('song');
+            Route::delete('/songs/{song}', [SongController::class, 'destroy'])->whereNumber('song');
         });
     });
 });

@@ -21,3 +21,4 @@ export { Chip } from './Chip';
 export { Notice } from './Notice';
 export { TextField } from './TextField';
 export { Toast } from './Toast';
+export { KeyBadge } from './KeyBadge';

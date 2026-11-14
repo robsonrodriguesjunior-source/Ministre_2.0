@@ -20,6 +20,9 @@ export const monthYear = (d: Date) => cap(format(d, 'MMMM yyyy', { locale: ptBR 
 /** "Dom, 26 out" */
 export const shortDate = (d: Date) => cap(format(d, 'EEE, d MMM', { locale: ptBR }).replace('.', ''));
 
+/** "12 out" */
+export const dayMonth = (d: Date) => format(d, 'd MMM', { locale: ptBR }).replace('.', '');
+
 /** "hoje", "amanhã", "em 6 dias", "há 2 dias" */
 export function relativeDays(d: Date, now = new Date()) {
   const days = differenceInCalendarDays(d, now);

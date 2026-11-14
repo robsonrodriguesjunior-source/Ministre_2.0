@@ -67,6 +67,17 @@ const glyphs = {
       <Path d="M20 20l-4.2-4.2" />
     </>
   ),
+  minus: <Path d="M5 12h14" />,
+  play: <Path d="M8 5.5v13l10.5-6.5z" />,
+  pause: <Path d="M8 5v14M16 5v14" />,
+  edit: <Path d="M5 19h4L19 9l-4-4L5 15zM13.5 6.5l4 4" />,
+  link: (
+    <>
+      <Path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
+      <Path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
+    </>
+  ),
+  sliders: <Path d="M5 7h9M18 7h1M5 17h1M10 17h9M16 5v4M8 15v4" />,
 } as const;
 
 export type IconName = keyof typeof glyphs;

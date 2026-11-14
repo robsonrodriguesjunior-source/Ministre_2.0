@@ -36,6 +36,13 @@ export default function RootLayout() {
     hydrate();
   }, [hydrate]);
 
+  // Web: guarda o app no aparelho (public/sw.js) para abrir sem internet, como no altar.
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return;
+    if (location.protocol !== 'https:') return;
+    navigator.serviceWorker.register('/sw.js').catch(() => undefined);
+  }, []);
+
   const ready = (fontsLoaded || !!fontError) && sessionReady;
 
   useEffect(() => {
@@ -99,6 +106,9 @@ function AppNavigator() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="escala/[id]" />
         <Stack.Screen name="escala/nova" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="musica/[id]" />
+        <Stack.Screen name="musica/editar" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="palco" options={{ animation: 'fade', contentStyle: { backgroundColor: colors.stageBg } }} />
         <Stack.Screen name="indisponibilidade" />
         <Stack.Screen name="avisos" />
         <Stack.Screen name="notificacoes" />

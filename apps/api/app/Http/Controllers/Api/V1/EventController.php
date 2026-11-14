@@ -188,6 +188,29 @@ class EventController extends Controller
         return $this->detail($event);
     }
 
+    /** Modo Palco (5.8): as músicas da escala com a cifra, para o app guardar e usar sem internet. */
+    public function stage(Event $event): JsonResponse
+    {
+        Gate::authorize('view', $event);
+        $event->load('songs.song');
+
+        return response()->json(['data' => [
+            'event_id' => $event->id,
+            'title' => $event->title,
+            'starts_at' => $event->starts_at->toIso8601String(),
+            'songs' => $event->songs->map(fn ($s) => [
+                'song_id' => $s->song_id,
+                'title' => $s->song->title,
+                'artist' => $s->song->artist,
+                'key' => $s->key ?: $s->song->original_key,
+                'original_key' => $s->song->original_key,
+                'bpm' => $s->song->bpm,
+                'duration_sec' => $s->song->duration_sec,
+                'chordpro' => $s->song->chordpro ?? '',
+            ])->values(),
+        ]]);
+    }
+
     public function rundown(RundownRequest $request, Event $event): EventDetailResource
     {
         Gate::authorize('manage', $event);

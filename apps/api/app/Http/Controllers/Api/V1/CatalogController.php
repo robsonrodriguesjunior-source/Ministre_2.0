@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\EventType;
 use App\Models\MinistryMember;
 use App\Models\Position;
-use App\Models\Song;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Listas de apoio do ministério ativo (funções, tipos de culto e músicas).
- * A gestão completa (criar, renomear, arquivar) chega na Etapa 6; o repertório completo na Etapa 4.
+ * Listas de apoio do ministério ativo (funções e tipos de culto).
+ * A gestão completa (criar, renomear, arquivar) chega na Etapa 6; o repertório fica no SongController.
  */
 class CatalogController extends Controller
 {
@@ -33,18 +32,6 @@ class CatalogController extends Controller
                 'default_location' => $t->default_location,
                 'is_rehearsal' => $t->is_rehearsal,
             ])]);
-    }
-
-    public function songs(Request $request): JsonResponse
-    {
-        $request->validate(['q' => ['nullable', 'string', 'max:80']]);
-
-        return response()->json(['data' => Song::where('ministry_id', $this->ministryId($request))
-            ->when($request->filled('q'), fn ($q) => $q->where(fn ($w) => $w
-                ->where('title', 'like', '%'.$request->input('q').'%')
-                ->orWhere('artist', 'like', '%'.$request->input('q').'%')))
-            ->orderBy('title')
-            ->get(['id', 'title', 'artist', 'original_key', 'bpm', 'duration_sec'])]);
     }
 
     private function ministryId(Request $request): int

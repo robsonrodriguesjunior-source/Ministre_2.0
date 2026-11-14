@@ -75,7 +75,11 @@ class DemoSeeder extends Seeder
         // ---- Músicas (letras inventadas) ----
         $songs = [];
         foreach ($this->songs() as $data) {
-            $songs[$data['title']] = Song::create($data + ['ministry_id' => $ministry->id]);
+            $daysAgo = $data['days_ago'];
+            unset($data['days_ago']);
+            $song = Song::create($data + ['ministry_id' => $ministry->id]);
+            $song->forceFill(['created_at' => now()->subDays($daysAgo)])->save();
+            $songs[$data['title']] = $song;
         }
 
         // ---- Datas: próximos sábado, domingo, quarta e o domingo seguinte (horário de Brasília) ----
@@ -171,6 +175,21 @@ class DemoSeeder extends Seeder
             ]);
         }
 
+        $ceia->songs()->create(['song_id' => $songs['Santo Lugar']->id, 'sort_order' => 0, 'key' => 'C']);
+        $ceia->songs()->create(['song_id' => $songs['Coroado']->id, 'sort_order' => 1, 'key' => 'D']);
+
+        // Dois domingos que já passaram, para o repertório mostrar "Tocada N vezes · última em …".
+        foreach ([1 => ['Luz da Manhã', 'Rio de Graça', 'Coroado'], 2 => ['Luz da Manhã', 'Fiel em Tudo']] as $weeksAgo => $titles) {
+            $past = Event::create([
+                'ministry_id' => $ministry->id, 'event_type_id' => $type('Culto da Família'), 'title' => 'Culto da Família',
+                'starts_at' => $at($sunday->subWeeks($weeksAgo + 1), '19:00'), 'location' => 'Templo',
+                'status' => Event::STATUS_PUBLISHED, 'created_by' => $users['daniel']->id, 'published_at' => now()->subWeeks($weeksAgo + 2),
+            ]);
+            foreach ($titles as $i => $title) {
+                $past->songs()->create(['song_id' => $songs[$title]->id, 'sort_order' => $i, 'key' => $songs[$title]->original_key]);
+            }
+        }
+
         // Marina não pode no domingo do Culto da Família.
         Unavailability::create([
             'ministry_member_id' => $members['marina']->id,
@@ -188,34 +207,114 @@ class DemoSeeder extends Seeder
         ]);
     }
 
-    /** @return list<array<string, mixed>> */
+    /**
+     * Músicas de exemplo. Todas as letras são inventadas (nunca usar letra real com direitos autorais).
+     * "Santo Lugar" foi cadastrada há poucos dias para aparecer no filtro "Novas".
+     *
+     * @return list<array<string, mixed>>
+     */
     private function songs(): array
     {
         return [
             [
                 'title' => 'Luz da Manhã', 'artist' => 'Ministério Exemplo', 'original_key' => 'G', 'bpm' => 72,
-                'duration_sec' => 240, 'tags' => ['Adoração'], 'links' => [],
-                'chordpro' => "{title: Luz da Manhã}\n{key: G}\n[G]Quando a luz da ma[D]nhã\n[Em]toca o meu ja[C]nela\n[G]lembro do teu a[D]mor\n[Em]que nunca se [C]cansa\n\n{c: Refrão}\n[C]Luz da manhã, [G]brilha em mim\n[Em]mostra o caminho [D]até o fim\n",
+                'duration_sec' => 240, 'tags' => ['Adoração'], 'links' => [], 'days_ago' => 120,
+                'chordpro' => <<<'CHO'
+                {title: Luz da Manhã}
+                {key: G}
+                [G]Quando a luz da ma[D]nhã
+                [Em]toca a minha ja[C]nela
+                [G]lembro do teu a[D]mor
+                [Em]que nunca se [C]cansa
+
+                {c: Refrão}
+                [C]Luz da manhã, [G]brilha em mim
+                [Em]mostra o caminho [D]até o fim
+                [C]luz da manhã, [G]fica aqui
+                [Em]tudo o que eu sou [D]vem de [G]ti
+
+                {c: Ponte}
+                [Am]Mesmo na noite [C]mais escura
+                [G]tua palavra [D]me segura
+                CHO,
             ],
             [
                 'title' => 'Rio de Graça', 'artist' => 'Ministério Exemplo', 'original_key' => 'A', 'bpm' => 68,
-                'duration_sec' => 300, 'tags' => ['Adoração'], 'links' => [],
-                'chordpro' => "{title: Rio de Graça}\n{key: A}\n[A]Como um rio que [E]desce o monte\n[F#m]tua graça corre em [D]mim\n[A]cada manhã é um [E]começo\n[F#m]teu cuidado [D]não tem [A]fim\n\n{c: Refrão}\n[D]Rio de graça, [A]leva-me\n[F#m]para perto de [E]ti\n[D]rio de graça, [A]lava-me\n[F#m]quero es[E]tar a[A]qui\n",
+                'duration_sec' => 300, 'tags' => ['Adoração'], 'links' => [], 'days_ago' => 120,
+                'chordpro' => <<<'CHO'
+                {title: Rio de Graça}
+                {key: A}
+                [A]Como um rio que [E]desce o monte
+                [F#m]tua graça corre em [D]mim
+                [A]cada manhã é um [E]começo
+                [F#m]teu cuidado [D]não tem [A]fim
+
+                {c: Refrão}
+                [D]Rio de graça, [A]leva-me
+                [F#m]para perto de [E]ti
+                [D]rio de graça, [A]lava-me
+                [F#m]quero es[E]tar a[A]qui
+
+                {c: Ponte}
+                [D]Corre, corre, [E]rio de graça
+                [F#m]enche o vale, [D]enche a praça
+                [D]corre, corre, [E]sobre nós
+                [F#m]ouço a tua [E]voz
+                CHO,
             ],
             [
                 'title' => 'Fiel em Tudo', 'artist' => 'Ministério Exemplo', 'original_key' => 'D', 'bpm' => 80,
-                'duration_sec' => 240, 'tags' => ['Celebração'], 'links' => [],
-                'chordpro' => "{title: Fiel em Tudo}\n{key: D}\n[D]Em cada passo [A]que eu der\n[Bm]tua mão me se[G]gura\n[D]no vale ou no [A]monte\n[Bm]teu amor per[G]dura\n\n{c: Refrão}\n[G]Fiel em tudo, [D]fiel em tudo\n[Bm]nunca me dei[A]xou\n",
+                'duration_sec' => 240, 'tags' => ['Celebração'], 'links' => [], 'days_ago' => 90,
+                'chordpro' => <<<'CHO'
+                {title: Fiel em Tudo}
+                {key: D}
+                [D]Em cada passo [A]que eu der
+                [Bm]tua mão me se[G]gura
+                [D]no vale ou no [A]monte
+                [Bm]teu amor per[G]dura
+
+                {c: Refrão}
+                [G]Fiel em tudo, [D]fiel em tudo
+                [Bm]nunca me dei[A]xou
+                [G]fiel em tudo, [D]fiel em tudo
+                [Bm]teu amor fi[A]cou [D]
+                CHO,
             ],
             [
                 'title' => 'Coroado', 'artist' => 'Ministério Exemplo', 'original_key' => 'E', 'bpm' => 64,
-                'duration_sec' => 360, 'tags' => ['Adoração'], 'links' => [],
-                'chordpro' => "{title: Coroado}\n{key: E}\n[E]Toda a terra can[B]ta\n[C#m]o céu se le[A]vanta\n[E]o Rei está co[B]roado\n[C#m]e reina para [A]sempre\n",
+                'duration_sec' => 360, 'tags' => ['Adoração', 'Celebração'], 'links' => [], 'days_ago' => 60,
+                'chordpro' => <<<'CHO'
+                {title: Coroado}
+                {key: E}
+                [E]Toda a terra can[B]ta
+                [C#m]o céu se le[A]vanta
+                [E]o Rei está co[B]roado
+                [C#m]e reina para [A]sempre
+
+                {c: Refrão}
+                [A]Coroado, co[E]roado
+                [B]digno é o teu [C#m]nome
+                [A]coroado, co[E]roado
+                [B]para sempre [E]Rei
+                CHO,
             ],
             [
                 'title' => 'Santo Lugar', 'artist' => 'Ministério Exemplo', 'original_key' => 'C', 'bpm' => 70,
-                'duration_sec' => 270, 'tags' => ['Ceia'], 'links' => [],
-                'chordpro' => "{title: Santo Lugar}\n{key: C}\n[C]Neste santo lu[G]gar\n[Am]venho me pros[F]trar\n[C]tua presença é o [G]meu lar\n[Am]quero aqui fi[F]car\n",
+                'duration_sec' => 270, 'tags' => ['Ceia'], 'links' => [], 'days_ago' => 5,
+                'chordpro' => <<<'CHO'
+                {title: Santo Lugar}
+                {key: C}
+                [C]Neste santo lu[G]gar
+                [Am]venho me pros[F]trar
+                [C]tua presença é o [G]meu lar
+                [Am]quero aqui fi[F]car
+
+                {c: Refrão}
+                [F]Santo, [G]santo
+                [Em]é o teu [Am]nome
+                [F]santo, [G]santo
+                [C]sempre vou can[G]tar
+                CHO,
             ],
         ];
     }

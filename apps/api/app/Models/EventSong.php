@@ -19,6 +19,6 @@ class EventSong extends Model
     /** @return BelongsTo<Song, $this> */
     public function song(): BelongsTo
     {
-        return $this->belongsTo(Song::class);
+        return $this->belongsTo(Song::class)->withTrashed(); // música apagada continua nas escalas antigas
     }
 }

@@ -84,7 +84,7 @@ export function StepSongs({ songs, loading, picked, onChange }: Props) {
           </>
         ) : filtered.length === 0 ? (
           <Text variant="bodySm" color="dim">
-            {songs?.length ? 'Nenhuma música com esse nome.' : 'O repertório ainda está vazio. As músicas são cadastradas na Etapa 4.'}
+            {songs?.length ? 'Nenhuma música com esse nome.' : 'O repertório ainda está vazio. Cadastre as músicas na aba Músicas.'}
           </Text>
         ) : (
           filtered.map((s) => (

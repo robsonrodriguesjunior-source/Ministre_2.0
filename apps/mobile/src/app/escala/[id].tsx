@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import { type ComponentRef, useCallback, useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
@@ -10,6 +10,7 @@ import {
   DateBadge,
   EmptyState,
   IconButton,
+  KeyBadge,
   ListRow,
   Pill,
   Segmented,
@@ -23,8 +24,10 @@ import { EventMenu } from '@/features/events/EventMenu';
 import { myStatus, statusPill } from '@/features/events/status';
 import type { EventDetail } from '@/features/events/types';
 import { useRespond } from '@/features/events/useRespond';
+import { songsApi } from '@/features/songs/api';
+import { loadStageSet, saveStageSet, stageKey } from '@/features/songs/offline';
 import { hour, weekdayName } from '@/lib/dates';
-import { colors, fonts, size, space } from '@/theme/tokens';
+import { colors, size, space } from '@/theme/tokens';
 
 type Tab = 'equipe' | 'repertorio' | 'roteiro';
 const TABS: { value: Tab; label: string }[] = [
@@ -67,29 +70,30 @@ function TeamTab({ event }: { event: EventDetail }) {
   );
 }
 
+// Tocar numa música abre a cifra já no tom desta escala.
 function SongsTab({ event }: { event: EventDetail }) {
   if (event.songs.length === 0) return <EmptyState icon="music" message="Nenhuma música escolhida ainda." />;
   return (
     <View>
       {event.songs.map((s, i) => (
-        <View key={s.id} style={[styles.songRow, i < event.songs.length - 1 && styles.divider]}>
+        <Pressable
+          key={s.id}
+          onPress={() => router.push({ pathname: '/musica/[id]', params: { id: String(s.song_id), key: s.key } })}
+          accessibilityRole="button"
+          accessibilityLabel={`${i + 1}. ${s.title}, tom ${s.key}`}
+          style={({ pressed }) => [styles.songRow, i < event.songs.length - 1 && styles.divider, pressed && styles.pressed]}
+        >
           <Text variant="eventDay" style={styles.songNumber}>
             {i + 1}
           </Text>
           <View style={styles.flex}>
-            <Text variant="body" style={styles.songTitle}>
-              {s.title}
-            </Text>
+            <Text variant="songTitle">{s.title}</Text>
             <Text variant="meta" color="dim">
               {[minutes(s.duration_sec), s.bpm ? `${s.bpm} bpm` : null].filter(Boolean).join(' · ') || s.artist}
             </Text>
           </View>
-          <View style={styles.key} accessibilityLabel={`Tom ${s.key}`}>
-            <Text variant="pill" color="orange">
-              {s.key}
-            </Text>
-          </View>
-        </View>
+          <KeyBadge label={s.key} accessibilityLabel={`Tom ${s.key}`} />
+        </Pressable>
       ))}
     </View>
   );
@@ -105,9 +109,7 @@ function RundownTab({ event }: { event: EventDetail }) {
             {r.planned_time ?? '—'}
           </Text>
           <View style={styles.flex}>
-            <Text variant="body" style={styles.songTitle}>
-              {r.title}
-            </Text>
+            <Text variant="songTitle">{r.title}</Text>
             <Text variant="meta" color="dim">
               {[r.duration_min ? `${r.duration_min} min` : null, r.responsible].filter(Boolean).join(' · ') || ' '}
             </Text>
@@ -136,6 +138,24 @@ export default function Escala() {
 
   const query = useQuery({ queryKey: ['event', id], queryFn: () => eventsApi.get(id), enabled: Number.isFinite(id) });
   const event = query.data?.data;
+  const songCount = event?.songs.length ?? 0;
+
+  // Guarda o repertório no aparelho assim que a escala abre, para o Modo Palco funcionar depois sem internet.
+  useEffect(() => {
+    if (!songCount) return;
+    songsApi
+      .stage(id)
+      .then((r) => saveStageSet(stageKey({ eventId: id }), { ...r.data, saved_at: new Date().toISOString() }))
+      .catch(() => undefined);
+  }, [id, songCount, query.dataUpdatedAt]);
+
+  // Sem internet: se o repertório desta escala foi guardado, o Modo Palco ainda abre.
+  const saved = useQuery({
+    queryKey: ['stage-saved', id],
+    queryFn: () => loadStageSet(stageKey({ eventId: id })),
+    enabled: !event && (query.isError || query.fetchStatus === 'paused'),
+    networkMode: 'always',
+  });
 
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ['event', id] });
@@ -173,7 +193,14 @@ export default function Escala() {
           <View style={styles.spacer} />
         </View>
         <View style={styles.loading}>
-          {query.isError ? (
+          {saved.data ? (
+            <EmptyState
+              icon="music"
+              message="Sem conexão com a internet. O repertório desta escala está salvo no aparelho."
+              actionLabel="Abrir Modo Palco"
+              onAction={() => router.push({ pathname: '/palco', params: { event: String(id) } })}
+            />
+          ) : query.isError || query.fetchStatus === 'paused' ? (
             <EmptyState icon="calendar" message="Não foi possível abrir esta escala." actionLabel="Voltar" onAction={() => router.back()} />
           ) : (
             <>
@@ -226,7 +253,7 @@ export default function Escala() {
       );
     }
   } else if (tab === 'repertorio' && event.songs.length > 0) {
-    cta = <Button label="Abrir Modo Palco" onPress={() => setToast('O Modo Palco chega na Etapa 4.')} />;
+    cta = <Button label="Abrir Modo Palco" onPress={() => router.push({ pathname: '/palco', params: { event: String(id) } })} />;
   }
 
   return (
@@ -329,9 +356,8 @@ const styles = StyleSheet.create({
   songRow: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 14 },
   divider: { borderBottomWidth: 1, borderBottomColor: colors.line },
   songNumber: { width: 22, color: colors.lineStrong },
-  songTitle: { fontFamily: fonts.semibold, fontSize: 16 },
   time: { width: 48 },
-  key: { borderWidth: 1.5, borderColor: colors.orange, borderRadius: 10, paddingHorizontal: 9, paddingVertical: 4, minWidth: 34, alignItems: 'center' },
+  pressed: { opacity: 0.7 },
   cta: { position: 'absolute', left: space.lg, right: space.lg },
 });
 

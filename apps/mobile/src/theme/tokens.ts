@@ -2,7 +2,7 @@
 // Nunca use cor ou tamanho solto num componente: use sempre um token daqui.
 // Tema escuro é o único da v1; o tema claro entra depois trocando só `colors`.
 
-import type { TextStyle } from 'react-native';
+import { Platform, type TextStyle } from 'react-native';
 
 export const colors = {
   bg: '#0C0C0D',
@@ -34,7 +34,8 @@ export const fonts = {
   semibold: 'Figtree_600SemiBold',
   bold: 'Figtree_700Bold',
   extrabold: 'Figtree_800ExtraBold',
-  mono: 'monospace',
+  // Cifras: monoespaçada do sistema (Menlo no iOS, monospace no Android e na web).
+  mono: Platform.select({ ios: 'Menlo', default: 'monospace' }),
 } as const;
 
 // Escala tipográfica (seção 3.2). fontFamily já carrega o peso; não use fontWeight junto.
@@ -72,6 +73,16 @@ export const type = {
   input: { fontFamily: fonts.medium, fontSize: 15 },
   chip: { fontFamily: fonts.semibold, fontSize: 14 },
   code: { fontFamily: fonts.extrabold, fontSize: 24, letterSpacing: 6 },
+  // Músicas e cifra (5.7) e Modo Palco (5.8).
+  songTitle: { fontFamily: fonts.semibold, fontSize: 16 },
+  songName: { fontFamily: fonts.semibold, fontSize: 15 },
+  songHeader: { fontFamily: fonts.extrabold, fontSize: 26, letterSpacing: -0.6 },
+  lyric: { fontFamily: fonts.semibold, fontSize: 18, lineHeight: 24 },
+  chord: { fontFamily: fonts.mono, fontWeight: '700', fontSize: 15, lineHeight: 20 },
+  section: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 2, textTransform: 'uppercase' },
+  stageTitle: { fontFamily: fonts.extrabold, fontSize: 30, letterSpacing: -0.8 },
+  stageLyric: { fontFamily: fonts.semibold, fontSize: 23, lineHeight: 29 },
+  editor: { fontFamily: fonts.mono, fontSize: 14, lineHeight: 21 },
 } satisfies Record<string, TextStyle>;
 
 export type TypeToken = keyof typeof type;
@@ -93,6 +104,7 @@ export const radius = {
   eventRow: 16,
   quickAction: 16,
   pill: 20,
+  key: 10, // selo do tom
   card: 22,
   sheet: 28,
   round: 999,
@@ -125,6 +137,10 @@ export const size = {
   input: 50,
   checkbox: 24,
   maxContentWidth: 480, // no computador, o app fica numa coluna central
+  stagePlay: 72, // play/pause do Modo Palco
+  stageSide: 52, // ‹ › do Modo Palco
+  stageFade: 60, // degradê no alto e embaixo da letra
+  progress: 3, // barra de progresso fina
 } as const;
 
 // Durações das animações (seção 3.4), em ms.
