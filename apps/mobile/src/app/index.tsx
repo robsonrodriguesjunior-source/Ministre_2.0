@@ -36,6 +36,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.screen}>
+      <View style={styles.body}>
       <View style={styles.center}>
         <Text style={styles.logo}>
           Minis<Text style={styles.logoAccent}>tre</Text>
@@ -61,6 +62,7 @@ export default function HomeScreen() {
         )}
         <Text style={styles.statusUrl}>{API_URL || '(sem endereço)'}</Text>
       </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
@@ -69,6 +71,9 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.bg,
+  },
+  body: {
+    flex: 1,
     paddingHorizontal: 16,
   },
   center: {

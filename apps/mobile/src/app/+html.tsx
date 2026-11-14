@@ -1,14 +1,17 @@
-import { ScrollViewStyleReset } from 'expo-router/html';
+import { ScrollViewStyleReset, useServerDocumentContext } from 'expo-router/html';
 import type { PropsWithChildren } from 'react';
 
 import { colors } from '@/theme/tokens';
 
 // HTML da versão web. É ele que deixa o Ministre "instalável" pelo navegador:
 // no iPhone, Compartilhar › Adicionar à Tela de Início; no Android, o próprio navegador oferece instalar.
+// headNodes/bodyNodes trazem os scripts e estilos do app: sem eles a página não "ganha vida" (SDK 58).
 export default function Root({ children }: PropsWithChildren) {
+  const { htmlAttributes, bodyAttributes, headNodes, bodyNodes } = useServerDocumentContext();
   return (
-    <html lang="pt-BR">
+    <html {...htmlAttributes} lang="pt-BR">
       <head>
+        {headNodes}
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta
@@ -31,7 +34,10 @@ export default function Root({ children }: PropsWithChildren) {
         <ScrollViewStyleReset />
         <style dangerouslySetInnerHTML={{ __html: `html,body{background-color:${colors.bg};}` }} />
       </head>
-      <body>{children}</body>
+      <body {...bodyAttributes}>
+        {children}
+        {bodyNodes}
+      </body>
     </html>
   );
 }
