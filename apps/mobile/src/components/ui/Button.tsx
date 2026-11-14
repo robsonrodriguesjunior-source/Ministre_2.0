@@ -88,14 +88,16 @@ export function Button({
                 {label}
               </Text>
             </Animated.View>
-            <Animated.View style={[styles.layer, confirmedStyle]} pointerEvents="none">
-              <View style={styles.row}>
-                <Icon name="check" size={17} strokeWidth={3} color={colors[fg]} />
-                <Text variant="button" color={fg}>
-                  {confirmedLabel}
-                </Text>
-              </View>
-            </Animated.View>
+            {confirmed && (
+              <Animated.View style={[styles.layer, confirmedStyle]} pointerEvents="none">
+                <View style={styles.row}>
+                  <Icon name="check" size={17} strokeWidth={3} color={colors[fg]} />
+                  <Text variant="button" color={fg}>
+                    {confirmedLabel}
+                  </Text>
+                </View>
+              </Animated.View>
+            )}
           </>
         )}
       </Animated.View>

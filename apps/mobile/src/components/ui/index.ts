@@ -16,3 +16,7 @@ export { Segmented } from './Segmented';
 export { Skeleton } from './Skeleton';
 export { Text } from './Text';
 export { WeekStrip } from './WeekStrip';
+export { Checkbox } from './Checkbox';
+export { Chip } from './Chip';
+export { Notice } from './Notice';
+export { TextField } from './TextField';

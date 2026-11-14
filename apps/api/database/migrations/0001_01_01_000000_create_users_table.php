@@ -6,25 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone', 30)->nullable();
+            $table->string('avatar_path')->nullable();
+            $table->json('push_prefs')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->timestamp('terms_accepted_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
+        // Código de 6 dígitos do "Esqueci a senha" (guardado só como hash).
+        Schema::create('password_resets', function (Blueprint $table) {
+            $table->id();
+            $table->string('email')->index();
+            $table->string('code_hash');
+            $table->unsignedTinyInteger('attempts')->default(0);
+            $table->timestamp('expires_at');
+            $table->timestamps();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -37,13 +43,10 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('password_resets');
         Schema::dropIfExists('sessions');
     }
 };

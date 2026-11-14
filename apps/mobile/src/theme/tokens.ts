@@ -66,6 +66,12 @@ export const type = {
   sheetTitle: { fontFamily: fonts.extrabold, fontSize: 20, letterSpacing: -0.4 },
   tileTitle: { fontFamily: fonts.bold, fontSize: 15 },
   tileSub: { fontFamily: fonts.regular, fontSize: 12 },
+  logo: { fontFamily: fonts.extrabold, fontSize: 40, letterSpacing: -1 },
+  question: { fontFamily: fonts.extrabold, fontSize: 26, letterSpacing: -0.6, lineHeight: 30 },
+  fieldLabel: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 0.7, textTransform: 'uppercase' },
+  input: { fontFamily: fonts.medium, fontSize: 15 },
+  chip: { fontFamily: fonts.semibold, fontSize: 14 },
+  code: { fontFamily: fonts.extrabold, fontSize: 24, letterSpacing: 6 },
 } satisfies Record<string, TextStyle>;
 
 export type TypeToken = keyof typeof type;
@@ -116,6 +122,8 @@ export const size = {
   sheetHandleW: 40,
   sheetHandleH: 5,
   fixedCtaBottom: 88, // CTA fixo acima da barra de abas
+  input: 50,
+  checkbox: 24,
   maxContentWidth: 480, // no computador, o app fica numa coluna central
 } as const;
 
