@@ -1,3 +1,5 @@
+export type SongLink = { url: string; type: 'youtube' | 'spotify' | 'deezer' | 'other' };
+
 export type SongSummary = {
   id: number;
   title: string;
@@ -6,16 +8,14 @@ export type SongSummary = {
   bpm: number | null;
   duration_sec: number | null;
   tags: string[];
+  links: SongLink[];
   played_count: number;
   last_played_at: string | null;
   is_new: boolean;
 };
 
-export type SongLink = { url: string; type: 'youtube' | 'spotify' | 'other' };
-
 export type SongDetail = SongSummary & {
   chordpro: string;
-  links: SongLink[];
   can_manage: boolean;
 };
 
@@ -51,4 +51,18 @@ export type StageSet = {
   starts_at: string | null;
   songs: StageSong[];
   saved_at: string;
+};
+
+/** O que o link (YouTube, Spotify ou Deezer) trouxe. O tom nunca vem: a pessoa escolhe. */
+export type SongLookup = {
+  source: 'youtube' | 'spotify' | 'deezer';
+  url: string;
+  title: string | null;
+  artist: string | null;
+  bpm: number | null;
+  duration_sec: number | null;
+  lyrics: string | null;
+  key: null;
+  /** Já existe na biblioteca com esse mesmo link. */
+  existing: { id: number; title: string } | null;
 };

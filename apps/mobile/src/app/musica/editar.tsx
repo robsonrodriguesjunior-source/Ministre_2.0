@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -8,7 +8,8 @@ import { BottomSheet, Button, Card, Chip, EmptyState, Icon, IconButton, Notice, 
 import { songKeys, songsApi } from '@/features/songs/api';
 import { ChordSheet } from '@/features/songs/ChordSheet';
 import { chordsOverLyricsToChordPro, KEYS, looksLikeChordsOverLyrics } from '@/features/songs/chordpro';
-import type { SongDetail, SongInput } from '@/features/songs/types';
+import { LinkImport } from '@/features/songs/LinkImport';
+import type { SongDetail, SongInput, SongLookup } from '@/features/songs/types';
 import { ApiError } from '@/lib/api';
 import { useActiveMembership } from '@/stores/session';
 import { colors, radius, size, space, type } from '@/theme/tokens';
@@ -79,6 +80,22 @@ export default function EditarMusica() {
     setForm(fromSong(song));
     setLoaded(true);
   }
+
+  // Colou o link: preenche título, cantor, andamento, duração e a letra (sem apagar uma cifra já escrita).
+  const [duplicate, setDuplicate] = useState<SongLookup['existing']>(null);
+  const fromLink = useCallback((d: SongLookup) => {
+    setForm((f) => ({
+      ...f,
+      title: d.title ?? f.title,
+      artist: d.artist ?? f.artist,
+      bpm: d.bpm ? String(d.bpm) : f.bpm,
+      duration: d.duration_sec ? `${Math.floor(d.duration_sec / 60)}:${String(d.duration_sec % 60).padStart(2, '0')}` : f.duration,
+      chordpro: f.chordpro.trim() ? f.chordpro : (d.lyrics ?? ''),
+      links: f.links.includes(d.url) ? f.links : [...f.links.filter(Boolean), d.url],
+    }));
+    setDirty(true);
+    setDuplicate(d.existing && d.existing.id !== editId ? d.existing : null);
+  }, [editId]);
 
   if (membership && membership.role !== 'leader') {
     return (
@@ -168,6 +185,15 @@ export default function EditarMusica() {
           </View>
         ) : (
           <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+            <LinkImport onResult={fromLink} />
+            {!!duplicate && (
+              <Card style={styles.convert}>
+                <Text variant="bodySm" color="inkSoft">
+                  “{duplicate.title}” já está na biblioteca com esse link.
+                </Text>
+                <Button label="Abrir a que já existe" variant="secondary" onPress={() => router.replace({ pathname: '/musica/[id]', params: { id: String(duplicate.id) } })} />
+              </Card>
+            )}
             <TextField label="Nome" value={form.title} onChangeText={(v) => set('title', v)} placeholder="Ex.: Rio de Graça" error={errors.title} maxLength={120} />
             <TextField label="Artista" value={form.artist} onChangeText={(v) => set('artist', v)} placeholder="Opcional" error={errors.artist} maxLength={120} />
 
@@ -213,7 +239,7 @@ export default function EditarMusica() {
 
             <View style={styles.group}>
               <Text variant="fieldLabel" color="dim">
-                Links (YouTube, Spotify ou outro)
+                Links para ouvir (YouTube, Spotify, Deezer ou outro)
               </Text>
               {form.links.map((l, i) => (
                 <View key={i} style={styles.linkRow}>

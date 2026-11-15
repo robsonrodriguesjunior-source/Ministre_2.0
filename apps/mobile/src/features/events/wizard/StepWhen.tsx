@@ -1,11 +1,11 @@
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Switch, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, TextInput, View } from 'react-native';
 
 import { BottomSheet, Text, TextField } from '@/components/ui';
 import { isoDay, sameDay } from '@/lib/dates';
-import { colors, radius, space } from '@/theme/tokens';
+import { colors, radius, space, type } from '@/theme/tokens';
 
 import type { EventType } from '../types';
 
@@ -16,6 +16,8 @@ export type WhenState = {
   title: string;
   location: string;
   isRehearsal: boolean;
+  /** Observações do líder para a equipe (aparecem na aba Equipe). */
+  notes: string;
 };
 
 const WEEK_SHORT = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
@@ -172,6 +174,23 @@ export function StepWhen({ value, onChange, types }: { value: WhenState; onChang
             accessibilityLabel="É ensaio?"
           />
         </View>
+        <View style={styles.notesField}>
+          <Text variant="fieldLabel" color="dim">
+            Observações para a equipe
+          </Text>
+          <TextInput
+            value={value.notes}
+            onChangeText={(t) => onChange({ ...value, notes: t })}
+            multiline
+            maxLength={2000}
+            accessibilityLabel="Observações para a equipe"
+            placeholder="Opcional. Ex.: chegar 30 minutos antes para passar o som."
+            placeholderTextColor={colors.tabInactive}
+            selectionColor={colors.orange}
+            textAlignVertical="top"
+            style={styles.notes}
+          />
+        </View>
       </View>
 
       <BottomSheet visible={otherDate} onClose={() => setOtherDate(false)} title="Escolha a data">
@@ -202,6 +221,18 @@ export function StepWhen({ value, onChange, types }: { value: WhenState; onChang
 }
 
 const styles = StyleSheet.create({
+  notesField: { gap: space.sm },
+  notes: {
+    ...type.input,
+    minHeight: 90,
+    color: colors.ink,
+    backgroundColor: colors.card,
+    borderWidth: 1.5,
+    borderColor: colors.line,
+    borderRadius: radius.button,
+    padding: space.lg,
+    outlineStyle: 'none',
+  } as object,
   wrap: { paddingBottom: space.xxl },
   semibold: { fontFamily: 'Figtree_600SemiBold' },
   label: { marginTop: 22, marginBottom: 10 },

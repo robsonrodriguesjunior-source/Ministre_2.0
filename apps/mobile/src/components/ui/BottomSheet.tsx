@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -17,13 +17,15 @@ type Props = {
   onClose: () => void;
   title?: string;
   children: ReactNode;
+  /** Conteúdo longo (listas, formulários): o painel ocupa até 90% da tela e rola. */
+  scroll?: boolean;
 };
 
 const OFFSCREEN = 600;
 
 // Painel que sobe de baixo: `card`, raio 28 no topo, alça 40×5; o fundo escurece para rgba(0,0,0,.62).
 // Feito com Reanimated (funciona igual no app e no navegador). Toque fora ou na alça fecha.
-export function BottomSheet({ visible, onClose, title, children }: Props) {
+export function BottomSheet({ visible, onClose, title, children, scroll = false }: Props) {
   const reduce = useReduceMotion();
   const insets = useSafeAreaInsets();
   // Ao fechar, o painel continua montado (closing) até a animação de descida terminar.
@@ -61,7 +63,7 @@ export function BottomSheet({ visible, onClose, title, children }: Props) {
           <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Fechar painel" />
         </Animated.View>
         <Animated.View
-          style={[styles.sheet, { paddingBottom: space.xxl + insets.bottom }, sheetStyle]}
+          style={[styles.sheet, scroll && styles.tall, { paddingBottom: (scroll ? space.md : space.xxl) + insets.bottom }, sheetStyle]}
           accessibilityViewIsModal
         >
           <Pressable onPress={onClose} accessibilityRole="button" accessibilityLabel="Fechar" style={styles.handleArea}>
@@ -72,7 +74,13 @@ export function BottomSheet({ visible, onClose, title, children }: Props) {
               {title}
             </Text>
           )}
-          {children}
+          {scroll ? (
+            <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+              {children}
+            </ScrollView>
+          ) : (
+            children
+          )}
         </Animated.View>
       </View>
     </Modal>
@@ -96,6 +104,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: radius.sheet,
     borderTopRightRadius: radius.sheet,
     paddingHorizontal: space.lg,
+  },
+  tall: {
+    maxHeight: '90%',
+  },
+  scrollContent: {
+    paddingBottom: space.lg,
   },
   handleArea: {
     alignItems: 'center',

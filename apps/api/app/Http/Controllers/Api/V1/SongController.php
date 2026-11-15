@@ -7,6 +7,7 @@ use App\Http\Requests\SongRequest;
 use App\Http\Resources\SongResource;
 use App\Models\MinistryMember;
 use App\Models\Song;
+use App\Services\SongLookup;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -40,6 +41,20 @@ class SongController extends Controller
             ->get();
 
         return SongResource::collection($songs);
+    }
+
+    /** Colou o link (YouTube, Spotify ou Deezer): título, cantor e letra para pré-preencher a música. */
+    public function lookup(Request $request, SongLookup $lookup): JsonResponse
+    {
+        Gate::authorize('manage', $this->membership($request)->ministry);
+        $request->validate(['url' => ['required', 'string', 'max:500']], ['url.required' => 'Cole o link da música.']);
+
+        $data = $lookup->lookup($request->input('url'));
+        $existing = Song::where('ministry_id', $this->membership($request)->ministry_id)
+            ->whereJsonContains('links', $data['url'])->first(['id', 'title']);
+
+        // Já está na biblioteca: avisa em vez de duplicar.
+        return response()->json(['data' => $data + ['existing' => $existing ? ['id' => $existing->id, 'title' => $existing->title] : null]]);
     }
 
     /** As tags usadas no repertório, para os chips de filtro. */

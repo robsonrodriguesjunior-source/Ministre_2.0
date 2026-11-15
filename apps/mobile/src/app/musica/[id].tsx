@@ -1,19 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BottomSheet, Button, Card, EmptyState, Icon, IconButton, KeyBadge, Pill, Skeleton, Text } from '@/components/ui';
+import { BottomSheet, Button, Card, EmptyState, IconButton, KeyBadge, Pill, Skeleton, Text } from '@/components/ui';
 import { songKeys, songsApi } from '@/features/songs/api';
 import { ChordSheet } from '@/features/songs/ChordSheet';
 import { SheetControls } from '@/features/songs/SheetControls';
-import type { SongDetail, SongLink } from '@/features/songs/types';
+import { ListenButtons } from '@/features/songs/ListenButtons';
+import type { SongDetail } from '@/features/songs/types';
 import { useTranspose } from '@/features/songs/useTranspose';
 import { dayMonth } from '@/lib/dates';
 import { colors, size, space } from '@/theme/tokens';
-
-const LINK_LABEL: Record<SongLink['type'], string> = { youtube: 'YouTube', spotify: 'Spotify', other: 'Ouvir' };
 
 const minutes = (sec: number | null) => (sec ? `${Math.max(1, Math.round(sec / 60))} min` : null);
 
@@ -55,20 +54,7 @@ function SongBody({ song, startKey }: { song: SongDetail; startKey: string | nul
 
         {song.links.length > 0 && (
           <View style={styles.links}>
-            {song.links.map((l) => (
-              <Pressable
-                key={l.url}
-                onPress={() => Linking.openURL(l.url).catch(() => undefined)}
-                accessibilityRole="link"
-                accessibilityLabel={`Abrir no ${LINK_LABEL[l.type]}`}
-                style={({ pressed }) => [styles.link, pressed && styles.pressed]}
-              >
-                <Icon name="link" size={16} color={colors.orange} />
-                <Text variant="link" color="ink">
-                  {LINK_LABEL[l.type]}
-                </Text>
-              </Pressable>
-            ))}
+            <ListenButtons links={song.links} />
           </View>
         )}
 
@@ -192,18 +178,7 @@ const styles = StyleSheet.create({
   content: { paddingHorizontal: space.lg, paddingTop: space.lg },
   badges: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: space.sm, marginTop: space.md },
   played: { marginTop: space.sm },
-  links: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm, marginTop: space.md },
-  link: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    minHeight: 36,
-    paddingHorizontal: space.md,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: colors.line,
-  },
-  pressed: { opacity: 0.7 },
+  links: { marginTop: space.lg },
   controls: { marginTop: space.lg },
   sheet: { marginTop: space.xl },
   cta: { position: 'absolute', left: space.lg, right: space.lg },

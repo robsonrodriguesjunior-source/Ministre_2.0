@@ -4,6 +4,9 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { BottomSheet, Checkbox, Chip, Icon, Skeleton, Text, TextField } from '@/components/ui';
 import { colors, space } from '@/theme/tokens';
 
+import { QuickAddSong } from '@/features/songs/QuickAddSong';
+import type { SongDetail } from '@/features/songs/types';
+
 import type { SongOption } from '../types';
 
 export type SongPick = { song_id: number; title: string; key: string };
@@ -16,6 +19,13 @@ type Props = { songs: SongOption[] | undefined; loading: boolean; picked: SongPi
 export function StepSongs({ songs, loading, picked, onChange }: Props) {
   const [q, setQ] = useState('');
   const [keyFor, setKeyFor] = useState<number | null>(null);
+  const [newOpen, setNewOpen] = useState(false);
+
+  // Música nova pelo link: já fica salva na biblioteca e entra marcada nesta escala.
+  const addNew = (song: SongDetail) => {
+    setNewOpen(false);
+    if (!picked.some((p) => p.song_id === song.id)) onChange([...picked, { song_id: song.id, title: song.title, key: song.original_key }]);
+  };
 
   const filtered = useMemo(() => {
     const term = q.trim().toLowerCase();
@@ -76,6 +86,12 @@ export function StepSongs({ songs, loading, picked, onChange }: Props) {
         Repertório
       </Text>
       <TextField label="Buscar" value={q} onChangeText={setQ} placeholder="Buscar outra música…" />
+      <Pressable onPress={() => setNewOpen(true)} accessibilityRole="button" style={styles.newSong}>
+        <Icon name="plus" size={16} color={colors.orange} />
+        <Text variant="link" color="orange">
+          Nova música pelo link (YouTube, Spotify ou Deezer)
+        </Text>
+      </Pressable>
       <View style={styles.list}>
         {loading ? (
           <>
@@ -107,6 +123,10 @@ export function StepSongs({ songs, loading, picked, onChange }: Props) {
           ))
         )}
       </View>
+
+      <BottomSheet visible={newOpen} onClose={() => setNewOpen(false)} title="Nova música" scroll>
+        {newOpen && <QuickAddSong onSaved={addNew} onUseExisting={addNew} />}
+      </BottomSheet>
 
       <BottomSheet visible={keyFor !== null} onClose={() => setKeyFor(null)} title={editing ? `Tom de ${editing.title}` : ''}>
         <View style={styles.keys}>
@@ -142,4 +162,5 @@ const styles = StyleSheet.create({
   list: { marginTop: space.sm },
   songLabel: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   keys: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+  newSong: { flexDirection: 'row', alignItems: 'center', gap: 6, minHeight: 44, marginTop: space.xs },
 });

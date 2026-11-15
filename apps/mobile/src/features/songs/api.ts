@@ -1,6 +1,6 @@
 import { api } from '@/lib/api';
 
-import type { SongDetail, SongFilter, SongInput, SongSummary, StageSet } from './types';
+import type { SongDetail, SongFilter, SongInput, SongLookup, SongSummary, StageSet } from './types';
 
 const m = { ministry: true } as const;
 
@@ -13,6 +13,7 @@ export const songsApi = {
     return api<{ data: SongSummary[] }>(`/songs?${q.toString()}`, m);
   },
   tags: () => api<{ data: string[] }>('/songs/tags', m),
+  lookup: (url: string) => api<{ data: SongLookup }>('/songs/lookup', { ...m, method: 'POST', body: { url } }),
   get: (id: number) => api<{ data: SongDetail }>(`/songs/${id}`, m),
   create: (body: SongInput) => api<{ data: SongDetail }>('/songs', { ...m, method: 'POST', body }),
   update: (id: number, body: SongInput) => api<{ data: SongDetail }>(`/songs/${id}`, { ...m, method: 'PATCH', body }),

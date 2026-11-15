@@ -18,7 +18,7 @@ import { useReduceMotion } from '@/theme/motion';
 import { colors, motion, size, space } from '@/theme/tokens';
 import { goBack } from '@/lib/nav';
 
-const EMPTY_WHEN: WhenState = { date: null, time: '19:00', typeId: null, title: '', location: '', isRehearsal: false };
+const EMPTY_WHEN: WhenState = { date: null, time: '19:00', typeId: null, title: '', location: '', isRehearsal: false, notes: '' };
 
 function startsAt(w: WhenState): Date | null {
   if (!w.date || !/^\d{2}:\d{2}$/.test(w.time)) return null;
@@ -69,6 +69,7 @@ export default function NovaEscala() {
       title: ev.title,
       location: ev.location ?? '',
       isRehearsal: ev.is_rehearsal,
+      notes: ev.notes ?? '',
     });
     setTeam(ev.team.map((t) => ({ member_id: t.member_id, position_id: t.position_id, name: t.name, user_id: t.user_id, avatar_url: t.avatar_url })));
     setSongs(ev.songs.map((s) => ({ song_id: s.song_id, title: s.title, key: s.key })));
@@ -111,6 +112,7 @@ export default function NovaEscala() {
         event_type_id: when.typeId,
         location: when.location.trim() || null,
         is_rehearsal: when.isRehearsal,
+        notes: when.notes.trim() || null,
       };
       const saved = editId ? (await eventsApi.update(editId, body)).data : (await eventsApi.create(body)).data;
       await eventsApi.setTeam(saved.id, activeTeam.map((t) => ({ member_id: t.member_id, position_id: t.position_id })));

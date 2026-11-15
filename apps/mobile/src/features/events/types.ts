@@ -39,6 +39,7 @@ export type EventSong = {
   original_key: string;
   bpm: number | null;
   duration_sec: number | null;
+  links: { url: string; type: 'youtube' | 'spotify' | 'deezer' | 'other' }[];
   sort_order: number;
 };
 

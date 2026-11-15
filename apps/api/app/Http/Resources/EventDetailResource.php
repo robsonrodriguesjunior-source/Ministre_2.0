@@ -49,6 +49,7 @@ class EventDetailResource extends EventSummaryResource
                 'original_key' => $s->song->original_key,
                 'bpm' => $s->song->bpm,
                 'duration_sec' => $s->song->duration_sec,
+                'links' => SongResource::links($s->song->links),
                 'sort_order' => $s->sort_order,
             ]),
             'rundown' => $this->rundown->map(fn ($r) => [

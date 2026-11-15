@@ -3,11 +3,12 @@
 namespace App\Http\Resources;
 
 use App\Models\Song;
+use App\Services\SongLookup;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Música do repertório. Na lista vem o resumo; no detalhe (`detailed()`) vem também a cifra e os links.
+ * Música da biblioteca. Na lista vem o resumo (com os links para "Ouvir"); no detalhe (`detailed()`) vem também a cifra.
  *
  * @mixin Song
  */
@@ -33,6 +34,7 @@ class SongResource extends JsonResource
             'bpm' => $this->bpm,
             'duration_sec' => $this->duration_sec,
             'tags' => $this->tags ?? [],
+            'links' => self::links($this->links),
             'played_count' => (int) ($this->played_count ?? 0),
             'last_played_at' => $this->last_played?->toIso8601String(),
             'is_new' => (bool) $this->created_at?->gte(now()->subDays(Song::NEW_DAYS)),
@@ -46,20 +48,18 @@ class SongResource extends JsonResource
 
         return $summary + [
             'chordpro' => $this->chordpro ?? '',
-            'links' => collect($this->links ?? [])->map(fn ($url) => ['url' => $url, 'type' => self::linkType($url)])->values(),
             'can_manage' => (bool) $membership?->isLeader(),
         ];
     }
 
-    /** YouTube, Spotify ou outro, pelo endereço. */
-    public static function linkType(string $url): string
+    /**
+     * Links para o botão "Ouvir no YouTube / Spotify / Deezer" (abre fora do app, sem player dentro).
+     *
+     * @param  list<string>|null  $links
+     * @return list<array{url: string, type: string}>
+     */
+    public static function links(?array $links): array
     {
-        $host = strtolower((string) parse_url($url, PHP_URL_HOST));
-
-        return match (true) {
-            str_contains($host, 'youtube.') || str_contains($host, 'youtu.be') => 'youtube',
-            str_contains($host, 'spotify.') => 'spotify',
-            default => 'other',
-        };
+        return collect($links ?? [])->map(fn ($url) => ['url' => $url, 'type' => SongLookup::source($url)])->values()->all();
     }
 }

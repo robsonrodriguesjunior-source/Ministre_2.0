@@ -9,6 +9,7 @@ import {
   Card,
   DateBadge,
   EmptyState,
+  Icon,
   IconButton,
   KeyBadge,
   ListRow,
@@ -24,17 +25,18 @@ import { EventMenu } from '@/features/events/EventMenu';
 import { myStatus, statusPill } from '@/features/events/status';
 import type { EventDetail } from '@/features/events/types';
 import { useRespond } from '@/features/events/useRespond';
+import { AddSongSheet, type PickedSong } from '@/features/songs/AddSongSheet';
 import { songsApi } from '@/features/songs/api';
+import { ListenButtons } from '@/features/songs/ListenButtons';
 import { loadStageSet, saveStageSet, stageKey } from '@/features/songs/offline';
 import { hour, weekdayName } from '@/lib/dates';
 import { colors, size, space } from '@/theme/tokens';
 import { goBack } from '@/lib/nav';
 
-type Tab = 'equipe' | 'repertorio' | 'roteiro';
+type Tab = 'equipe' | 'repertorio';
 const TABS: { value: Tab; label: string }[] = [
   { value: 'equipe', label: 'Equipe' },
   { value: 'repertorio', label: 'Repertório' },
-  { value: 'roteiro', label: 'Roteiro' },
 ];
 
 const minutes = (sec: number | null) => (sec ? `${Math.round(sec / 60)} min` : null);
@@ -71,9 +73,24 @@ function TeamTab({ event }: { event: EventDetail }) {
   );
 }
 
-// Tocar numa música abre a cifra já no tom desta escala.
-function SongsTab({ event }: { event: EventDetail }) {
-  if (event.songs.length === 0) return <EmptyState icon="music" message="Nenhuma música escolhida ainda." />;
+type SongsTabProps = {
+  event: EventDetail;
+  onAdd: () => void;
+  onRemove: (songId: number) => void;
+};
+
+// Tocar numa música abre a cifra já no tom desta escala; "Ouvir" abre no YouTube, Spotify ou Deezer.
+// O líder adiciona músicas (da biblioteca ou novas pelo link) e tira as que não vão mais.
+function SongsTab({ event, onAdd, onRemove }: SongsTabProps) {
+  const add = event.can_manage ? <Button label="Adicionar música" variant="secondary" onPress={onAdd} style={styles.addSong} /> : null;
+  if (event.songs.length === 0) {
+    return (
+      <View>
+        <EmptyState icon="music" message="Nenhuma música escolhida ainda." />
+        {add}
+      </View>
+    );
+  }
   return (
     <View>
       {event.songs.map((s, i) => (
@@ -89,34 +106,20 @@ function SongsTab({ event }: { event: EventDetail }) {
           </Text>
           <View style={styles.flex}>
             <Text variant="songTitle">{s.title}</Text>
-            <Text variant="meta" color="dim">
-              {[minutes(s.duration_sec), s.bpm ? `${s.bpm} bpm` : null].filter(Boolean).join(' · ') || s.artist}
+            <Text variant="meta" color="dim" numberOfLines={1}>
+              {[s.artist, minutes(s.duration_sec), s.bpm ? `${s.bpm} bpm` : null].filter(Boolean).join(' · ')}
             </Text>
           </View>
+          <ListenButtons links={s.links} compact />
           <KeyBadge label={s.key} accessibilityLabel={`Tom ${s.key}`} />
+          {event.can_manage && (
+            <Pressable onPress={() => onRemove(s.song_id)} accessibilityRole="button" accessibilityLabel={`Tirar ${s.title} da escala`} hitSlop={8} style={styles.remove}>
+              <Icon name="close" size={16} color={colors.dim} />
+            </Pressable>
+          )}
         </Pressable>
       ))}
-    </View>
-  );
-}
-
-function RundownTab({ event }: { event: EventDetail }) {
-  if (event.rundown.length === 0) return <EmptyState icon="list" message="O roteiro ainda não foi montado." />;
-  return (
-    <View>
-      {event.rundown.map((r, i) => (
-        <View key={r.id} style={[styles.songRow, i < event.rundown.length - 1 && styles.divider]}>
-          <Text variant="eventTitle" color="dim" style={styles.time}>
-            {r.planned_time ?? '—'}
-          </Text>
-          <View style={styles.flex}>
-            <Text variant="songTitle">{r.title}</Text>
-            <Text variant="meta" color="dim">
-              {[r.duration_min ? `${r.duration_min} min` : null, r.responsible].filter(Boolean).join(' · ') || ' '}
-            </Text>
-          </View>
-        </View>
-      ))}
+      {add}
     </View>
   );
 }
@@ -128,7 +131,8 @@ export default function Escala() {
   const qc = useQueryClient();
   const insets = useSafeAreaInsets();
   const { width: windowWidth } = useWindowDimensions();
-  const [tab, setTab] = useState<Tab>(params.tab ?? 'equipe');
+  const [tab, setTab] = useState<Tab>(TABS.some((t) => t.value === params.tab) ? (params.tab as Tab) : 'equipe');
+  const [addOpen, setAddOpen] = useState(false);
   const [pageWidth, setPageWidth] = useState(Math.min(windowWidth, size.maxContentWidth));
   const pager = useRef<ComponentRef<typeof ScrollView>>(null);
   const [menu, setMenu] = useState(false);
@@ -157,6 +161,22 @@ export default function Escala() {
     enabled: !event && (query.isError || query.fetchStatus === 'paused'),
     networkMode: 'always',
   });
+
+  // Repertório da escala: adicionar (da biblioteca ou nova) e tirar músicas.
+  const saveSongs = useMutation({
+    mutationFn: (songs: { song_id: number; key: string }[]) => eventsApi.setSongs(id, songs),
+    onSuccess: (r) => {
+      qc.setQueryData(['event', id], r);
+      qc.invalidateQueries({ queryKey: ['home'] });
+    },
+    onError: () => setToast('Não foi possível salvar o repertório. Tente de novo.'),
+  });
+  const currentSongs = () => (event?.songs ?? []).map((s) => ({ song_id: s.song_id, key: s.key }));
+  const addSong = (song: PickedSong) => {
+    saveSongs.mutate([...currentSongs(), { song_id: song.song_id, key: song.key }]);
+    setToast(`${song.title} entrou no repertório.`);
+  };
+  const removeSong = (songId: number) => saveSongs.mutate(currentSongs().filter((s) => s.song_id !== songId));
 
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ['event', id] });
@@ -312,7 +332,7 @@ export default function Escala() {
         onLayout={(e) => setPageWidth(e.nativeEvent.layout.width)}
         style={styles.flex}
       >
-        {[<TeamTab key="e" event={event} />, <SongsTab key="r" event={event} />, <RundownTab key="t" event={event} />].map((page, i) => (
+        {[<TeamTab key="e" event={event} />, <SongsTab key="r" event={event} onAdd={() => setAddOpen(true)} onRemove={removeSong} />].map((page, i) => (
           <ScrollView
             key={i}
             style={{ width: pageWidth }}
@@ -328,6 +348,7 @@ export default function Escala() {
       <Toast message={toast} onHide={() => setToast(null)} bottom={(cta ? 80 : 24) + insets.bottom} />
 
       {event.can_manage && <EventMenu event={event} visible={menu} onClose={() => setMenu(false)} onToast={setToast} />}
+      {event.can_manage && <AddSongSheet visible={addOpen} onClose={() => setAddOpen(false)} onAdd={addSong} added={event.songs.map((s) => s.song_id)} />}
       <DeclineSheet
         visible={declineOpen}
         onClose={() => setDeclineOpen(false)}
@@ -357,7 +378,8 @@ const styles = StyleSheet.create({
   songRow: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 14 },
   divider: { borderBottomWidth: 1, borderBottomColor: colors.line },
   songNumber: { width: 22, color: colors.lineStrong },
-  time: { width: 48 },
+  addSong: { marginTop: space.lg },
+  remove: { width: 28, height: 28, alignItems: 'center', justifyContent: 'center' },
   pressed: { opacity: 0.7 },
   cta: { position: 'absolute', left: space.lg, right: space.lg },
 });

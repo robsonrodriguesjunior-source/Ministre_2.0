@@ -202,10 +202,10 @@ Puxar para atualizar. Skeleton no primeiro carregamento.
 ### 5.4 Escala (detalhe)
 - Barra: voltar (IconButton) · "Escala" · mais (⋯, só para líder: Editar, Duplicar para outra data, Cancelar culto, Excluir).
 - Cabeçalho: DateBadge + título 20/800 + "Domingo · 19h00 · Templo".
-- **Segmented: Equipe · Repertório · Roteiro**, que também troca deslizando o dedo.
+- **Segmented: Equipe · Repertório**, que também troca deslizando o dedo. (O Roteiro foi retirado a pedido do dono em 15/11/2026.)
   - **Equipe:** lista de membros por função, com pílulas Confirmado, Pendente ou Não pode. O próprio usuário aparece como "Marcos (você)". CTA fixo: membro pendente vê **Confirmar minha presença**; líder vê **Lembrar N pendentes**, que manda push só para quem não respondeu, no máximo uma vez a cada 6 h.
-  - **Repertório:** músicas numeradas (número grande e apagado), nome, "4 min · 72 bpm" e o **tom** num selo de borda laranja. Tocar abre a música no tom da escala. CTA: **Abrir Modo Palco**. O líder pode reordenar arrastando.
-  - **Roteiro:** ordem do culto (ex.: Abertura, Louvor, Avisos, Palavra, Ceia, Encerramento), com horário previsto, duração e responsável. O líder edita.
+  - **Repertório:** músicas numeradas (número grande e apagado), nome, "4 min · 72 bpm" e o **tom** num selo de borda laranja. Tocar abre a música no tom da escala. Cada música tem o botão **Ouvir**, que abre no YouTube, Spotify ou Deezer (sem player dentro do app). CTA: **Abrir Modo Palco**. O líder pode reordenar arrastando, tirar músicas e **Adicionar música**: da biblioteca ou uma nova pelo link (ela já fica salva na biblioteca).
+  - Observações do líder: campo "Observações para a equipe" no passo 1 da escala; aparece no fim da aba Equipe.
 - Observações do líder (texto livre) no fim da aba Equipe.
 
 ### 5.5 Nova escala (líder, assistente em 3 passos)
@@ -231,7 +231,8 @@ Editar uma escala publicada usa o mesmo assistente. Quem for **adicionado** rece
 ### 5.7 Músicas (Repertório)
 - Busca no topo e filtros por chips: Todas · Mais tocadas · Novas · por tag (Adoração, Celebração, Ceia…).
 - Item: nome 15/600, artista em `dim`, selo do tom, "72 bpm".
-- **Música (detalhe):** nome, artista, tom original, BPM, duração, tags, links (YouTube, Spotify ou outro) que abrem fora do app, "Tocada N vezes · última em 12 out".
+- **Música (detalhe):** nome, artista, tom original, BPM, duração, tags, botões **Ouvir no YouTube / Spotify / Deezer** que abrem no lugar de origem (sem player dentro do app), "Tocada N vezes · última em 12 out".
+- **Importar pelo link (líder):** colar o link do YouTube, Spotify ou Deezer preenche sozinho **título, cantor e letra** (letra pelo LRCLIB, gratuito; nem toda música é encontrada) e, no Deezer, andamento e duração. Nenhuma plataforma informa o **tom**: ele é escolhido pelo líder. Tudo continua editável e fica salvo. Se o link já estiver na biblioteca, o app avisa em vez de duplicar.
   - **Cifra** renderizada: acorde em mono laranja acima da sílaba e letra em 18/600. Controles: **transpor** (− / tom / +, com preferência ♯ ou ♭), **tamanho da letra** (A− / A+), **só letra** (esconde as cifras).
 - **Nova ou editar música (líder):** nome, artista, tom, BPM, duração, tags, links e o editor de cifra em **formato ChordPro** (`[G]Como um rio que [D]desce o monte`, `{c: Refrão}`), com pré-visualização ao vivo. Aceita também colar cifra em "acordes acima da letra" e converte para ChordPro.
 

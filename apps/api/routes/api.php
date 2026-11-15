@@ -120,6 +120,7 @@ Route::prefix('v1')->group(function () {
             // Repertório
             Route::get('/songs', [SongController::class, 'index']);
             Route::get('/songs/tags', [SongController::class, 'tags']);
+            Route::post('/songs/lookup', [SongController::class, 'lookup'])->middleware('throttle:30,1');
             Route::post('/songs', [SongController::class, 'store']);
             Route::get('/songs/{song}', [SongController::class, 'show'])->whereNumber('song');
             Route::patch('/songs/{song}', [SongController::class, 'update'])->whereNumber('song');
