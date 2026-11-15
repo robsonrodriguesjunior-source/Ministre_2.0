@@ -42,9 +42,9 @@ const TABS: { value: Tab; label: string }[] = [
 const minutes = (sec: number | null) => (sec ? `${Math.round(sec / 60)} min` : null);
 
 function TeamTab({ event }: { event: EventDetail }) {
-  if (event.team.length === 0) return <EmptyState icon="user" message="Ninguém escalado ainda." />;
   return (
     <View>
+      {event.team.length === 0 && <EmptyState icon="user" message="Ninguém escalado ainda." />}
       {event.team.map((t, i) => {
         const pill = statusPill(t.status);
         return (
