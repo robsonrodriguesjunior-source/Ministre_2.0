@@ -9,7 +9,8 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
 /**
- * "Duplicar para outra data": copia tipo, local, equipe, músicas e roteiro como rascunho.
+ * "Duplicar para outra data": copia local, visibilidade, ensaio, equipe e músicas como rascunho.
+ * O ensaio vai junto, com a mesma antecedência em relação ao culto (ex.: sábado 16h para culto de domingo 19h).
  * Quem está indisponível na nova data fica de fora.
  */
 class DuplicateEvent
@@ -22,6 +23,9 @@ class DuplicateEvent
             $copy = $source->replicate(['status', 'published_at', 'created_by']);
             $copy->fill([
                 'starts_at' => $startsAt->utc(),
+                'rehearsal_at' => $source->rehearsal_at
+                    ? $startsAt->utc()->subSeconds($source->starts_at->getTimestamp() - $source->rehearsal_at->getTimestamp())
+                    : null,
                 'ends_at' => null,
                 'status' => Event::STATUS_DRAFT,
                 'published_at' => null,

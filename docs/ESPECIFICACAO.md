@@ -198,6 +198,8 @@ Puxar para atualizar. Skeleton no primeiro carregamento.
 - Cada evento é um EventRow: escalado com a sua função e a pílula do seu status; não escalado aparece esmaecido com "Você não está escalado"; ensaios também aparecem.
 - Filtro no topo: **Todas** / **Só as minhas**.
 - Líder: escalas em **rascunho** aparecem com a pílula "Rascunho".
+- Escala **Temporária** só aparece para quem está escalado (e para os líderes, com a indicação "Temporária"); a **Oficial** aparece para todos, esmaecida para quem não está escalado.
+- O **ensaio** aparece dentro da escala ("Ensaio: sábado, 21 nov · 16h00"), no cartão do próximo culto e em "Esta semana" no Início.
 
 ### 5.4 Escala (detalhe)
 - Barra: voltar (IconButton) · "Escala" · mais (⋯, só para líder: Editar, Duplicar para outra data, Cancelar culto, Excluir).
@@ -211,7 +213,7 @@ Puxar para atualizar. Skeleton no primeiro carregamento.
 ### 5.5 Nova escala (líder, assistente em 3 passos)
 Modal em tela cheia: × para fechar (pergunta se quer descartar), título "Nova escala" e **barra de progresso em 3 segmentos** que enchem em laranja.
 
-1. **Quando vai ser?** Chips de data com as próximas ocorrências dos dias de culto (DOM 26, QUA 29…) mais "Outra data" (calendário); chips de horário (09h00, 19h00, Outro); tipo de culto em lista de opções (Culto da Família, Culto de Oração, Santa Ceia…). Local (padrão do ministério) e "É ensaio?".
+1. **Quando vai ser?** Chips de data com as próximas ocorrências dos dias de culto do ministério (DOM 26, QUA 29…) mais "Outra data" (calendário); chips de horário (09h00, 18h00, 19h00, 19h30, Outro). **Quem vê esta escala:** **Escala Oficial** (toda a equipe vê, mesmo quem não está escalado) ou **Escala Temporária** (só quem está escalado vê; os líderes sempre veem). Nome do culto, local (padrão do ministério), **Ensaio** (liga e escolhe o dia, na semana antes do culto, e a hora; o ensaio fica dentro da escala, não é uma escala à parte) e observações. (Tipos de culto e "É ensaio?" foram retirados a pedido do dono em 15/11/2026.)
 2. **Quem vai servir?** Uma linha por função do ministério: função à esquerda, pessoa escolhida (avatar + nome) ou "+ Escolher" (borda tracejada laranja). Escolher abre um sheet com os membros que têm aquela função.
    - **Quem marcou indisponibilidade na data não aparece para seleção** e um aviso explica: "**Marina Costa** marcou que não pode neste dia."
    - Quem já está em outra escala no mesmo dia aparece com o aviso "já escalado às 09h00".
@@ -264,7 +266,7 @@ Aberto pela escala (aba Repertório) ou por uma música.
 - **Gestão do ministério** (só líderes):
   - **Membros:** lista com papel e funções; convidar (gera código e link para compartilhar no WhatsApp); mudar papel (líder ou membro); editar funções; remover.
   - **Funções:** criar, renomear, ordenar e arquivar (Vocal, Violão…).
-  - **Tipos de culto:** nome, dia da semana e horário padrão, local padrão (alimentam os chips do passo 1).
+  - ~~Tipos de culto~~: retirado em 15/11/2026; os chips de data do passo 1 vêm dos **dias de culto** do Ministério.
   - **Ministério:** nome, foto/logo, local padrão, dias de culto.
   - **Indisponibilidades da equipe** por mês.
 

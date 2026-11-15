@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/** Escala de um culto ou ensaio. starts_at sempre em UTC. */
+/** Escala de um culto (com o ensaio dentro dela, em rehearsal_at). Datas sempre em UTC. */
 class Event extends Model
 {
     use SoftDeletes;
@@ -16,19 +17,53 @@ class Event extends Model
     public const STATUS_PUBLISHED = 'published';
     public const STATUS_CANCELLED = 'cancelled';
 
+    /** Escala Oficial: todos do ministério veem. Temporária: só quem está escalado (e os líderes). */
+    public const VISIBILITY_OFFICIAL = 'official';
+    public const VISIBILITY_TEMPORARY = 'temporary';
+
     protected $fillable = [
-        'ministry_id', 'event_type_id', 'title', 'starts_at', 'ends_at', 'location', 'notes',
-        'status', 'is_rehearsal', 'created_by', 'published_at',
+        'ministry_id', 'event_type_id', 'title', 'starts_at', 'rehearsal_at', 'ends_at', 'location', 'notes',
+        'status', 'visibility', 'is_rehearsal', 'created_by', 'published_at',
     ];
 
     protected function casts(): array
     {
         return [
             'starts_at' => 'datetime',
+            'rehearsal_at' => 'datetime',
             'ends_at' => 'datetime',
             'published_at' => 'datetime',
             'is_rehearsal' => 'boolean',
         ];
+    }
+
+    /**
+     * O que um membro (não líder) enxerga: escalas publicadas ou canceladas que sejam Oficiais
+     * ou Temporárias em que ele está escalado. Rascunhos, só os líderes.
+     *
+     * @param  Builder<Event>  $query
+     */
+    public function scopeVisibleTo(Builder $query, MinistryMember $member): void
+    {
+        if ($member->isLeader()) {
+            return;
+        }
+        $query->where('status', '!=', self::STATUS_DRAFT)
+            ->where(fn ($q) => $q->where('visibility', self::VISIBILITY_OFFICIAL)
+                ->orWhereHas('assignments', fn ($a) => $a->where('ministry_member_id', $member->id)));
+    }
+
+    public function isVisibleTo(MinistryMember $member): bool
+    {
+        if ($member->isLeader()) {
+            return true;
+        }
+        if ($this->status === self::STATUS_DRAFT) {
+            return false;
+        }
+
+        return $this->visibility !== self::VISIBILITY_TEMPORARY
+            || $this->assignments()->where('ministry_member_id', $member->id)->exists();
     }
 
     /** @return BelongsTo<Ministry, $this> */

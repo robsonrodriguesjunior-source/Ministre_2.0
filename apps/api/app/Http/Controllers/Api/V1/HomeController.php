@@ -36,12 +36,13 @@ class HomeController extends Controller
 
         // Esta semana (até domingo): ensaio, músicas novas no repertório e o último aviso.
         $weekEnd = CarbonImmutable::now(Availability::TZ)->endOfWeek(CarbonImmutable::SUNDAY)->utc();
+        // Ensaio da semana: marcado dentro da escala do culto (rehearsal_at), das escalas que eu enxergo.
         $rehearsal = Event::query()
             ->where('ministry_id', $membership->ministry_id)
             ->where('status', Event::STATUS_PUBLISHED)
-            ->where('is_rehearsal', true)
-            ->whereBetween('starts_at', [$now, $weekEnd])
-            ->orderBy('starts_at')
+            ->visibleTo($membership)
+            ->whereBetween('rehearsal_at', [$now, $weekEnd])
+            ->orderBy('rehearsal_at')
             ->first();
 
         $songsCount = $next ? $next->songs()->count() : 0;
@@ -60,7 +61,8 @@ class HomeController extends Controller
             'rehearsal' => $rehearsal ? [
                 'id' => $rehearsal->id,
                 'title' => $rehearsal->title,
-                'starts_at' => $rehearsal->starts_at->toIso8601String(),
+                'starts_at' => $rehearsal->rehearsal_at->toIso8601String(), // hora do ensaio
+                'event_starts_at' => $rehearsal->starts_at->toIso8601String(),
                 'location' => $rehearsal->location,
             ] : null,
             'songs' => $next ? ['event_id' => $next->id, 'count' => $songsCount, 'new' => $newSongs] : null,

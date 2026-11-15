@@ -29,7 +29,7 @@ import { AddSongSheet, type PickedSong } from '@/features/songs/AddSongSheet';
 import { songsApi } from '@/features/songs/api';
 import { ListenButtons } from '@/features/songs/ListenButtons';
 import { loadStageSet, saveStageSet, stageKey } from '@/features/songs/offline';
-import { hour, weekdayName } from '@/lib/dates';
+import { dayMonth, hour, weekdayName } from '@/lib/dates';
 import { colors, size, space } from '@/theme/tokens';
 import { goBack } from '@/lib/nav';
 
@@ -294,8 +294,18 @@ export default function Escala() {
           <Text variant="meta" color="dim">
             {[weekdayName(date), hour(date), event.location].filter(Boolean).join(' · ')}
           </Text>
+          {!!event.rehearsal_at && (
+            <Text variant="meta" color="orange">
+              Ensaio: {weekdayName(new Date(event.rehearsal_at))}, {dayMonth(new Date(event.rehearsal_at))} · {hour(new Date(event.rehearsal_at))}
+            </Text>
+          )}
         </View>
       </View>
+      {event.visibility === 'temporary' && (
+        <View style={styles.statusRow}>
+          <Pill label="Escala Temporária · só os escalados veem" tone="wait" />
+        </View>
+      )}
       {event.status !== 'published' && (
         <View style={styles.statusRow}>
           <Pill label={event.status === 'draft' ? 'Rascunho · só líderes veem' : 'Culto cancelado'} tone={event.status === 'draft' ? 'wait' : 'declined'} />

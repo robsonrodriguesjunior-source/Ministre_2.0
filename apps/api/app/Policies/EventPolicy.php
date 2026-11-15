@@ -7,15 +7,12 @@ use App\Models\User;
 
 class EventPolicy
 {
-    /** Participantes veem escalas publicadas; rascunhos só os líderes. */
+    /** Rascunhos só os líderes; escala Temporária só quem está escalado (e os líderes). */
     public function view(User $user, Event $event): bool
     {
         $membership = $user->membershipIn($event->ministry_id);
-        if (! $membership) {
-            return false;
-        }
 
-        return $event->status !== Event::STATUS_DRAFT || $membership->isLeader();
+        return $membership !== null && $event->isVisibleTo($membership);
     }
 
     /** Criar, editar, publicar, duplicar, cancelar, excluir e lembrar pendentes: só líderes. */

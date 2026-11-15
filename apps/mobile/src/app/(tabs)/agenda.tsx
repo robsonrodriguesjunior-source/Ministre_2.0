@@ -36,11 +36,12 @@ function Row({ event }: { event: EventSummary }) {
   else if (event.status === 'cancelled') right = <Pill label="Cancelado" tone="declined" />;
   else if (status) right = <Pill {...statusPill(status)} />;
 
-  const subtitle = mine
-    ? `${hour(date)} · ${positions}`
-    : event.is_rehearsal
-      ? `${hour(date)}${event.location ? ` · ${event.location}` : ''}`
-      : 'Você não está escalado';
+  const subtitle = [
+    mine ? `${hour(date)} · ${positions}` : 'Você não está escalado',
+    event.visibility === 'temporary' ? 'Temporária' : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
 
   return (
     <EventRow
@@ -48,7 +49,7 @@ function Row({ event }: { event: EventSummary }) {
       title={event.title}
       subtitle={subtitle}
       mine={mine && event.status === 'published'}
-      dimmed={!mine && !event.is_rehearsal}
+      dimmed={!mine}
       right={right}
       onPress={() => router.push({ pathname: '/escala/[id]', params: { id: String(event.id) } })}
     />

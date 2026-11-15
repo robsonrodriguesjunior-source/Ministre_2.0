@@ -46,7 +46,7 @@ class EventController extends Controller
         $events = Event::query()
             ->where('ministry_id', $membership->ministry_id)
             ->whereBetween('starts_at', [$from, $to])
-            ->when(! $membership->isLeader(), fn ($q) => $q->where('status', '!=', Event::STATUS_DRAFT))
+            ->visibleTo($membership)
             ->when($request->boolean('mine'), fn ($q) => $q->whereHas(
                 'assignments', fn ($a) => $a->where('ministry_member_id', $membership->id)
             ))
@@ -73,6 +73,7 @@ class EventController extends Controller
             ...$request->validated(),
             'event_type_id' => $this->validTypeId($request, $membership->ministry_id),
             'starts_at' => CarbonImmutable::parse($request->input('starts_at'))->utc(),
+            'rehearsal_at' => $request->filled('rehearsal_at') ? CarbonImmutable::parse($request->input('rehearsal_at'))->utc() : null,
             'ministry_id' => $membership->ministry_id,
             'status' => Event::STATUS_DRAFT,
             'created_by' => $request->user()->id,
@@ -88,13 +89,15 @@ class EventController extends Controller
         if ($request->has('event_type_id')) {
             $data['event_type_id'] = $this->validTypeId($request, $event->ministry_id);
         }
-        if (isset($data['starts_at'])) {
-            $data['starts_at'] = CarbonImmutable::parse($data['starts_at'])->utc();
+        foreach (['starts_at', 'rehearsal_at'] as $field) {
+            if (! empty($data[$field])) {
+                $data[$field] = CarbonImmutable::parse($data[$field])->utc();
+            }
         }
         $event->update($data);
 
-        // Mudou data/hora/local de uma escala publicada: a equipe é avisada.
-        if ($event->status === Event::STATUS_PUBLISHED && $event->wasChanged(['starts_at', 'location'])) {
+        // Mudou data/hora/local ou o ensaio de uma escala publicada: a equipe é avisada.
+        if ($event->status === Event::STATUS_PUBLISHED && $event->wasChanged(['starts_at', 'location', 'rehearsal_at'])) {
             $event->assignments()->with('member')->get()->unique('ministry_member_id')
                 ->each(fn ($a) => $notifier->changed($a->member, $event));
         }

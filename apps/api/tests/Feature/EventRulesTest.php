@@ -164,7 +164,7 @@ it('weekly unavailability blocks only that weekday', function () {
 it('home brings the next event where I am scheduled with my position', function () {
     $home = actor($this->marcos, $this)->getJson('/api/v1/home')->assertOk()->json();
 
-    expect($home['next_event']['title'])->toBeIn(['Ensaio geral', 'Culto da Família'])
+    expect($home['next_event']['title'])->toBe('Culto da Família')
         ->and($home['announcement']['body'])->toBe('Chegar 30 minutos antes no domingo.')
         ->and($home['next_event']['mine'][0]['position'])->toBe('Violão');
 });

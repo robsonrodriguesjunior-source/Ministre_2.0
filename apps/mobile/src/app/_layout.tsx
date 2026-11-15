@@ -126,7 +126,6 @@ function AppNavigator() {
         <Stack.Screen name="gestao/membros" />
         <Stack.Screen name="gestao/convites" />
         <Stack.Screen name="gestao/funcoes" />
-        <Stack.Screen name="gestao/tipos" />
         <Stack.Screen name="gestao/ministerio" />
         <Stack.Screen name="gestao/indisponibilidades" />
         <Stack.Screen name="_catalogo" />

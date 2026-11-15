@@ -104,7 +104,7 @@ export default function Inicio() {
             {data.rehearsal && (
               <WeekItem
                 icon="calendar"
-                title={data.rehearsal.title}
+                title={`Ensaio · ${data.rehearsal.title}`}
                 subtitle={`${weekdayName(new Date(data.rehearsal.starts_at))}, ${hour(new Date(data.rehearsal.starts_at))}${data.rehearsal.location ? ` · ${data.rehearsal.location}` : ''}`}
                 onPress={() => router.push({ pathname: '/escala/[id]', params: { id: String(data.rehearsal!.id) } })}
               />

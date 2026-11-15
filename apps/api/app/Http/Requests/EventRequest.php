@@ -24,6 +24,8 @@ class EventRequest extends FormRequest
             'location' => ['nullable', 'string', 'max:120'],
             'notes' => ['nullable', 'string', 'max:2000'],
             'is_rehearsal' => ['sometimes', 'boolean'],
+            'visibility' => ['sometimes', 'in:official,temporary'],
+            'rehearsal_at' => ['sometimes', 'nullable', 'date'],
         ];
     }
 

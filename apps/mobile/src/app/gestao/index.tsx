@@ -13,7 +13,6 @@ const ITEMS = [
   { icon: 'user', label: 'Membros', subtitle: 'Papel, funções e remover', href: '/gestao/membros' },
   { icon: 'plus', label: 'Convidar', subtitle: 'Código e link para mandar no WhatsApp', href: '/gestao/convites' },
   { icon: 'music', label: 'Funções', subtitle: 'Vocal, Violão… criar, ordenar e arquivar', href: '/gestao/funcoes' },
-  { icon: 'calendar', label: 'Tipos de culto', subtitle: 'Dia, horário e local padrão', href: '/gestao/tipos' },
   { icon: 'unavailable', label: 'Indisponibilidades', subtitle: 'Quem não pode, mês a mês', href: '/gestao/indisponibilidades' },
   { icon: 'edit', label: 'Ministério', subtitle: 'Nome, logo, local e dias de culto', href: '/gestao/ministerio' },
 ] as const;

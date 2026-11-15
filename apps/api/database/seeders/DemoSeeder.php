@@ -93,15 +93,10 @@ class DemoSeeder extends Seeder
         $at = fn (CarbonImmutable $day, string $time) => $day->setTimeFromTimeString($time)->utc();
         $type = fn (string $name) => EventType::where('ministry_id', $ministry->id)->where('name', $name)->value('id');
 
-        $rehearsal = Event::create([
-            'ministry_id' => $ministry->id, 'event_type_id' => $type('Ensaio'), 'title' => 'Ensaio geral',
-            'starts_at' => $at($saturday, '16:00'), 'location' => 'Templo', 'status' => Event::STATUS_PUBLISHED,
-            'is_rehearsal' => true, 'created_by' => $users['daniel']->id, 'published_at' => now(),
-        ]);
-
         $familia = Event::create([
             'ministry_id' => $ministry->id, 'event_type_id' => $type('Culto da Família'), 'title' => 'Culto da Família',
             'starts_at' => $at($sunday, '19:00'), 'location' => 'Templo', 'status' => Event::STATUS_PUBLISHED,
+            'rehearsal_at' => $at($saturday, '16:00'), // ensaio dentro da própria escala
             'created_by' => $users['daniel']->id, 'published_at' => now(),
             'notes' => 'Chegar 30 minutos antes para passar o som.',
         ]);
@@ -125,30 +120,10 @@ class DemoSeeder extends Seeder
                 'responded_at' => $status === 'pending' ? null : now(),
             ]);
         }
-        foreach ([['daniel', 'Ministro'], ['ana', 'Vocal'], ['marcos', 'Violão'], ['lucas', 'Bateria']] as [$key, $role]) {
-            EventAssignment::create([
-                'event_id' => $rehearsal->id, 'ministry_member_id' => $members[$key]->id,
-                'position_id' => $positions[$role], 'status' => 'confirmed', 'responded_at' => now(),
-            ]);
-        }
 
         $order = 0;
         foreach (['Luz da Manhã' => 'G', 'Rio de Graça' => 'A', 'Fiel em Tudo' => 'D', 'Coroado' => 'E'] as $title => $key) {
             $familia->songs()->create(['song_id' => $songs[$title]->id, 'sort_order' => $order++, 'key' => $key]);
-        }
-
-        $rundown = [
-            ['Abertura', '19:00', 5, 'daniel'],
-            ['Louvor', '19:05', 25, 'daniel'],
-            ['Avisos', '19:30', 5, null],
-            ['Palavra', '19:35', 40, null],
-            ['Encerramento', '20:15', 10, 'daniel'],
-        ];
-        foreach ($rundown as $i => [$title, $time, $minutes, $who]) {
-            $familia->rundown()->create([
-                'sort_order' => $i, 'title' => $title, 'planned_time' => $time, 'duration_min' => $minutes,
-                'responsible_member_id' => $who ? $members[$who]->id : null,
-            ]);
         }
 
         // Culto de Oração (Marcos não está escalado) e Santa Ceia (Marcos confirmado).
@@ -190,6 +165,19 @@ class DemoSeeder extends Seeder
             foreach ($titles as $i => $title) {
                 $past->songs()->create(['song_id' => $songs[$title]->id, 'sort_order' => $i, 'key' => $songs[$title]->original_key]);
             }
+        }
+
+        // Escala Temporária: só quem está escalado (Clara e João) e os líderes veem. O Marcos não vê.
+        $jovens = Event::create([
+            'ministry_id' => $ministry->id, 'title' => 'Culto de Jovens',
+            'starts_at' => $at($sunday->addDays(5), '20:00'), 'location' => 'Salão', 'status' => Event::STATUS_PUBLISHED,
+            'visibility' => Event::VISIBILITY_TEMPORARY, 'created_by' => $users['daniel']->id, 'published_at' => now(),
+        ]);
+        foreach ([['clara', 'Vocal'], ['joao', 'Violão']] as [$key, $role]) {
+            EventAssignment::create([
+                'event_id' => $jovens->id, 'ministry_member_id' => $members[$key]->id,
+                'position_id' => $positions[$role], 'status' => 'pending',
+            ]);
         }
 
         // Marina não pode no domingo do Culto da Família.

@@ -33,7 +33,7 @@ export function NextEventCard({ event }: { event: EventSummary }) {
       >
         <View style={styles.row}>
           <Text variant="cardLabel" color="orange">
-            {event.is_rehearsal ? 'Próximo ensaio' : 'Próximo culto'}
+            Próximo culto
           </Text>
           <Pill label={relativeDays(date)} tone="wait" />
         </View>
@@ -46,6 +46,14 @@ export function NextEventCard({ event }: { event: EventSummary }) {
             {longDateTime(date)}
           </Text>
         </View>
+        {!!event.rehearsal_at && (
+          <View style={styles.meta}>
+            <Icon name="clock" size={16} color={colors.dim} />
+            <Text variant="bodySm" color="inkSoft">
+              Ensaio: {longDateTime(new Date(event.rehearsal_at))}
+            </Text>
+          </View>
+        )}
         <View style={styles.meta}>
           <Icon name="music" size={16} color={colors.dim} />
           <Text variant="bodySm" color="inkSoft">

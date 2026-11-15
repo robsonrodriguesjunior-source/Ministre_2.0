@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BottomSheet, Button, EmptyState, IconButton, Notice, Skeleton, Text } from '@/components/ui';
 import { eventsApi } from '@/features/events/api';
+import { manageApi, manageKeys } from '@/features/manage/api';
 import { ProgressBar } from '@/features/events/wizard/ProgressBar';
 import { StepSongs, type SongPick } from '@/features/events/wizard/StepSongs';
 import { StepWhen, type WhenState } from '@/features/events/wizard/StepWhen';
@@ -18,16 +19,29 @@ import { useReduceMotion } from '@/theme/motion';
 import { colors, motion, size, space } from '@/theme/tokens';
 import { goBack } from '@/lib/nav';
 
-const EMPTY_WHEN: WhenState = { date: null, time: '19:00', typeId: null, title: '', location: '', isRehearsal: false, notes: '' };
+const EMPTY_WHEN: WhenState = {
+  date: null,
+  time: '19:00',
+  title: '',
+  location: '',
+  visibility: 'official',
+  hasRehearsal: false,
+  rehearsalDate: null,
+  rehearsalTime: '16:00',
+  notes: '',
+};
 
-function startsAt(w: WhenState): Date | null {
-  if (!w.date || !/^\d{2}:\d{2}$/.test(w.time)) return null;
-  const [h, m] = w.time.split(':').map(Number);
+/** Junta o dia com "HH:MM" (horário do aparelho). Null se faltar ou estiver errado. */
+function at(day: Date | null, time: string): Date | null {
+  if (!day || !/^\d{2}:\d{2}$/.test(time)) return null;
+  const [h, m] = time.split(':').map(Number);
   if (h > 23 || m > 59) return null;
-  const d = new Date(w.date);
+  const d = new Date(day);
   d.setHours(h, m, 0, 0);
   return d;
 }
+
+const hhmm = (d: Date) => `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 
 // Nova escala (5.5): três perguntas, uma de cada vez. Também serve para editar (?id=).
 export default function NovaEscala() {
@@ -48,7 +62,8 @@ export default function NovaEscala() {
   const [error, setError] = useState<string | null>(null);
   const [loadedEdit, setLoadedEdit] = useState(false);
 
-  const types = useQuery({ queryKey: ['event-types'], queryFn: eventsApi.eventTypes });
+  // Dias de culto do ministério (Gestão › Ministério) para sugerir as datas.
+  const ministry = useQuery({ queryKey: manageKeys.ministry, queryFn: manageApi.ministry, enabled: membership?.role === 'leader' });
   const songList = useQuery({ queryKey: ['songs-options'], queryFn: eventsApi.songs, enabled: step === 3 });
   const existing = useQuery({ queryKey: ['event', editId], queryFn: () => eventsApi.get(editId!), enabled: !!editId });
   const date = when.date;
@@ -62,13 +77,16 @@ export default function NovaEscala() {
   const ev = existing.data?.data;
   if (ev && !loadedEdit) {
     const d = new Date(ev.starts_at);
+    const r = ev.rehearsal_at ? new Date(ev.rehearsal_at) : null;
     setWhen({
       date: d,
-      time: `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`,
-      typeId: ev.event_type_id,
+      time: hhmm(d),
       title: ev.title,
       location: ev.location ?? '',
-      isRehearsal: ev.is_rehearsal,
+      visibility: ev.visibility,
+      hasRehearsal: !!r,
+      rehearsalDate: r,
+      rehearsalTime: r ? hhmm(r) : '16:00',
       notes: ev.notes ?? '',
     });
     setTeam(ev.team.map((t) => ({ member_id: t.member_id, position_id: t.position_id, name: t.name, user_id: t.user_id, avatar_url: t.avatar_url })));
@@ -88,9 +106,20 @@ export default function NovaEscala() {
     );
   }
 
-  const start = startsAt(when);
-  const stepError =
-    step === 1 && !when.date ? 'Escolha a data.' : step === 1 && !start ? 'Confira o horário (ex.: 19:00).' : step === 1 && !when.title.trim() ? 'Escolha o tipo de culto ou dê um nome.' : null;
+  const start = at(when.date, when.time);
+  const rehearsal = when.hasRehearsal ? at(when.rehearsalDate, when.rehearsalTime) : null;
+  const firstStepError = !when.date
+    ? 'Escolha a data.'
+    : !start
+      ? 'Confira o horário (ex.: 19:00).'
+      : !when.title.trim()
+        ? 'Dê um nome ao culto.'
+        : when.hasRehearsal && !when.rehearsalDate
+          ? 'Escolha o dia do ensaio (ou desligue o ensaio).'
+          : when.hasRehearsal && !rehearsal
+            ? 'Confira a hora do ensaio (ex.: 16:00).'
+            : null;
+  const stepError = step === 1 ? firstStepError : null;
 
   const go = (next: number) => {
     setError(null);
@@ -99,7 +128,7 @@ export default function NovaEscala() {
   };
 
   const save = async (publish: boolean) => {
-    if (!start || !when.title.trim()) {
+    if (!start || firstStepError) {
       go(1);
       return;
     }
@@ -109,9 +138,9 @@ export default function NovaEscala() {
       const body = {
         title: when.title.trim(),
         starts_at: start.toISOString(),
-        event_type_id: when.typeId,
+        rehearsal_at: rehearsal ? rehearsal.toISOString() : null,
+        visibility: when.visibility,
         location: when.location.trim() || null,
-        is_rehearsal: when.isRehearsal,
         notes: when.notes.trim() || null,
       };
       const saved = editId ? (await eventsApi.update(editId, body)).data : (await eventsApi.create(body)).data;
@@ -149,7 +178,7 @@ export default function NovaEscala() {
           <ProgressBar step={step} total={3} />
         </View>
 
-        {(editId && !loadedEdit) || types.isLoading ? (
+        {(editId && !loadedEdit) || ministry.isLoading ? (
           <View style={styles.loading}>
             <Skeleton height={40} />
             <Skeleton height={70} />
@@ -158,7 +187,7 @@ export default function NovaEscala() {
         ) : (
           <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
             <Animated.View key={step} entering={entering}>
-              {step === 1 && <StepWhen value={when} onChange={change(setWhen)} types={types.data?.data ?? []} />}
+              {step === 1 && <StepWhen value={when} onChange={change(setWhen)} worshipDays={ministry.data?.data.worship_days ?? []} />}
               {step === 2 && date && (
                 <StepWho date={date} availability={availability.data} loading={availability.isLoading} team={activeTeam} onChange={change(setTeam)} />
               )}

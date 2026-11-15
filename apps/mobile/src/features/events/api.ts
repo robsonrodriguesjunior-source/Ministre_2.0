@@ -9,6 +9,7 @@ import type {
   Home,
   SongOption,
   Unavailability,
+  Visibility,
 } from './types';
 
 const m = { ministry: true } as const;
@@ -26,10 +27,10 @@ export const eventsApi = {
 
   get: (id: number) => api<{ data: EventDetail }>(`/events/${id}`, m),
 
-  create: (body: { title: string; starts_at: string; event_type_id?: number | null; location?: string | null; is_rehearsal?: boolean; notes?: string | null }) =>
+  create: (body: { title: string; starts_at: string; rehearsal_at?: string | null; visibility?: Visibility; location?: string | null; notes?: string | null }) =>
     api<{ data: EventDetail }>('/events', { ...m, method: 'POST', body }),
 
-  update: (id: number, body: Partial<{ title: string; starts_at: string; event_type_id: number | null; location: string | null; is_rehearsal: boolean; notes: string | null }>) =>
+  update: (id: number, body: Partial<{ title: string; starts_at: string; rehearsal_at: string | null; visibility: Visibility; location: string | null; notes: string | null }>) =>
     api<{ data: EventDetail }>(`/events/${id}`, { ...m, method: 'PATCH', body }),
 
   remove: (id: number) => api<{ message: string }>(`/events/${id}`, { ...m, method: 'DELETE' }),

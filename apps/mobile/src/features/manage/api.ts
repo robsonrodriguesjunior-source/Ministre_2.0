@@ -18,15 +18,6 @@ export type Member = {
 
 export type ManagedPosition = { id: number; name: string; sort_order: number; archived: boolean; members_count: number };
 
-export type ManagedEventType = {
-  id: number;
-  name: string;
-  weekday: number | null;
-  default_time: string | null;
-  default_location: string | null;
-  is_rehearsal: boolean;
-};
-
 export type MinistryInfo = {
   id: number;
   name: string;
@@ -86,12 +77,6 @@ export const manageApi = {
     api<{ data: ManagedPosition }>(`/manage/positions/${id}`, { ...m, method: 'PATCH', body }),
   reorderPositions: (ids: number[]) => api<{ data: ManagedPosition[] }>('/manage/positions/order', { ...m, method: 'PUT', body: { ids } }),
 
-  eventTypes: () => api<{ data: ManagedEventType[] }>('/event-types', m),
-  createEventType: (body: Omit<ManagedEventType, 'id'>) => api<{ data: ManagedEventType }>('/manage/event-types', { ...m, method: 'POST', body }),
-  updateEventType: (id: number, body: Omit<ManagedEventType, 'id'>) =>
-    api<{ data: ManagedEventType }>(`/manage/event-types/${id}`, { ...m, method: 'PATCH', body }),
-  removeEventType: (id: number) => api<{ message: string }>(`/manage/event-types/${id}`, { ...m, method: 'DELETE' }),
-
   ministry: () => api<{ data: MinistryInfo }>('/manage/ministry', m),
   updateMinistry: (body: { name?: string; default_location?: string | null; worship_days?: number[] }) =>
     api<{ data: MinistryInfo }>('/manage/ministry', { ...m, method: 'PATCH', body }),
@@ -106,7 +91,6 @@ export const manageKeys = {
   members: ['manage', 'members'] as const,
   invites: ['manage', 'invites'] as const,
   positions: ['manage', 'positions'] as const,
-  eventTypes: ['event-types'] as const, // a mesma lista do assistente de escala
   ministry: ['manage', 'ministry'] as const,
   unavailability: (month: string) => ['manage', 'unavailability', month] as const,
   stats: ['me', 'stats'] as const,

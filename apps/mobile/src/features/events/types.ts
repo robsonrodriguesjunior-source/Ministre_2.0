@@ -1,5 +1,7 @@
 export type AssignmentStatus = 'pending' | 'confirmed' | 'declined';
 export type EventStatus = 'draft' | 'published' | 'cancelled';
+/** Oficial: todos do ministério veem. Temporária: só quem está escalado (e os líderes). */
+export type Visibility = 'official' | 'temporary';
 
 export type Face = { user_id: number; name: string; avatar_url: string | null };
 
@@ -7,8 +9,11 @@ export type EventSummary = {
   id: number;
   title: string;
   starts_at: string;
+  /** Ensaio desta escala (dentro dela, não é uma escala à parte). */
+  rehearsal_at: string | null;
   location: string | null;
   status: EventStatus;
+  visibility: Visibility;
   is_rehearsal: boolean;
   event_type_id: number | null;
   team_count: number;
@@ -65,7 +70,8 @@ export type EventDetail = EventSummary & {
 
 export type Home = {
   next_event: EventSummary | null;
-  rehearsal: { id: number; title: string; starts_at: string; location: string | null } | null;
+  /** Ensaio da semana: starts_at é a hora do ensaio; event_starts_at, a do culto. */
+  rehearsal: { id: number; title: string; starts_at: string; event_starts_at: string; location: string | null } | null;
   songs: { event_id: number; count: number; new: number } | null;
   announcement: {
     id: number;
