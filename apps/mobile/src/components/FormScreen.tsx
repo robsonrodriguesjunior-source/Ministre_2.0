@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { IconButton, Text } from '@/components/ui';
+import { IconButton, Logo, Text } from '@/components/ui';
 import { colors, size, space } from '@/theme/tokens';
 
 type Props = {
@@ -17,10 +17,12 @@ type Props = {
   back?: boolean;
   /** Botão à direita do título (ex.: "Novo aviso"). */
   action?: ReactNode;
+  /** Logo oficial no topo e título centralizado (login e recuperação de senha). */
+  logo?: boolean;
 };
 
 // Molde das telas de formulário: voltar, pergunta, campos rolando e a ação principal embaixo.
-export function FormScreen({ title, question, subtitle, children, footer, back = true, action }: Props) {
+export function FormScreen({ title, question, subtitle, children, footer, back = true, action, logo = false }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -43,13 +45,18 @@ export function FormScreen({ title, question, subtitle, children, footer, back =
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
+          {logo && (
+            <View style={styles.logo}>
+              <Logo variant="vertical" width={150} />
+            </View>
+          )}
           {!!question && (
-            <Text variant="question" accessibilityRole="header">
+            <Text variant="question" accessibilityRole="header" style={logo && styles.centered}>
               {question}
             </Text>
           )}
           {!!subtitle && (
-            <Text variant="body" color="dim" style={styles.subtitle}>
+            <Text variant="body" color="dim" style={[styles.subtitle, logo && styles.centered]}>
               {subtitle}
             </Text>
           )}
@@ -86,6 +93,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     marginTop: space.sm,
+  },
+  logo: {
+    alignItems: 'center',
+    marginBottom: space.xxl,
+  },
+  centered: {
+    textAlign: 'center',
   },
   fields: {
     marginTop: space.xxl,

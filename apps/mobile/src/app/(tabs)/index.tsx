@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { addDays } from 'date-fns';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -16,9 +17,10 @@ import {
   Skeleton,
   Text,
 } from '@/components/ui';
+import { AgendaRow } from '@/features/events/AgendaRow';
 import { eventKeys, eventsApi } from '@/features/events/api';
 import { NextEventCard } from '@/features/events/NextEventCard';
-import { ago, greeting, hour, weekdayName } from '@/lib/dates';
+import { ago, hour, weekdayName } from '@/lib/dates';
 import { setAppBadge } from '@/lib/push';
 import { useSession } from '@/stores/session';
 import { fonts, colors, radius, space } from '@/theme/tokens';
@@ -45,9 +47,17 @@ function WeekItem({ icon, title, subtitle, onPress }: { icon: IconName; title: s
 // Início (5.2): o próximo culto vem primeiro.
 export default function Inicio() {
   const user = useSession((s) => s.user);
-  const firstName = user?.name.split(' ')[0] ?? '';
+  // Primeiro nome, pulando títulos como "Pr." ou "Pra.".
+  const firstName = user?.name.split(' ').find((w) => !w.endsWith('.')) ?? user?.name ?? '';
+  const ministry = useSession((s) => s.memberships.find((m) => m.ministry.id === s.activeMinistryId)?.ministry.name);
   const home = useQuery({ queryKey: eventKeys.home, queryFn: eventsApi.home });
   const data = home.data;
+  // Próximos compromissos: as próximas escalas em que você está (sem repetir a do cartão).
+  const upcoming = useQuery({
+    queryKey: ['events', { mine: true, home: true }],
+    queryFn: () => eventsApi.list({ from: new Date().toISOString(), to: addDays(new Date(), 60).toISOString(), mine: true }),
+  });
+  const next = (upcoming.data?.data ?? []).filter((e) => e.id !== data?.next_event?.id && e.status === 'published').slice(0, 3);
   const unread = data?.unread_notifications;
 
   // Número de notificações novas no ícone do app (Tela de Início).
@@ -60,10 +70,12 @@ export default function Inicio() {
       <View style={styles.hello}>
         <Avatar name={user?.name ?? '?'} photoUrl={user?.avatar_url} seed={user?.id} size={40} />
         <View style={styles.flex}>
-          <Text variant="meta" color="dim">
-            {greeting()},
-          </Text>
-          <Text variant="greetingName">{firstName}</Text>
+          <Text variant="greetingName">Olá, {firstName}!</Text>
+          {!!ministry && (
+            <Text variant="meta" color="dim" numberOfLines={1}>
+              {ministry}
+            </Text>
+          )}
         </View>
         <IconButton
           icon="bell"
@@ -97,7 +109,18 @@ export default function Inicio() {
         <QuickAction icon="unavailable" label="Indisponível" onPress={() => router.push('/indisponibilidade')} />
       </View>
 
-      {!!data && (data.rehearsal || data.songs || data.announcement) && (
+      {next.length > 0 && (
+        <>
+          <SectionHeader title="Próximos compromissos" actionLabel="Ver agenda" onAction={() => router.navigate('/agenda')} />
+          <View style={styles.list}>
+            {next.map((e) => (
+              <AgendaRow key={e.id} event={e} />
+            ))}
+          </View>
+        </>
+      )}
+
+      {!!data && (data.rehearsal || (data.songs && data.songs.count > 0)) && (
         <>
           <SectionHeader title="Esta semana" />
           <View>
@@ -117,9 +140,7 @@ export default function Inicio() {
                 onPress={() => router.push({ pathname: '/escala/[id]', params: { id: String(data.songs!.event_id), tab: 'repertorio' } })}
               />
             )}
-            {data.announcement && (
-              <WeekItem icon="megaphone" title="Aviso do líder" subtitle={data.announcement.body} onPress={() => router.push('/avisos')} />
-            )}
+
           </View>
         </>
       )}
@@ -155,6 +176,7 @@ const styles = StyleSheet.create({
   loading: { gap: space.md, marginTop: space.lg },
   gapTop: { marginTop: space.lg },
   quick: { flexDirection: 'row', gap: space.sm, marginTop: space.lg },
+  list: { gap: space.sm },
   weekItem: {
     flexDirection: 'row',
     alignItems: 'center',

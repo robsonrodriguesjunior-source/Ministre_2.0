@@ -39,6 +39,7 @@ function EmailStep({ onSent }: { onSent: (email: string) => void }) {
 
   return (
     <FormScreen
+      logo
       question="Esqueci a senha"
       subtitle="Mandamos um código de 6 números para o seu e-mail."
       footer={<Button label="Enviar código" onPress={submit} loading={formState.isSubmitting} />}

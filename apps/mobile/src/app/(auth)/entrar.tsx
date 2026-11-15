@@ -36,9 +36,15 @@ export default function Entrar() {
 
   return (
     <FormScreen
-      question="Entrar"
+      logo
+      question="Acesse sua conta"
       subtitle="Use o e-mail e a senha da sua conta."
-      footer={<Button label="Entrar" onPress={submit} loading={formState.isSubmitting} />}
+      footer={
+        <>
+          <Button label="Entrar" onPress={submit} loading={formState.isSubmitting} />
+          <Button label="Criar conta" variant="secondary" onPress={() => router.replace('/criar-conta')} />
+        </>
+      }
     >
       {!!formError && <Notice tone="error" message={formError} />}
       <Controller
@@ -80,7 +86,7 @@ export default function Entrar() {
           />
         )}
       />
-      <Pressable onPress={() => router.push('/esqueci-senha')} accessibilityRole="link" hitSlop={10}>
+      <Pressable onPress={() => router.push('/esqueci-senha')} accessibilityRole="link" hitSlop={10} style={{ alignSelf: 'center' }}>
         <Text variant="link" color="orange">
           Esqueci a senha
         </Text>

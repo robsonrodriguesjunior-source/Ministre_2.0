@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AvatarStack, Button, Card, Icon, Pill, Text } from '@/components/ui';
 import { longDateTime, relativeDays } from '@/lib/dates';
-import { colors, space } from '@/theme/tokens';
+import { colors, radius, space } from '@/theme/tokens';
 
 import { DeclineSheet } from './DeclineSheet';
 import { myStatus } from './status';
@@ -32,9 +32,14 @@ export function NextEventCard({ event }: { event: EventSummary }) {
         style={styles.card}
       >
         <View style={styles.row}>
-          <Text variant="cardLabel" color="orange">
-            Próximo culto
-          </Text>
+          <View style={styles.label}>
+            <View style={styles.labelIcon}>
+              <Icon name="calendar" size={16} color={colors.orange} />
+            </View>
+            <Text variant="cardLabel" color="orange">
+              Próximo culto
+            </Text>
+          </View>
           <Pill label={relativeDays(date)} tone="wait" />
         </View>
         <Text variant="cardTitle" style={styles.title}>
@@ -62,7 +67,7 @@ export function NextEventCard({ event }: { event: EventSummary }) {
         </View>
         <View style={styles.hr} />
         <View style={styles.row}>
-          <AvatarStack people={event.faces.map((f) => ({ name: f.name, photoUrl: f.avatar_url, seed: f.user_id }))} />
+          <AvatarStack people={event.faces.map((f) => ({ name: f.name, photoUrl: f.avatar_url, seed: f.user_id }))} backgroundColor={colors.orangeSoft} />
           <Text variant="meta" color="dim">
             {event.team_count} {event.team_count === 1 ? 'pessoa' : 'pessoas'} na equipe
           </Text>
@@ -122,11 +127,14 @@ export function NextEventCard({ event }: { event: EventSummary }) {
 }
 
 const styles = StyleSheet.create({
-  card: { marginTop: space.lg },
+  // Destaque da próxima ação (manual Light): fundo laranja suave, borda laranja à esquerda.
+  card: { marginTop: space.lg, backgroundColor: colors.orangeSoft, borderColor: colors.orangeBorder, borderLeftWidth: 4, borderLeftColor: colors.brand },
+  label: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  labelIcon: { width: 28, height: 28, borderRadius: radius.key, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   title: { marginVertical: space.sm },
   meta: { flexDirection: 'row', alignItems: 'center', gap: space.sm, marginTop: space.xs },
-  hr: { height: 1, backgroundColor: colors.line, marginVertical: space.md },
+  hr: { height: 1, backgroundColor: colors.orangeBorder, marginVertical: space.md },
   buttons: { flexDirection: 'row', gap: space.sm, marginTop: space.md },
   wide: { flex: 1.3 },
   narrow: { flex: 1 },

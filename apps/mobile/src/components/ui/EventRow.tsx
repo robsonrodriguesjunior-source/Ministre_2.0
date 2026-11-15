@@ -18,7 +18,7 @@ type Props = {
   onPress?: () => void;
 };
 
-// Evento na agenda: `card` raio 16 padding 12; coluna de data 46 px.
+// Evento na agenda: cartão branco com borda, raio 12, padding 12; selo da data à esquerda.
 export function EventRow({ date, title, subtitle, mine = false, dimmed = false, right, onPress }: Props) {
   return (
     <Pressable
@@ -28,11 +28,13 @@ export function EventRow({ date, title, subtitle, mine = false, dimmed = false, 
       accessibilityLabel={`${title}, ${subtitle}`}
       style={({ pressed }) => [styles.row, mine && styles.mine, dimmed && styles.dimmed, pressed && styles.pressed]}
     >
-      <View style={styles.date}>
-        <Text variant="weekday" color="dim">
+      <View style={[styles.date, mine && styles.dateMine]}>
+        <Text variant="weekday" color={mine ? 'orange' : 'dim'}>
           {WEEKDAYS[date.getDay()]}
         </Text>
-        <Text variant="eventDay">{String(date.getDate()).padStart(2, '0')}</Text>
+        <Text variant="eventDay" color={mine ? 'orange' : 'ink'}>
+          {String(date.getDate()).padStart(2, '0')}
+        </Text>
       </View>
       <View style={styles.texts}>
         <Text variant="eventTitle" numberOfLines={1}>
@@ -62,14 +64,21 @@ const styles = StyleSheet.create({
     borderColor: colors.orangeBorder,
   },
   dimmed: {
-    opacity: 0.55,
+    opacity: 0.7,
   },
   pressed: {
     opacity: 0.85,
   },
+  // Selo da data (manual Light): quadrado marfim; laranja suave quando você está escalado.
   date: {
-    width: size.eventDateCol,
+    width: size.eventDateCol + 4,
+    paddingVertical: space.xs + 2,
+    borderRadius: radius.key,
+    backgroundColor: colors.card2,
     alignItems: 'center',
+  },
+  dateMine: {
+    backgroundColor: colors.orangeSoft,
   },
   texts: {
     flex: 1,
