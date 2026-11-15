@@ -91,6 +91,11 @@ export const type = {
   stageTitle: { fontFamily: fonts.extrabold, fontSize: 30, letterSpacing: -0.8 },
   stageLyric: { fontFamily: fonts.semibold, fontSize: 23, lineHeight: 29 },
   editor: { fontFamily: fonts.mono, fontSize: 14, lineHeight: 21 },
+  // Computador: menu lateral, cabeçalho e título grande do Início.
+  nav: { fontFamily: fonts.medium, fontSize: 15 },
+  navActive: { fontFamily: fonts.semibold, fontSize: 15 },
+  headerName: { fontFamily: fonts.semibold, fontSize: 15 },
+  desktopTitle: { fontFamily: fonts.bold, fontSize: 30, letterSpacing: -0.6 },
 } satisfies Record<string, TextStyle>;
 
 export type TypeToken = keyof typeof type;
@@ -146,6 +151,15 @@ export const size = {
   checkbox: 24,
   maxContentWidth: 480, // no computador, o app fica numa coluna central
   maxWideWidth: 1040, // Gestão do líder no computador
+  // Computador (manual Light, seção 05).
+  desktopMin: 1024, // a partir daqui: menu lateral + cabeçalho
+  desktopTwoColumns: 1200, // Início em duas colunas
+  sidebar: 248, // largura do menu lateral (manual: 232–256)
+  header: 64, // altura do cabeçalho
+  desktopPage: 760, // largura das telas comuns no computador
+  desktopHome: 1120, // largura do Início no computador
+  desktopAside: 360, // coluna auxiliar do Início (semana e avisos)
+  navItem: 44,
   stagePlay: 72, // play/pause do Modo Palco
   stageSide: 52, // ‹ › do Modo Palco
   stageFade: 60, // degradê no alto e embaixo da letra

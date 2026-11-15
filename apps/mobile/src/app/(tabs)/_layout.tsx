@@ -1,27 +1,20 @@
-import { router } from 'expo-router';
 import { Tabs } from 'expo-router/tabs';
 
-import type { QuickActionId } from '@/components/nav/ActionSheet';
+import { handleQuickAction } from '@/components/nav/quickActions';
 import { TabBar } from '@/components/nav/TabBar';
+import { useDesktop } from '@/lib/layout';
 import { useActiveMembership } from '@/stores/session';
-
-// Ações do botão +.
-function handleQuickAction(id: QuickActionId) {
-  if (id === 'new-event') router.push('/escala/nova');
-  else if (id === 'unavailable') router.push('/indisponibilidade');
-  else if (id === 'my-events') router.navigate({ pathname: '/agenda', params: { mine: '1' } });
-  else if (id === 'new-announcement') router.push('/aviso/novo');
-  else router.push('/musica/editar');
-}
 
 export default function TabsLayout() {
   const membership = useActiveMembership();
   const role = membership?.role ?? 'member';
+  // No computador a navegação fica no menu lateral (DesktopShell); a barra de abas some.
+  const desktop = useDesktop();
 
   return (
     <Tabs
       screenOptions={{ headerShown: false }}
-      tabBar={(props) => <TabBar {...props} role={role} onQuickAction={handleQuickAction} />}
+      tabBar={(props) => (desktop ? null : <TabBar {...props} role={role} onQuickAction={handleQuickAction} />)}
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="agenda" />

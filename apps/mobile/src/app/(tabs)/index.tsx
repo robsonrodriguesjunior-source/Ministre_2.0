@@ -21,9 +21,10 @@ import { AgendaRow } from '@/features/events/AgendaRow';
 import { eventKeys, eventsApi } from '@/features/events/api';
 import { NextEventCard } from '@/features/events/NextEventCard';
 import { ago, hour, weekdayName } from '@/lib/dates';
+import { useDesktop, useWideDesktop } from '@/lib/layout';
 import { setAppBadge } from '@/lib/push';
 import { useSession } from '@/stores/session';
-import { fonts, colors, radius, space } from '@/theme/tokens';
+import { fonts, colors, radius, size, space } from '@/theme/tokens';
 
 function WeekItem({ icon, title, subtitle, onPress }: { icon: IconName; title: string; subtitle: string; onPress: () => void }) {
   return (
@@ -59,6 +60,8 @@ export default function Inicio() {
   });
   const next = (upcoming.data?.data ?? []).filter((e) => e.id !== data?.next_event?.id && e.status === 'published').slice(0, 3);
   const unread = data?.unread_notifications;
+  const desktop = useDesktop();
+  const wide = useWideDesktop();
 
   // Número de notificações novas no ícone do app (Tela de Início).
   useEffect(() => {
@@ -67,6 +70,19 @@ export default function Inicio() {
 
   return (
     <Screen refreshing={home.isRefetching} onRefresh={() => home.refetch()}>
+      {desktop ? (
+        // Computador: saudação grande; sino e foto ficam no cabeçalho.
+        <View style={styles.helloDesktop}>
+          <Text variant="desktopTitle" accessibilityRole="header">
+            Olá, {firstName}!
+          </Text>
+          {!!ministry && (
+            <Text variant="body" color="dim">
+              {ministry}
+            </Text>
+          )}
+        </View>
+      ) : (
       <View style={styles.hello}>
         <Avatar name={user?.name ?? '?'} photoUrl={user?.avatar_url} seed={user?.id} size={40} />
         <View style={styles.flex}>
@@ -84,7 +100,11 @@ export default function Inicio() {
           onPress={() => router.push('/notificacoes')}
         />
       </View>
+      )}
 
+      {/* A partir de 1200 px: coluna principal (próxima ação e compromissos) + coluna auxiliar (semana e avisos). */}
+      <View style={wide && styles.columns}>
+      <View style={wide && styles.mainCol}>
       {home.isLoading ? (
         <View style={styles.loading}>
           <Skeleton height={260} rounded={radius.card} />
@@ -102,12 +122,15 @@ export default function Inicio() {
         </Card>
       )}
 
-      <View style={styles.quick}>
-        <QuickAction icon="calendar" label="Escalas" onPress={() => router.navigate('/agenda')} />
-        <QuickAction icon="music" label="Músicas" onPress={() => router.navigate('/musicas')} />
-        <QuickAction icon="megaphone" label="Avisos" onPress={() => router.push('/avisos')} />
-        <QuickAction icon="unavailable" label="Indisponível" onPress={() => router.push('/indisponibilidade')} />
-      </View>
+      {/* Atalhos só no celular: no computador o menu lateral já leva a esses lugares. */}
+      {!desktop && (
+        <View style={styles.quick}>
+          <QuickAction icon="calendar" label="Escalas" onPress={() => router.navigate('/agenda')} />
+          <QuickAction icon="music" label="Músicas" onPress={() => router.navigate('/musicas')} />
+          <QuickAction icon="megaphone" label="Avisos" onPress={() => router.push('/avisos')} />
+          <QuickAction icon="unavailable" label="Indisponível" onPress={() => router.push('/indisponibilidade')} />
+        </View>
+      )}
 
       {next.length > 0 && (
         <>
@@ -120,6 +143,8 @@ export default function Inicio() {
         </>
       )}
 
+      </View>
+      <View style={wide && styles.sideCol}>
       {!!data && (data.rehearsal || (data.songs && data.songs.count > 0)) && (
         <>
           <SectionHeader title="Esta semana" />
@@ -164,6 +189,8 @@ export default function Inicio() {
           </View>
         </>
       )}
+      </View>
+      </View>
     </Screen>
   );
 }
@@ -173,6 +200,11 @@ const styles = StyleSheet.create({
   semibold: { fontFamily: fonts.semibold },
   bold: { fontFamily: fonts.bold },
   hello: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  helloDesktop: { gap: space.xs, marginTop: space.lg },
+  // Computador largo: coluna principal + coluna auxiliar de largura fixa.
+  columns: { flexDirection: 'row', alignItems: 'flex-start', gap: space.xxl + space.sm },
+  mainCol: { flex: 1, minWidth: 0 },
+  sideCol: { width: size.desktopAside },
   loading: { gap: space.md, marginTop: space.lg },
   gapTop: { marginTop: space.lg },
   quick: { flexDirection: 'row', gap: space.sm, marginTop: space.lg },

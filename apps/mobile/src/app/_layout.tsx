@@ -8,8 +8,10 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { AppFrame } from '@/components/nav/DesktopShell';
+import { useDesktop } from '@/lib/layout';
 import { useSession } from '@/stores/session';
-import { colors, size } from '@/theme/tokens';
+import { colors } from '@/theme/tokens';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -52,11 +54,15 @@ export default function RootLayout() {
   );
 }
 
-// No computador o app fica numa coluna central com a largura de um celular;
-// a Gestão do líder usa uma coluna larga (grade de atalhos e listas mais confortáveis).
+// Moldura: no computador (web, 1024 px ou mais), logado e com ministério, ganha menu lateral e cabeçalho;
+// o Modo Palco e as telas abertas sem login continuam em tela cheia/coluna.
 function Column({ children }: { children: ReactNode }) {
-  const wide = usePathname().startsWith('/gestao');
-  return <View style={[styles.column, Platform.OS === 'web' && { maxWidth: wide ? size.maxWideWidth : size.maxContentWidth }]}>{children}</View>;
+  const desktop = useDesktop();
+  const token = useSession((s) => s.token);
+  const hasMinistry = useSession((s) => s.memberships.length > 0);
+  const area = useSegments()[0] ?? '';
+  const framed = desktop && !!token && hasMinistry && !['palco', '(auth)', 'onboarding', 'convite', 'termos', 'privacidade'].includes(area);
+  return <AppFrame desktop={framed}>{children}</AppFrame>;
 }
 
 // Quem vê o quê: sem login -> boas-vindas/entrar; logado sem ministério -> onboarding; com ministério -> abas.
@@ -128,12 +134,6 @@ function AppNavigator() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: colors.bg,
-  },
-  column: {
-    flex: 1,
-    width: '100%',
-    alignSelf: 'center',
     backgroundColor: colors.bg,
   },
 });
