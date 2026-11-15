@@ -55,6 +55,7 @@ export function TabBar({ state, emitter, navigateToTab, role = 'leader', onQuick
         }}
         accessibilityRole="tab"
         accessibilityState={{ selected: focused }}
+        aria-selected={focused}
         accessibilityLabel={meta.label}
         style={styles.tab}
       >

@@ -34,6 +34,7 @@ function DayPicker({ value, onChange, min }: { value: Date | null; onChange: (d:
             onPress={() => onChange(d)}
             accessibilityRole="button"
             accessibilityState={{ selected: on }}
+            aria-pressed={on}
             accessibilityLabel={format(d, "EEEE, d 'de' MMMM", { locale: ptBR })}
             style={[styles.calDay, on && styles.on]}
           >

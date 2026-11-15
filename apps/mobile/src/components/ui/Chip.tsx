@@ -17,6 +17,7 @@ export function Chip({ label, selected, onPress }: Props) {
       onPress={onPress}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: selected }}
+      aria-checked={selected}
       accessibilityLabel={label}
       style={({ pressed }) => [styles.chip, selected && styles.selected, pressed && styles.pressed]}
     >

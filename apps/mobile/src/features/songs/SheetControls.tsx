@@ -90,6 +90,7 @@ export function SheetControls({ keyLabel, onTranspose, accidental, onAccidental,
           onPress={() => onLyricsOnly(!lyricsOnly)}
           accessibilityRole="switch"
           accessibilityState={{ checked: lyricsOnly }}
+          aria-checked={lyricsOnly}
           accessibilityLabel="Só letra"
           style={[styles.toggle, lyricsOnly && styles.toggleOn]}
         >

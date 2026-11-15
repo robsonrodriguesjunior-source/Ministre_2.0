@@ -34,6 +34,7 @@ function DayChip({ day, selected, onPress }: { day: Date; selected: boolean; onP
       onPress={onPress}
       accessibilityRole="button"
       accessibilityState={{ selected }}
+      aria-pressed={selected}
       accessibilityLabel={format(day, "EEEE, d 'de' MMMM", { locale: ptBR })}
       style={[styles.day, selected && styles.on]}
     >
@@ -53,6 +54,7 @@ function Choice({ label, hint, selected, onPress }: { label: string; hint: strin
       onPress={onPress}
       accessibilityRole="radio"
       accessibilityState={{ checked: selected }}
+      aria-checked={selected}
       accessibilityLabel={`${label}. ${hint}`}
       style={[styles.option, selected && styles.optionOn]}
     >
@@ -88,6 +90,7 @@ function TimePicker({ label, options, value, onChange }: { label: string; option
               accessibilityRole="button"
               accessibilityLabel={`${label} ${t.replace(':', 'h')}`}
               accessibilityState={{ selected: on }}
+              aria-pressed={on}
               style={[styles.hour, on && styles.on]}
             >
               <Text variant="eventTitle" color={on ? 'onOrange' : 'ink'}>

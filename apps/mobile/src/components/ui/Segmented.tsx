@@ -43,6 +43,7 @@ export function Segmented<T extends string>({ options, value, onChange }: Props<
             onPress={() => onChange(o.value)}
             accessibilityRole="tab"
             accessibilityState={{ selected: active }}
+            aria-selected={active}
             style={styles.option}
           >
             <Text variant="segment" color={active ? 'ink' : 'dim'}>

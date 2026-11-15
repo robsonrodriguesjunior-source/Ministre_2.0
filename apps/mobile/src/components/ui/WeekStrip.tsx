@@ -30,6 +30,7 @@ export function WeekStrip({ days, selected, onSelect, hasEvent }: Props) {
             onPress={() => onSelect(d)}
             accessibilityRole="button"
             accessibilityState={{ selected: sel }}
+            aria-pressed={sel}
             accessibilityLabel={`Dia ${d.getDate()}${dot ? ', tem culto' : ''}`}
             style={[styles.day, sel && styles.selected]}
           >

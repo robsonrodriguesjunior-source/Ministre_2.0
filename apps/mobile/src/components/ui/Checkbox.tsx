@@ -18,6 +18,7 @@ export function Checkbox({ checked, onChange, label, accessibilityLabel }: Props
       onPress={() => onChange(!checked)}
       accessibilityRole="checkbox"
       accessibilityState={{ checked }}
+      aria-checked={checked}
       accessibilityLabel={accessibilityLabel}
       style={styles.row}
     >
