@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Avatar, BottomSheet, Icon, ListRow, Notice, Skeleton, Text } from '@/components/ui';
 import { shortDate } from '@/lib/dates';
-import { colors, radius, space } from '@/theme/tokens';
+import { fonts, colors, radius, space } from '@/theme/tokens';
 
 import type { Availability } from '../types';
 
@@ -130,7 +130,7 @@ export function StepWho({ date, availability, loading, team, onChange }: Props) 
 
 const styles = StyleSheet.create({
   wrap: { paddingBottom: space.xxl },
-  semibold: { fontFamily: 'Figtree_600SemiBold' },
+  semibold: { fontFamily: fonts.semibold },
   label: { marginTop: 22, marginBottom: 4 },
   loading: { gap: space.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.md, borderBottomWidth: 1, borderBottomColor: colors.line },

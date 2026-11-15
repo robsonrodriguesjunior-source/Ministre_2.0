@@ -21,7 +21,7 @@ import { NextEventCard } from '@/features/events/NextEventCard';
 import { ago, greeting, hour, weekdayName } from '@/lib/dates';
 import { setAppBadge } from '@/lib/push';
 import { useSession } from '@/stores/session';
-import { colors, radius, space } from '@/theme/tokens';
+import { fonts, colors, radius, space } from '@/theme/tokens';
 
 function WeekItem({ icon, title, subtitle, onPress }: { icon: IconName; title: string; subtitle: string; onPress: () => void }) {
   return (
@@ -149,8 +149,8 @@ export default function Inicio() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  semibold: { fontFamily: 'Figtree_600SemiBold' },
-  bold: { fontFamily: 'Figtree_700Bold' },
+  semibold: { fontFamily: fonts.semibold },
+  bold: { fontFamily: fonts.bold },
   hello: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   loading: { gap: space.md, marginTop: space.lg },
   gapTop: { marginTop: space.lg },
@@ -178,6 +178,8 @@ const styles = StyleSheet.create({
     gap: 10,
     backgroundColor: colors.card,
     borderRadius: radius.eventRow,
+    borderWidth: 1,
+    borderColor: colors.line,
     padding: space.md,
   },
 });

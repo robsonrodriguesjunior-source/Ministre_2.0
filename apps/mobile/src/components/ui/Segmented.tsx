@@ -59,7 +59,7 @@ export function Segmented<T extends string>({ options, value, onChange }: Props<
 const styles = StyleSheet.create({
   track: {
     flexDirection: 'row',
-    backgroundColor: colors.card,
+    backgroundColor: colors.card2,
     borderRadius: radius.button,
     padding: PAD,
   },
@@ -69,7 +69,9 @@ const styles = StyleSheet.create({
     bottom: PAD,
     left: PAD,
     borderRadius: radius.segmentIndicator,
-    backgroundColor: colors.card2,
+    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.line,
   },
   option: {
     flex: 1,

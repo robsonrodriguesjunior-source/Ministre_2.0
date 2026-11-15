@@ -2,17 +2,17 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button, Text } from '@/components/ui';
+import { Button, Logo, Text } from '@/components/ui';
 import { colors, space } from '@/theme/tokens';
 
-// Boas-vindas (5.1): logo, a frase e os botões Entrar (principal) e Criar conta (secundário).
+// Abertura (manual Light): fundo marfim, logo oficial vertical no centro, decoração mínima.
 export default function Welcome() {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
       <View style={styles.center}>
-        <Text variant="logo" accessibilityRole="header">
-          Minis<Text variant="logo" color="orange">tre</Text>
-        </Text>
+        <View accessibilityRole="header">
+          <Logo variant="vertical" width={220} />
+        </View>
         <Text variant="body" color="dim" style={styles.tagline}>
           As escalas do seu ministério, em ordem.
         </Text>
@@ -28,14 +28,14 @@ export default function Welcome() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.bg,
+    backgroundColor: colors.ivory,
     paddingHorizontal: space.lg,
   },
   center: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: space.sm,
+    gap: space.xxl,
   },
   tagline: {
     textAlign: 'center',

@@ -1,39 +1,47 @@
-// Tokens de design do Ministre (docs/ESPECIFICACAO.md, seção 3; medidas de docs/design/telas-direcoes.html).
+// Tokens de design do Ministre: visual "Light" do manual da marca (MINISTRE_Light_Especificacao_Claude.docx, seção 04).
 // Nunca use cor ou tamanho solto num componente: use sempre um token daqui.
-// Tema escuro é o único da v1; o tema claro entra depois trocando só `colors`.
+// O modo escuro ficou fora desta etapa (decisão do manual).
 
 import { Platform, type TextStyle } from 'react-native';
 
 export const colors = {
-  bg: '#0C0C0D',
-  card: '#18181A',
-  card2: '#222225',
-  line: '#26262A',
-  lineStrong: '#3A3A3F',
-  tabBar: '#111113',
-  ink: '#FFFFFF',
-  inkSoft: '#C9C9CE',
-  inkMuted: '#D4D4D8', // rótulo dos atalhos (QuickAction)
-  dim: '#9B9BA1',
-  tabInactive: '#77777D',
-  orange: '#F7731C',
-  orangeSoft: 'rgba(247,115,28,0.14)',
-  orangeBorder: 'rgba(247,115,28,0.55)',
-  onOrange: '#0C0C0D',
-  stageBg: '#050505',
-  backdrop: 'rgba(0,0,0,0.62)',
+  bg: '#FAFAF9', // fundo principal
+  card: '#FFFFFF', // superfície
+  card2: '#F5F2E9', // marfim: fundos de ícone, campos, segmentado
+  line: '#E1DDD5', // borda
+  lineStrong: '#CBC5B9',
+  tabBar: '#FFFFFF',
+  ink: '#0B1F3B', // marca / texto forte (azul-marinho)
+  inkSoft: '#2A3B52',
+  inkMuted: '#2A3B52', // rótulo dos atalhos (QuickAction)
+  dim: '#526174', // texto secundário
+  tabInactive: '#5B6878',
+  // "orange" = ação: laranja escuro com texto branco (contraste AA). O laranja da marca fica em `brand`.
+  orange: '#B83B10',
+  orangeSoft: '#FCEDE5', // destaque suave
+  orangeBorder: 'rgba(184,59,16,0.35)',
+  onOrange: '#FFFFFF',
+  brand: '#E5571F', // laranja da bandeira (só decoração: nunca texto pequeno)
+  ivory: '#F5F2E9',
+  success: '#166534',
+  successBg: '#EAF6EC',
+  danger: '#B42318',
+  dangerBg: '#FDECEA',
+  stageBg: '#FAFAF9',
+  backdrop: 'rgba(11,31,59,0.45)',
   transparent: 'transparent',
 } as const;
 
-// Tons terrosos fixos para avatar sem foto (mesma lista do design).
-export const avatarTones = ['#8C6A52', '#5D6A74', '#9A7B60', '#4E4743', '#76606C', '#A0846A', '#6A5A4C'] as const;
+// Tons fixos para avatar sem foto (texto branco por cima; todos com contraste AA).
+export const avatarTones = ['#8C5A3C', '#3F5670', '#7A5C45', '#4E4743', '#6B4F5E', '#5C6B4A', '#6A5A4C'] as const;
 
+// Inter (manual: pesos 400/500/600/700). "extrabold" ficou como 700 para não exagerar no negrito.
 export const fonts = {
-  regular: 'Figtree_400Regular',
-  medium: 'Figtree_500Medium',
-  semibold: 'Figtree_600SemiBold',
-  bold: 'Figtree_700Bold',
-  extrabold: 'Figtree_800ExtraBold',
+  regular: 'Inter_400Regular',
+  medium: 'Inter_500Medium',
+  semibold: 'Inter_600SemiBold',
+  bold: 'Inter_700Bold',
+  extrabold: 'Inter_700Bold',
   // Cifras: monoespaçada do sistema (Menlo no iOS, monospace no Android e na web).
   mono: Platform.select({ ios: 'Menlo', default: 'monospace' }),
 } as const;
@@ -101,12 +109,12 @@ export const radius = {
   segmentIndicator: 9,
   button: 12,
   tag: 14,
-  eventRow: 16,
-  quickAction: 16,
+  eventRow: 12,
+  quickAction: 12,
   pill: 20,
   key: 10, // selo do tom
-  card: 22,
-  sheet: 28,
+  card: 16, // manual: 12–16 em cards
+  sheet: 20,
   round: 999,
 } as const;
 

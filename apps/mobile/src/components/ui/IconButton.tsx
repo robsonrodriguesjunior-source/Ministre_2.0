@@ -32,6 +32,8 @@ const styles = StyleSheet.create({
     height: size.iconButton,
     borderRadius: size.iconButton / 2,
     backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     alignItems: 'center',
     justifyContent: 'center',
   },

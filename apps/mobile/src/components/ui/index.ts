@@ -8,6 +8,7 @@ export { EventRow } from './EventRow';
 export { Icon, type IconName } from './Icon';
 export { IconButton } from './IconButton';
 export { ListRow } from './ListRow';
+export { Logo } from './Logo';
 export { Pill, type PillTone } from './Pill';
 export { QuickAction } from './QuickAction';
 export { Screen } from './Screen';

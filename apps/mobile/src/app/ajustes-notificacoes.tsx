@@ -58,8 +58,8 @@ export default function AjustesNotificacoes() {
                   onValueChange={(v) => change.mutate({ [o.key]: v })}
                   accessibilityLabel={o.title}
                   trackColor={{ false: colors.lineStrong, true: colors.orange }}
-                  thumbColor={colors.ink}
-                  {...({ activeThumbColor: colors.ink } as object)}
+                  thumbColor={colors.onOrange}
+                  {...({ activeThumbColor: colors.onOrange } as object)}
                 />
               </View>
             ))

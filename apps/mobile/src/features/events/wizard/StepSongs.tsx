@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { BottomSheet, Checkbox, Chip, Icon, Skeleton, Text, TextField } from '@/components/ui';
-import { colors, space } from '@/theme/tokens';
+import { fonts, colors, space } from '@/theme/tokens';
 
 import { QuickAddSong } from '@/features/songs/QuickAddSong';
 import type { SongDetail } from '@/features/songs/types';
@@ -150,7 +150,7 @@ export function StepSongs({ songs, loading, picked, onChange }: Props) {
 const styles = StyleSheet.create({
   wrap: { paddingBottom: space.xxl },
   flex: { flex: 1 },
-  semibold: { fontFamily: 'Figtree_600SemiBold' },
+  semibold: { fontFamily: fonts.semibold },
   label: { marginTop: 22, marginBottom: 10 },
   row: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: colors.line },
   number: { width: 22, color: colors.lineStrong },

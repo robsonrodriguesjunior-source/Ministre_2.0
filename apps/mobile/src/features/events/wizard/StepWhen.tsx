@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, Switch, TextInput, View } from 'react-native';
 
 import { BottomSheet, Text, TextField } from '@/components/ui';
 import { isoDay, sameDay } from '@/lib/dates';
-import { colors, radius, space, type } from '@/theme/tokens';
+import { fonts, colors, radius, space, type } from '@/theme/tokens';
 
 import type { Visibility } from '../types';
 
@@ -214,7 +214,7 @@ export function StepWhen({ value, onChange, worshipDays }: Props) {
           value={value.hasRehearsal}
           onValueChange={(v) => onChange({ ...value, hasRehearsal: v, rehearsalTime: value.rehearsalTime || '16:00' })}
           trackColor={{ true: colors.orange, false: colors.lineStrong }}
-          thumbColor={colors.ink}
+          thumbColor={colors.onOrange}
           accessibilityLabel="Tem ensaio"
         />
       </View>
@@ -290,7 +290,7 @@ export function StepWhen({ value, onChange, worshipDays }: Props) {
 const styles = StyleSheet.create({
   wrap: { paddingBottom: space.xxl },
   flex: { flex: 1 },
-  semibold: { fontFamily: 'Figtree_600SemiBold' },
+  semibold: { fontFamily: fonts.semibold },
   label: { marginTop: 22, marginBottom: 10 },
   chips: { flexDirection: 'row', gap: space.sm },
   wrapChips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },

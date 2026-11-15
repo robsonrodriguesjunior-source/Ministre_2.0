@@ -27,7 +27,7 @@ function toneFor(seed: string) {
   return avatarTones[Math.abs(h) % avatarTones.length];
 }
 
-// Foto real ou, sem foto, iniciais sobre um tom terroso fixo por pessoa.
+// Foto real ou, sem foto, iniciais brancas sobre um tom fixo por pessoa.
 export function Avatar({ name, photoUrl, seed, size = sizes.avatarList, ringColor }: AvatarProps) {
   const ring = ringColor ? { borderWidth: 2, borderColor: ringColor } : null;
   const box = { width: size, height: size, borderRadius: size / 2 };
@@ -50,7 +50,7 @@ export function Avatar({ name, photoUrl, seed, size = sizes.avatarList, ringColo
     >
       <Text
         variant="pill"
-        color="ink"
+        color="onOrange"
         style={{ fontFamily: fonts.bold, fontSize: Math.max(9, size * 0.36) }}
       >
         {initials(name)}

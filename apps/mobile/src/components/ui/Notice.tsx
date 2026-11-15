@@ -13,7 +13,7 @@ export function Notice({ message, tone = 'info' }: Props) {
       accessibilityRole={tone === 'error' ? 'alert' : undefined}
       accessibilityLiveRegion="polite"
     >
-      <Text variant="bodySm" color={tone === 'error' ? 'ink' : 'inkSoft'}>
+      <Text variant="bodySm" color={tone === 'error' ? 'danger' : 'inkSoft'}>
         {message}
       </Text>
     </View>
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     padding: space.lg,
   },
   error: {
-    borderColor: colors.orangeBorder,
-    backgroundColor: colors.orangeSoft,
+    borderColor: colors.danger,
+    backgroundColor: colors.dangerBg,
   },
 });

@@ -17,8 +17,8 @@ type Mode = 'menu' | 'duplicate' | 'cancel' | 'delete';
 function Item({ icon, label, onPress, danger }: { icon: IconName; label: string; onPress: () => void; danger?: boolean }) {
   return (
     <Pressable onPress={onPress} accessibilityRole="button" style={({ pressed }) => [styles.item, pressed && styles.pressed]}>
-      <Icon name={icon} color={danger ? colors.orange : colors.ink} />
-      <Text variant="body" color={danger ? 'orange' : 'ink'}>
+      <Icon name={icon} color={danger ? colors.danger : colors.ink} />
+      <Text variant="body" color={danger ? 'danger' : 'ink'}>
         {label}
       </Text>
     </Pressable>

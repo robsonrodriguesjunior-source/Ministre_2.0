@@ -21,7 +21,7 @@ import { eventsApi } from '@/features/events/api';
 import { myStatus, statusPill } from '@/features/events/status';
 import type { EventSummary } from '@/features/events/types';
 import { hour, isoDay, monthYear, sameDay, weekDays } from '@/lib/dates';
-import { colors, space } from '@/theme/tokens';
+import { fonts, colors, space } from '@/theme/tokens';
 
 type Filter = 'all' | 'mine';
 
@@ -184,7 +184,7 @@ export default function Agenda() {
 }
 
 const styles = StyleSheet.create({
-  semibold: { fontFamily: 'Figtree_600SemiBold' },
+  semibold: { fontFamily: fonts.semibold },
   month: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: space.sm },
   arrows: { flexDirection: 'row', gap: 14 },
   week: { marginTop: space.md },

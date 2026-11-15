@@ -43,6 +43,8 @@ const styles = StyleSheet.create({
     height: size.quickAction,
     borderRadius: radius.quickAction,
     backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -24,10 +24,10 @@ export function MenuRow({ icon, label, subtitle, onPress, danger = false, divide
       style={({ pressed }) => [styles.row, divider && styles.divider, pressed && styles.pressed]}
     >
       <View style={styles.icon}>
-        <Icon name={icon} size={19} color={danger ? colors.orange : colors.ink} />
+        <Icon name={icon} size={19} color={danger ? colors.danger : colors.ink} />
       </View>
       <View style={styles.texts}>
-        <Text variant="tileTitle" color={danger ? 'orange' : 'ink'}>
+        <Text variant="tileTitle" color={danger ? 'danger' : 'ink'}>
           {label}
         </Text>
         {!!subtitle && (

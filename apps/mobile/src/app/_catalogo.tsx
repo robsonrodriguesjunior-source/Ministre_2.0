@@ -24,7 +24,7 @@ import {
   WeekStrip,
 } from '@/components/ui';
 import { API_URL, getHealth } from '@/lib/api';
-import { colors, space } from '@/theme/tokens';
+import { fonts, colors, space } from '@/theme/tokens';
 
 // Catálogo interno (/_catalogo): todos os componentes da seção 3.3 com os dados de exemplo do design,
 // para conferir com docs/design/telas-direcoes.html. Não aparece para o usuário final.
@@ -259,7 +259,7 @@ export default function Catalogo() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   push: { flex: 1 },
-  bold: { fontFamily: 'Figtree_700Bold' },
+  bold: { fontFamily: fonts.bold },
   bar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   barSpacer: { width: 38 },
   hello: { flexDirection: 'row', alignItems: 'center', gap: 10 },

@@ -8,7 +8,7 @@ type Props = ViewProps & {
   style?: StyleProp<ViewStyle>;
 };
 
-// Cartão: fundo `card`, raio 22, padding 16. Tocável quando recebe onPress.
+// Cartão: fundo branco, borda 1 px, raio 16, padding 16, sem sombra (manual Light). Tocável quando recebe onPress.
 export function Card({ onPress, style, children, accessibilityLabel, ...rest }: Props) {
   if (onPress) {
     return (
@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
     borderRadius: radius.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     padding: space.lg,
   },
   pressed: {

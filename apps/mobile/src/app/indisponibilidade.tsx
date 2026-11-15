@@ -200,7 +200,7 @@ export default function Indisponibilidade() {
         {mode === 'dia' && (
           <View style={styles.switchRow}>
             <Text variant="body">{start ? `Repetir toda ${WEEKDAYS[start.getDay()]}` : 'Repetir toda semana'}</Text>
-            <Switch value={weekly} onValueChange={setWeekly} trackColor={{ true: colors.orange, false: colors.lineStrong }} thumbColor={colors.ink} accessibilityLabel="Repetir toda semana" />
+            <Switch value={weekly} onValueChange={setWeekly} trackColor={{ true: colors.orange, false: colors.lineStrong }} thumbColor={colors.onOrange} accessibilityLabel="Repetir toda semana" />
           </View>
         )}
         <View style={styles.chips}>
@@ -241,6 +241,8 @@ const styles = StyleSheet.create({
     gap: space.md,
     backgroundColor: colors.card,
     borderRadius: radius.eventRow,
+    borderWidth: 1,
+    borderColor: colors.line,
     padding: space.md,
   },
   label: { marginTop: space.lg, marginBottom: space.sm },

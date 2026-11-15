@@ -64,7 +64,9 @@ ministre/
 
 ## 3. Identidade visual (design system)
 
-**Fonte principal:** `docs/design/telas-direcoes.html`. Abra esse arquivo, leia o CSS e reproduza **as mesmas medidas**. As telas do celular nele têm 320 px de largura; use essas medidas como pontos (pt) no React Native.
+> **Atualização 2026-11-15: visual "Light" (manual da marca).** A fonte visual agora é `MINISTRE_Light_Especificacao_Claude.docx` (raiz do repositório) e os logos oficiais em `Logo2026/`. Os valores de cor e fonte abaixo (tema escuro, Figtree) ficaram como histórico; os valores em vigor estão em `apps/mobile/src/theme/tokens.ts`: fundo `#FAFAF9`, superfície `#FFFFFF`, marfim `#F5F2E9`, texto forte `#0B1F3B`, texto secundário `#526174`, borda `#E1DDD5`, ação `#B83B10` (texto branco), laranja da marca `#E5571F` (só decoração), destaque suave `#FCEDE5`, sucesso `#166534`/`#EAF6EC`, erro `#B42318`/`#FDECEA`. Fonte **Inter** (400–700). Cards brancos com borda de 1 px, raio 16, sem sombra. "Confirmado" é verde. Logo: componente `Logo` (horizontal, vertical, símbolo), nunca redesenhado. Modo escuro fora desta etapa.
+
+**Fonte principal (histórico, tema escuro):** `docs/design/telas-direcoes.html`. Abra esse arquivo, leia o CSS e reproduza **as mesmas medidas**. As telas do celular nele têm 320 px de largura; use essas medidas como pontos (pt) no React Native.
 
 ### 3.1 Tokens de cor (tema escuro, padrão)
 Crie `apps/mobile/src/theme/tokens.ts` com exatamente:

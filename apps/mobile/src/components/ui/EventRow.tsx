@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.eventRow,
     padding: space.md,
     borderWidth: 1,
-    borderColor: colors.transparent,
+    borderColor: colors.line,
   },
   mine: {
     borderColor: colors.orangeBorder,
