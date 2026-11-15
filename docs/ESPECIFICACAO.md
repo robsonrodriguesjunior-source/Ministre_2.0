@@ -16,7 +16,8 @@ A referência de mercado é o app *Louve*. O Ministre tem **identidade visual pr
 | Papel | Pode |
 |---|---|
 | **Líder** (`leader`) | Tudo do ministério: criar, editar e publicar escalas; gerenciar membros, funções, tipos de culto e repertório; enviar avisos; lembrar pendentes. |
-| **Membro** (`member`) | Ver agenda e escalas, confirmar ou recusar a própria presença, marcar indisponibilidade, ver repertório e cifras, usar o Modo Palco, ler avisos, editar o próprio perfil. |
+| **Membro** (`member`) | Ver agenda e escalas, confirmar ou recusar a própria presença, marcar indisponibilidade, ver repertório e cifras, usar o Modo Palco, ler avisos, editar o próprio perfil. **Não** mexe no repertório das escalas. |
+| **Ministro da escala** (estrela, por escala) | Qualquer membro escalado pode ser marcado pelo **líder** com a ⭐ na aba Equipe da escala (só o líder marca/desmarca; vale para todas as funções da pessoa naquela escala e continua se o líder trocar a função). O ministro **monta o repertório só daquela escala**: adiciona da biblioteca, cadastra música nova (que entra na biblioteca; `POST /songs` com `event_id`), importa pelo link e tira músicas. Não edita nem apaga músicas da biblioteca, e nas escalas sem estrela só confirma presença. Recebe a notificação "Você é o ministro deste culto". API: `PUT /events/{id}/minister {member_id, minister}` (líder); `event_assignments.is_minister`; `can_edit_songs` no detalhe da escala; regra em `Event::canEditSongs`. |
 
 Uma pessoa pode estar em vários ministérios e igrejas, com papéis diferentes em cada um. O app tem um **seletor de ministério** no Perfil, e o ministério ativo fica salvo.
 

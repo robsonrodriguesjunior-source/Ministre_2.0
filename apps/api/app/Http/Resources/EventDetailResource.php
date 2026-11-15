@@ -23,6 +23,8 @@ class EventDetailResource extends EventSummaryResource
         return parent::toArray($request) + [
             'notes' => $this->notes,
             'can_manage' => (bool) $membership?->isLeader(),
+            // Líder ou o ministro (estrela) desta escala: monta o repertório.
+            'can_edit_songs' => $this->resource->canEditSongs($membership),
             'pending_count' => $pending->pluck('ministry_member_id')->unique()->count(),
             'remindable_count' => $remindable->pluck('ministry_member_id')->unique()->count(),
             'team' => $this->assignments
@@ -37,6 +39,7 @@ class EventDetailResource extends EventSummaryResource
                     'position_id' => $a->position_id,
                     'position' => $a->position->name,
                     'status' => $a->status,
+                    'is_minister' => (bool) $a->is_minister,
                     'decline_reason' => $a->decline_reason,
                     'is_me' => $a->ministry_member_id === $membership?->id,
                 ]),

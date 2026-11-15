@@ -43,6 +43,9 @@ export const eventsApi = {
 
   setTeam: (id: number, team: { member_id: number; position_id: number }[]) =>
     api<{ data: EventDetail }>(`/events/${id}/assignments`, { ...m, method: 'PUT', body: { team } }),
+  /** Estrela de ministro (só o líder). */
+  setMinister: (id: number, memberId: number, minister: boolean) =>
+    api<{ data: EventDetail }>(`/events/${id}/minister`, { ...m, method: 'PUT', body: { member_id: memberId, minister } }),
   setSongs: (id: number, songs: { song_id: number; key: string }[]) =>
     api<{ data: EventDetail }>(`/events/${id}/songs`, { ...m, method: 'PUT', body: { songs } }),
 

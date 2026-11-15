@@ -66,6 +66,29 @@ class Event extends Model
             || $this->assignments()->where('ministry_member_id', $member->id)->exists();
     }
 
+    /** A pessoa está escalada como ministro (estrela) nesta escala. */
+    public function isMinister(?MinistryMember $member): bool
+    {
+        if (! $member) {
+            return false;
+        }
+
+        return $this->assignments()->where('ministry_member_id', $member->id)->where('is_minister', true)->exists();
+    }
+
+    /** Montar o repertório desta escala: líder sempre; membro só se for o ministro dela (e puder vê-la). */
+    public function canEditSongs(?MinistryMember $member): bool
+    {
+        if (! $member || $member->ministry_id !== $this->ministry_id) {
+            return false;
+        }
+        if ($member->isLeader()) {
+            return true;
+        }
+
+        return $this->isVisibleTo($member) && $this->isMinister($member);
+    }
+
     /** @return BelongsTo<Ministry, $this> */
     public function ministry(): BelongsTo
     {

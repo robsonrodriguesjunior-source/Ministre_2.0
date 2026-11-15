@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SongRequest;
 use App\Http\Resources\SongResource;
+use App\Models\Event;
+use App\Models\EventAssignment;
 use App\Models\MinistryMember;
 use App\Models\Song;
 use App\Services\SongLookup;
@@ -46,7 +48,13 @@ class SongController extends Controller
     /** Colou o link (YouTube, Spotify ou Deezer): título, cantor e letra para pré-preencher a música. */
     public function lookup(Request $request, SongLookup $lookup): JsonResponse
     {
-        Gate::authorize('manage', $this->membership($request)->ministry);
+        // Importar pelo link: líder, ou quem é ministro de alguma escala (para montar o repertório dela).
+        $membership = $this->membership($request);
+        abort_unless(
+            $membership->isLeader() || EventAssignment::where('ministry_member_id', $membership->id)->where('is_minister', true)->exists(),
+            403,
+            'Só o líder ou o ministro de uma escala pode importar músicas.'
+        );
         $request->validate(['url' => ['required', 'string', 'max:500']], ['url.required' => 'Cole o link da música.']);
 
         $data = $lookup->lookup($request->input('url'));
@@ -77,7 +85,14 @@ class SongController extends Controller
     public function store(SongRequest $request): JsonResponse
     {
         $membership = $this->membership($request);
-        Gate::authorize('manage', $membership->ministry);
+        // Líder cadastra em qualquer lugar. O ministro só cadastra de dentro da escala em que é ministro
+        // (event_id): a música nova entra na biblioteca para ele pôr no repertório daquela escala.
+        if (! $membership->isLeader()) {
+            $event = $request->filled('event_id')
+                ? Event::where('ministry_id', $membership->ministry_id)->find($request->integer('event_id'))
+                : null;
+            abort_unless($event?->canEditSongs($membership), 403, 'Só o líder ou o ministro da escala pode cadastrar músicas.');
+        }
 
         $song = Song::create([...$this->data($request), 'ministry_id' => $membership->ministry_id]);
 
@@ -105,6 +120,7 @@ class SongController extends Controller
     private function data(SongRequest $request): array
     {
         $data = $request->validated();
+        unset($data['event_id']); // só serve para conferir a permissão do ministro
         foreach (['tags', 'links'] as $list) {
             if (array_key_exists($list, $data)) {
                 $data[$list] = array_values($data[$list] ?? []);

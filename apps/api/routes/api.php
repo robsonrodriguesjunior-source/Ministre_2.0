@@ -90,6 +90,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/events/{event}/duplicate', [EventController::class, 'duplicate'])->whereNumber('event');
             Route::post('/events/{event}/remind-pending', [EventController::class, 'remindPending'])->whereNumber('event');
             Route::put('/events/{event}/assignments', [EventController::class, 'assignments'])->whereNumber('event');
+            Route::put('/events/{event}/minister', [EventController::class, 'minister'])->whereNumber('event');
             Route::put('/events/{event}/songs', [EventController::class, 'songs'])->whereNumber('event');
             Route::put('/events/{event}/rundown', [EventController::class, 'rundown'])->whereNumber('event');
             Route::get('/events/{event}/stage', [EventController::class, 'stage'])->whereNumber('event');

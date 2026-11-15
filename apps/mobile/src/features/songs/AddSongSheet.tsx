@@ -16,12 +16,14 @@ type Props = {
   onAdd: (song: PickedSong) => void;
   /** Músicas que já estão na escala (aparecem marcadas). */
   added: number[];
+  /** Escala aberta (o ministro só cadastra música nova de dentro dela). */
+  eventId?: number;
 };
 
 type Mode = 'library' | 'new';
 
 // "Adicionar música" na escala: da biblioteca ou uma nova pelo link (que já fica salva na biblioteca).
-export function AddSongSheet({ visible, onClose, onAdd, added }: Props) {
+export function AddSongSheet({ visible, onClose, onAdd, added, eventId }: Props) {
   const [mode, setMode] = useState<Mode>('library');
   const [q, setQ] = useState('');
   const songs = useQuery({ queryKey: ['songs-options'], queryFn: eventsApi.songs, enabled: visible });
@@ -94,6 +96,7 @@ export function AddSongSheet({ visible, onClose, onAdd, added }: Props) {
           </>
         ) : (
           <QuickAddSong
+            eventId={eventId}
             onSaved={(song) => {
               onAdd({ song_id: song.id, title: song.title, key: song.original_key });
               close();

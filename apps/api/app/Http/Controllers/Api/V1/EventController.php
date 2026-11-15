@@ -167,9 +167,40 @@ class EventController extends Controller
         return $this->detail($event);
     }
 
-    public function songs(EventSongsRequest $request, Event $event): EventDetailResource
+    /**
+     * Estrela de ministro (só o líder): PUT /events/{id}/minister {member_id, minister}.
+     * Vale para todas as funções da pessoa nesta escala; ela recebe aviso quando vira ministro.
+     */
+    public function minister(Request $request, Event $event, Notifier $notifier): EventDetailResource
     {
         Gate::authorize('manage', $event);
+        $data = $request->validate([
+            'member_id' => ['required', 'integer'],
+            'minister' => ['required', 'boolean'],
+        ], ['member_id.required' => 'Escolha quem é o ministro.']);
+
+        $rows = $event->assignments()->where('ministry_member_id', $data['member_id']);
+        if (! $rows->exists()) {
+            throw ValidationException::withMessages(['member_id' => 'Essa pessoa não está escalada nesta escala.']);
+        }
+
+        $on = (bool) $data['minister'];
+        $was = (clone $rows)->where('is_minister', true)->exists();
+        $rows->update(['is_minister' => $on]);
+
+        if ($on && ! $was && $event->status === Event::STATUS_PUBLISHED) {
+            $member = MinistryMember::with('user')->find($data['member_id']);
+            if ($member) {
+                $notifier->minister($member, $event);
+            }
+        }
+
+        return $this->detail($event);
+    }
+
+    public function songs(EventSongsRequest $request, Event $event): EventDetailResource
+    {
+        Gate::authorize('editSongs', $event);
         $songIds = collect($request->input('songs'))->pluck('song_id');
         $valid = Song::where('ministry_id', $event->ministry_id)->whereIn('id', $songIds)->pluck('original_key', 'id');
 

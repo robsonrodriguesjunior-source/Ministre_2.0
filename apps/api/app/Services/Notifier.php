@@ -21,6 +21,7 @@ class Notifier
     /** Cada tipo de notificação obedece a uma preferência do Perfil (User::PUSH_PREFS). */
     public const PREF_BY_TYPE = [
         'scheduled' => 'escalas',
+        'minister' => 'escalas',
         'removed' => 'escalas',
         'changed' => 'escalas',
         'cancelled' => 'escalas',
@@ -107,6 +108,14 @@ class Notifier
     {
         $this->notify($member->user_id, $event->ministry_id, 'scheduled',
             "Você foi escalado no {$position}", "{$event->title} · ".self::when($event),
+            ['route' => "/escala/{$event->id}", 'event_id' => $event->id]);
+    }
+
+    /** O líder marcou a estrela: a pessoa é o ministro e cuida do repertório desta escala. */
+    public function minister(MinistryMember $member, Event $event): void
+    {
+        $this->notify($member->user_id, $event->ministry_id, 'minister',
+            'Você é o ministro deste culto', "{$event->title} · ".self::when($event).'. Você pode montar o repertório.',
             ['route' => "/escala/{$event->id}", 'event_id' => $event->id]);
     }
 

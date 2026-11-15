@@ -23,14 +23,14 @@ import { eventsApi } from '@/features/events/api';
 import { DeclineSheet } from '@/features/events/DeclineSheet';
 import { EventMenu } from '@/features/events/EventMenu';
 import { myStatus, statusPill } from '@/features/events/status';
-import type { EventDetail } from '@/features/events/types';
+import type { EventDetail, TeamMember } from '@/features/events/types';
 import { useRespond } from '@/features/events/useRespond';
 import { AddSongSheet, type PickedSong } from '@/features/songs/AddSongSheet';
 import { songsApi } from '@/features/songs/api';
 import { ListenButtons } from '@/features/songs/ListenButtons';
 import { loadStageSet, saveStageSet, stageKey } from '@/features/songs/offline';
 import { dayMonth, hour, weekdayName } from '@/lib/dates';
-import { colors, size, space } from '@/theme/tokens';
+import { colors, radius, size, space } from '@/theme/tokens';
 import { goBack } from '@/lib/nav';
 
 type Tab = 'equipe' | 'repertorio';
@@ -41,20 +41,57 @@ const TABS: { value: Tab; label: string }[] = [
 
 const minutes = (sec: number | null) => (sec ? `${Math.round(sec / 60)} min` : null);
 
-function TeamTab({ event }: { event: EventDetail }) {
+// Estrela do ministro: o líder toca para marcar/desmarcar; os outros só veem quem é o ministro.
+function MinisterStar({ event, member, onStar }: { event: EventDetail; member: TeamMember; onStar: (memberId: number, on: boolean) => void }) {
+  const on = member.is_minister;
+  const icon = <Icon name="star" size={22} color={on ? colors.brand : colors.lineStrong} fill={on ? colors.brand : 'none'} strokeWidth={1.8} />;
+  if (!event.can_manage) {
+    return on ? (
+      <View accessible accessibilityLabel="Ministro desta escala" style={styles.star}>
+        {icon}
+      </View>
+    ) : null;
+  }
+  return (
+    <Pressable
+      onPress={() => onStar(member.member_id, !on)}
+      accessibilityRole="button"
+      accessibilityState={{ selected: on }}
+      aria-pressed={on}
+      accessibilityLabel={on ? `Tirar ${member.name} de ministro` : `Marcar ${member.name} como ministro`}
+      hitSlop={6}
+      style={styles.star}
+    >
+      {icon}
+    </Pressable>
+  );
+}
+
+function TeamTab({ event, onStar }: { event: EventDetail; onStar: (memberId: number, on: boolean) => void }) {
   return (
     <View>
       {event.team.length === 0 && <EmptyState icon="user" message="Ninguém escalado ainda." />}
+      {event.can_manage && event.team.length > 0 && (
+        <Text variant="meta" color="dim" style={styles.starHint}>
+          Toque na estrela para escolher o ministro: ele monta o repertório desta escala.
+        </Text>
+      )}
       {event.team.map((t, i) => {
         const pill = statusPill(t.status);
+        const base = t.status === 'declined' && t.decline_reason ? `${t.position} · ${t.decline_reason}` : t.position;
         return (
           <ListRow
             key={t.assignment_id}
             name={t.is_me ? `${t.name.split(' ')[0]} (você)` : t.name}
-            subtitle={t.status === 'declined' && t.decline_reason ? `${t.position} · ${t.decline_reason}` : t.position}
+            subtitle={t.is_minister ? `${base} · Ministro do culto` : base}
             photoUrl={t.avatar_url}
             seed={t.user_id}
-            right={<Pill label={pill.label} tone={pill.tone} />}
+            right={
+              <View style={styles.teamRight}>
+                <Pill label={pill.label} tone={pill.tone} />
+                <MinisterStar event={event} member={t} onStar={onStar} />
+              </View>
+            }
             divider={i < event.team.length - 1}
           />
         );
@@ -80,9 +117,10 @@ type SongsTabProps = {
 };
 
 // Tocar numa música abre a cifra já no tom desta escala; "Ouvir" abre no YouTube, Spotify ou Deezer.
-// O líder adiciona músicas (da biblioteca ou novas pelo link) e tira as que não vão mais.
+// O líder ou o ministro desta escala adiciona músicas (da biblioteca ou novas pelo link) e tira as que não vão mais.
+// Os demais só veem e ouvem.
 function SongsTab({ event, onAdd, onRemove }: SongsTabProps) {
-  const add = event.can_manage ? <Button label="Adicionar música" variant="secondary" onPress={onAdd} style={styles.addSong} /> : null;
+  const add = event.can_edit_songs ? <Button label="Adicionar música" variant="secondary" onPress={onAdd} style={styles.addSong} /> : null;
   if (event.songs.length === 0) {
     return (
       <View>
@@ -112,7 +150,7 @@ function SongsTab({ event, onAdd, onRemove }: SongsTabProps) {
           </View>
           <ListenButtons links={s.links} compact />
           <KeyBadge label={s.key} accessibilityLabel={`Tom ${s.key}`} />
-          {event.can_manage && (
+          {event.can_edit_songs && (
             <Pressable onPress={() => onRemove(s.song_id)} accessibilityRole="button" accessibilityLabel={`Tirar ${s.title} da escala`} hitSlop={8} style={styles.remove}>
               <Icon name="close" size={16} color={colors.dim} />
             </Pressable>
@@ -178,6 +216,18 @@ export default function Escala() {
   };
   const removeSong = (songId: number) => saveSongs.mutate(currentSongs().filter((s) => s.song_id !== songId));
 
+  // Estrela do ministro (só o líder).
+  const setMinister = useMutation({
+    mutationFn: ({ memberId, on }: { memberId: number; on: boolean }) => eventsApi.setMinister(id, memberId, on),
+    onSuccess: (r, v) => {
+      qc.setQueryData(['event', id], r);
+      const name = r.data.team.find((t) => t.member_id === v.memberId)?.name.split(' ')[0] ?? 'A pessoa';
+      setToast(v.on ? `${name} é o ministro: pode montar o repertório.` : `${name} não é mais o ministro.`);
+    },
+    onError: () => setToast('Não foi possível salvar o ministro. Tente de novo.'),
+  });
+  const star = (memberId: number, on: boolean) => setMinister.mutate({ memberId, on });
+
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ['event', id] });
     qc.invalidateQueries({ queryKey: ['events'] });
@@ -239,6 +289,7 @@ export default function Escala() {
   const date = new Date(event.starts_at);
   const status = myStatus(event.mine);
   const first = event.mine[0];
+  const iAmMinister = !event.can_manage && event.team.some((t) => t.is_me && t.is_minister);
 
   // Um botão por aba (5.4).
   let cta: React.ReactNode = null;
@@ -301,6 +352,16 @@ export default function Escala() {
           )}
         </View>
       </View>
+      {iAmMinister && (
+        <View style={styles.statusRow}>
+          <View style={styles.ministerBanner}>
+            <Icon name="star" size={16} color={colors.brand} fill={colors.brand} />
+            <Text variant="pill" color="orange">
+              Você é o ministro: monte o repertório
+            </Text>
+          </View>
+        </View>
+      )}
       {event.visibility === 'temporary' && (
         <View style={styles.statusRow}>
           <Pill label="Escala Temporária · só os escalados veem" tone="wait" />
@@ -342,7 +403,7 @@ export default function Escala() {
         onLayout={(e) => setPageWidth(e.nativeEvent.layout.width)}
         style={styles.flex}
       >
-        {[<TeamTab key="e" event={event} />, <SongsTab key="r" event={event} onAdd={() => setAddOpen(true)} onRemove={removeSong} />].map((page, i) => (
+        {[<TeamTab key="e" event={event} onStar={star} />, <SongsTab key="r" event={event} onAdd={() => setAddOpen(true)} onRemove={removeSong} />].map((page, i) => (
           <ScrollView
             key={i}
             style={{ width: pageWidth }}
@@ -358,7 +419,9 @@ export default function Escala() {
       <Toast message={toast} onHide={() => setToast(null)} bottom={(cta ? 80 : 24) + insets.bottom} />
 
       {event.can_manage && <EventMenu event={event} visible={menu} onClose={() => setMenu(false)} onToast={setToast} />}
-      {event.can_manage && <AddSongSheet visible={addOpen} onClose={() => setAddOpen(false)} onAdd={addSong} added={event.songs.map((s) => s.song_id)} />}
+      {event.can_edit_songs && (
+        <AddSongSheet visible={addOpen} onClose={() => setAddOpen(false)} onAdd={addSong} added={event.songs.map((s) => s.song_id)} eventId={id} />
+      )}
       <DeclineSheet
         visible={declineOpen}
         onClose={() => setDeclineOpen(false)}
@@ -390,6 +453,18 @@ const styles = StyleSheet.create({
   songNumber: { width: 22, color: colors.lineStrong },
   addSong: { marginTop: space.lg },
   remove: { width: 28, height: 28, alignItems: 'center', justifyContent: 'center' },
+  teamRight: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  star: { width: size.touch, height: size.touch, alignItems: 'center', justifyContent: 'center', marginRight: -space.sm },
+  starHint: { marginTop: space.xs, marginBottom: space.xs },
+  ministerBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 5,
+    paddingHorizontal: space.md,
+    borderRadius: radius.pill,
+    backgroundColor: colors.orangeSoft,
+  },
   pressed: { opacity: 0.7 },
   cta: { position: 'absolute', left: space.lg, right: space.lg },
 });

@@ -41,6 +41,8 @@ class SongRequest extends FormRequest
             'tags.*' => ['string', 'max:30'],
             'links' => ['nullable', 'array', 'max:5'],
             'links.*' => ['string', 'url:https', 'max:500'],
+            // Ministro cadastrando de dentro da escala dele (a permissão é conferida no controller).
+            'event_id' => ['nullable', 'integer'],
         ];
     }
 

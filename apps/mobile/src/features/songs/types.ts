@@ -20,6 +20,8 @@ export type SongDetail = SongSummary & {
 };
 
 export type SongInput = {
+  /** Ministro cadastrando de dentro da escala em que é ministro (o servidor confere). */
+  event_id?: number;
   title: string;
   artist: string | null;
   original_key: string;

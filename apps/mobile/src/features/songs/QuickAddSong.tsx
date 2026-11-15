@@ -16,10 +16,12 @@ type Props = {
   onSaved: (song: SongDetail) => void;
   /** O link já estava na biblioteca: usar a que existe. */
   onUseExisting: (song: SongDetail) => void;
+  /** Escala de onde a música está sendo cadastrada (necessário para o ministro). */
+  eventId?: number;
 };
 
 // Música nova a partir do link: preenche título, cantor e letra; o tom a pessoa escolhe. Salva na biblioteca.
-export function QuickAddSong({ onSaved, onUseExisting }: Props) {
+export function QuickAddSong({ onSaved, onUseExisting, eventId }: Props) {
   const qc = useQueryClient();
   const [link, setLink] = useState<string | null>(null);
   const [title, setTitle] = useState('');
@@ -65,6 +67,7 @@ export function QuickAddSong({ onSaved, onUseExisting }: Props) {
     setError(null);
     try {
       const { data } = await songsApi.create({
+        event_id: eventId,
         title: title.trim(),
         artist: artist.trim() || null,
         original_key: note + (minor ? 'm' : ''),

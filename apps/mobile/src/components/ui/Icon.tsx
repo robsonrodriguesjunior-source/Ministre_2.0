@@ -78,6 +78,8 @@ const glyphs = {
     </>
   ),
   sliders: <Path d="M5 7h9M18 7h1M5 17h1M10 17h9M16 5v4M8 15v4" />,
+  // Estrela do ministro da escala (preenchida com `fill`).
+  star: <Path d="M12 3.5l2.6 5.3 5.9.9-4.25 4.1 1 5.8L12 16.9l-5.25 2.7 1-5.8L3.5 9.7l5.9-.9z" />,
 } as const;
 
 export type IconName = keyof typeof glyphs;
@@ -87,15 +89,17 @@ type Props = {
   size?: number;
   color?: string;
   strokeWidth?: number;
+  /** Preenchimento (ex.: estrela marcada). Padrão: só o traço. */
+  fill?: string;
 };
 
-export function Icon({ name, size = sizes.icon, color = colors.ink, strokeWidth = 1.9 }: Props) {
+export function Icon({ name, size = sizes.icon, color = colors.ink, strokeWidth = 1.9, fill = 'none' }: Props) {
   return (
     <Svg
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={fill}
       stroke={color}
       strokeWidth={strokeWidth}
       strokeLinecap="round"

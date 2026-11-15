@@ -11,6 +11,7 @@ import { colors, radius, size, space } from '@/theme/tokens';
 
 const ICONS: Record<string, IconName> = {
   scheduled: 'calendar',
+  minister: 'star',
   changed: 'calendar',
   removed: 'unavailable',
   cancelled: 'unavailable',

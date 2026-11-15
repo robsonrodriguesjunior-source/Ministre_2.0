@@ -33,6 +33,8 @@ export type TeamMember = {
   status: AssignmentStatus;
   decline_reason: string | null;
   is_me: boolean;
+  /** Ministro desta escala (estrela marcada pelo líder): monta o repertório dela. */
+  is_minister: boolean;
 };
 
 export type EventSong = {
@@ -61,6 +63,8 @@ export type RundownItem = {
 export type EventDetail = EventSummary & {
   notes: string | null;
   can_manage: boolean;
+  /** Líder, ou o ministro desta escala: adiciona, troca o tom e tira músicas do repertório. */
+  can_edit_songs: boolean;
   pending_count: number;
   remindable_count: number;
   team: TeamMember[];

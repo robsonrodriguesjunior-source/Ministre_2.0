@@ -20,4 +20,10 @@ class EventPolicy
     {
         return (bool) $user->membershipIn($event->ministry_id)?->isLeader();
     }
+
+    /** Repertório da escala: líder, ou o ministro (estrela) daquela escala. Demais membros só confirmam presença. */
+    public function editSongs(User $user, Event $event): bool
+    {
+        return $event->canEditSongs($user->membershipIn($event->ministry_id));
+    }
 }

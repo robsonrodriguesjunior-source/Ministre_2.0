@@ -61,6 +61,8 @@ class ReplaceAssignments
             $current = $event->assignments()->with(['member.user', 'position'])->get()
                 ->keyBy(fn (EventAssignment $a) => $a->ministry_member_id.'-'.$a->position_id);
             $published = $event->status === Event::STATUS_PUBLISHED;
+            // Quem é ministro continua ministro mesmo se o líder trocar a função dele.
+            $ministers = $current->where('is_minister', true)->pluck('ministry_member_id')->unique();
 
             // Saem
             $removedMembers = [];
@@ -80,6 +82,7 @@ class ReplaceAssignments
                         'ministry_member_id' => $member->id,
                         'position_id' => $position->id,
                         'status' => EventAssignment::STATUS_PENDING,
+                        'is_minister' => $ministers->contains($member->id),
                     ]);
                     $added[] = [$member, $position];
                     unset($removedMembers[$member->id]); // trocou de função: não "saiu"

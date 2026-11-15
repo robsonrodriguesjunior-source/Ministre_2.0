@@ -13,13 +13,14 @@ class EventAssignment extends Model
     public const STATUS_DECLINED = 'declined';
 
     protected $fillable = [
-        'event_id', 'ministry_member_id', 'position_id', 'status', 'decline_reason', 'responded_at', 'reminded_at',
+        'event_id', 'ministry_member_id', 'position_id', 'status', 'is_minister', 'decline_reason', 'responded_at', 'reminded_at',
         'pending_reminded_at', 'day_reminded_at',
     ];
 
     protected function casts(): array
     {
         return [
+            'is_minister' => 'boolean',
             'responded_at' => 'datetime',
             'reminded_at' => 'datetime',
             'pending_reminded_at' => 'datetime',
