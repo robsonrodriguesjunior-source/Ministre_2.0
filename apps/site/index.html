@@ -5,42 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Ministre — escalas do seu ministério</title>
   <meta name="description" content="As escalas do seu ministério, em ordem. Escalas, repertório com cifra, Modo Palco e avisos para a equipe de louvor.">
-  <meta name="theme-color" content="#0C0C0D">
+  <meta name="theme-color" content="#FAFAF9">
   <link rel="icon" href="/icon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0C0C0D; --card: #18181A; --card2: #222225; --line: #26262A;
-      --ink: #FFFFFF; --soft: #C9C9CE; --dim: #9B9BA1; --orange: #F7731C;
+      /* Visual Light do manual da marca (mesmos valores de apps/mobile/src/theme/tokens.ts). */
+      --bg: #FAFAF9; --card: #FFFFFF; --card2: #F5F2E9; --line: #E1DDD5;
+      --ink: #0B1F3B; --soft: #2A3B52; --dim: #526174; --orange: #B83B10; --brand: #E5571F; --orange-soft: #FCEDE5;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--ink); font-family: 'Figtree', -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    body { background: var(--bg); color: var(--ink); font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
     a { color: inherit; }
     .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 48px; }
     header { display: flex; align-items: center; gap: 12px; }
-    header img { width: 40px; height: 40px; border-radius: 12px; }
-    header strong { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; }
+    header img { height: 44px; width: auto; display: block; }
     .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; margin-top: 56px; }
-    h1 { font-size: clamp(34px, 6vw, 56px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.05; }
+    h1 { font-size: clamp(34px, 6vw, 56px); font-weight: 700; letter-spacing: -1.5px; line-height: 1.05; }
     h1 span { color: var(--orange); }
     .lead { color: var(--soft); font-size: 18px; margin-top: 18px; max-width: 34ch; }
-    .cta { display: inline-flex; align-items: center; justify-content: center; margin-top: 28px; min-height: 52px; padding: 0 28px; border-radius: 14px; background: var(--orange); color: var(--bg); font-weight: 800; font-size: 16px; text-decoration: none; }
+    .cta { display: inline-flex; align-items: center; justify-content: center; margin-top: 28px; min-height: 52px; padding: 0 28px; border-radius: 14px; background: var(--orange); color: #FFFFFF; font-weight: 700; font-size: 16px; text-decoration: none; }
     .cta:focus-visible, a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-    .qr { background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 28px; text-align: center; }
+    .qr { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 28px; text-align: center; }
     .qr img { width: 100%; max-width: 240px; border-radius: 16px; background: #fff; display: block; margin: 0 auto; }
     .qr p { color: var(--soft); margin-top: 16px; }
     .qr small { display: block; color: var(--dim); margin-top: 6px; }
     .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 72px; }
-    .feature { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+    .feature { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
     .feature b { display: block; font-size: 17px; margin-bottom: 6px; }
     .feature span { color: var(--dim); font-size: 15px; }
-    h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-top: 72px; }
+    h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-top: 72px; }
     .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
-    .step { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
-    .step.here { border-color: var(--orange); }
+    .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+    .step.here { border-color: var(--orange); background: var(--orange-soft); }
     .step h3 { font-size: 18px; margin-bottom: 12px; }
     .step ol { padding-left: 20px; color: var(--soft); }
     .step li { margin: 6px 0; }
@@ -59,8 +59,7 @@
 <body>
   <div class="wrap">
     <header>
-      <img src="/icon.png" alt="">
-      <strong>Ministre</strong>
+      <img src="/logo.png" alt="Ministre" width="151" height="44">
     </header>
 
     <section class="hero">

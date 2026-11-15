@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Logo, Text } from '@/components/ui';
 import { colors, space } from '@/theme/tokens';
 
-// Abertura (manual Light): fundo marfim, logo oficial vertical no centro, decoração mínima.
+// Abertura (manual Light): fundo claro, logo oficial vertical no centro, decoração mínima.
 export default function Welcome() {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
@@ -28,7 +28,7 @@ export default function Welcome() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.ivory,
+    backgroundColor: colors.bg,
     paddingHorizontal: space.lg,
   },
   center: {
