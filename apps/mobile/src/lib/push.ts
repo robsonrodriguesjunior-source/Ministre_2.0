@@ -4,7 +4,7 @@ import { api } from '@/lib/api';
 
 // Avisos no celular pelo app da Tela de Início (Web Push).
 // iPhone: só funciona com o Ministre adicionado à Tela de Início (iOS 16.4 ou mais novo).
-// O app das lojas (Etapa 7) usa o push do Expo, com outro cadastro.
+// O app nativo (APK/lojas) usa push.native.ts, direto pelo Firebase.
 
 export type PushStatus =
   | 'on' // este celular recebe avisos
@@ -112,3 +112,6 @@ export function setAppBadge(count: number) {
   const nav = navigator as Navigator & { setAppBadge?: (n: number) => Promise<void>; clearAppBadge?: () => Promise<void> };
   (count > 0 ? nav.setAppBadge?.(count) : nav.clearAppBadge?.())?.catch(() => undefined);
 }
+
+/** Só no app nativo (push.native.ts): na web o próprio aviso abre o endereço certo. */
+export function useNotificationRoutes(_enabled: boolean) {}

@@ -11,6 +11,11 @@ return [
         'private_key' => env('VAPID_PRIVATE_KEY'),
     ],
 
+    // App nativo (APK/lojas): caminho do JSON da conta de serviço do Firebase, fora do Git.
+    'fcm' => [
+        'credentials' => env('FIREBASE_CREDENTIALS'),
+    ],
+
     // Quem recebe o e-mail quando o backup diário falha (precisa do envio de e-mail configurado: MAIL_*).
     'admin_email' => env('MINISTRE_ADMIN_EMAIL'),
 ];

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\DeviceToken;
 use App\Models\WebPushSubscription;
 use App\Services\PushSender;
 use Illuminate\Http\JsonResponse;
@@ -47,6 +48,30 @@ class PushController extends Controller
         $request->user()->webPushSubscriptions()
             ->where('endpoint_hash', WebPushSubscription::hash($request->input('endpoint')))
             ->delete();
+
+        return response()->json(['message' => 'Este celular não vai mais receber avisos.']);
+    }
+
+    /** App nativo: o celular manda o endereço de avisos do Firebase. Trocou de conta? Passa para quem entrou. */
+    public function registerDevice(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'token' => ['required', 'string', 'max:512'],
+            'platform' => ['required', 'in:android,ios'],
+        ]);
+
+        DeviceToken::updateOrCreate(
+            ['token' => $data['token']],
+            ['user_id' => $request->user()->id, 'provider' => 'fcm', 'platform' => $data['platform'], 'last_seen_at' => now()],
+        );
+
+        return response()->json(['message' => 'Pronto! Os avisos vão chegar neste celular.']);
+    }
+
+    public function unregisterDevice(Request $request): JsonResponse
+    {
+        $request->validate(['token' => ['required', 'string', 'max:512']]);
+        $request->user()->deviceTokens()->where('token', $request->input('token'))->delete();
 
         return response()->json(['message' => 'Este celular não vai mais receber avisos.']);
     }

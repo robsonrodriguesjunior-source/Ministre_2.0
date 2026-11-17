@@ -19,7 +19,25 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "br.com.ministre.app"
+      "package": "br.com.ministre.app",
+      "versionCode": 1,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "app.ministreapp.com.br",
+              "pathPrefix": "/convite"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "output": "static",
@@ -46,7 +64,16 @@
           "photosPermission": "O Ministre usa suas fotos para a foto de perfil e o logo do ministério.",
           "cameraPermission": "O Ministre usa a câmera para tirar a sua foto de perfil."
         }
-      ]
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/android-icon-monochrome.png",
+          "color": "#B83B10",
+          "defaultChannel": "avisos"
+        }
+      ],
+      "./plugins/withReleaseSigning"
     ],
     "experiments": {
       "typedRoutes": true,

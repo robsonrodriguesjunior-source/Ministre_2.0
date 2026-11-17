@@ -13,18 +13,21 @@ use Minishlink\WebPush\WebPush;
 /**
  * Entrega o aviso no celular da pessoa:
  * - app da Tela de Início (Web Push, iPhone com iOS 16.4+ e Android);
- * - app das lojas (Expo Push), quando existir (Etapa 7).
+ * - app nativo (APK/lojas), direto pelo Firebase (FCM);
+ * - app das lojas pelo serviço do Expo (endereços antigos, se houver).
  * Endereços que o celular já descartou são apagados.
  */
 class PushSender
 {
+    public function __construct(private FcmClient $fcm) {}
+
     /** @return int quantos aparelhos receberam */
     public function send(User $user, string $title, ?string $body, ?string $route = null, ?string $tag = null): int
     {
         $url = rtrim((string) config('ministre.app_url'), '/').($route ?? '/');
         $sent = $this->sendWeb($user, ['title' => $title, 'body' => $body, 'url' => $url, 'tag' => $tag]);
 
-        return $sent + $this->sendExpo($user, $title, $body, $route);
+        return $sent + $this->sendFcm($user, $title, $body, $route) + $this->sendExpo($user, $title, $body, $route);
     }
 
     /** @param  array<string, mixed>  $payload */
@@ -63,9 +66,29 @@ class PushSender
         return $sent;
     }
 
+    private function sendFcm(User $user, string $title, ?string $body, ?string $route): int
+    {
+        $devices = DeviceToken::where('user_id', $user->id)->where('provider', 'fcm')->get();
+        if ($devices->isEmpty() || ! $this->fcm->configured()) {
+            return 0;
+        }
+
+        $sent = 0;
+        foreach ($devices as $device) {
+            $result = $this->fcm->send($device->token, $title, $body, ['route' => $route ?? '/']);
+            if ($result === FcmClient::SENT) {
+                $sent++;
+            } elseif ($result === FcmClient::GONE) {
+                $device->delete();
+            }
+        }
+
+        return $sent;
+    }
+
     private function sendExpo(User $user, string $title, ?string $body, ?string $route): int
     {
-        $tokens = DeviceToken::where('user_id', $user->id)->pluck('expo_token');
+        $tokens = DeviceToken::where('user_id', $user->id)->where('provider', 'expo')->pluck('token');
         if ($tokens->isEmpty()) {
             return 0;
         }
@@ -89,7 +112,7 @@ class PushSender
             if (($ticket['status'] ?? '') === 'ok') {
                 $sent++;
             } elseif (($ticket['details']['error'] ?? '') === 'DeviceNotRegistered') {
-                DeviceToken::where('expo_token', $tokens[$i] ?? null)->delete();
+                DeviceToken::where('token', $tokens[$i] ?? null)->delete();
             }
         }
 

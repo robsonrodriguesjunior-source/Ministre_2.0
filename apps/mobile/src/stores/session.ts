@@ -50,6 +50,7 @@ export const useSession = create<SessionState>((set, get) => ({
       try {
         const [{ data: user }] = await Promise.all([authApi.me(), get().refreshMemberships()]);
         set({ user });
+        refreshPushSubscription(); // o endereço de avisos do celular pode ter mudado
       } catch {
         // sem internet: mantém o login salvo; 401 já faz signOut pelo configureApi
       }

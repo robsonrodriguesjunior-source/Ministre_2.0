@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DeviceToken extends Model
 {
-    protected $fillable = ['user_id', 'expo_token', 'platform', 'last_seen_at'];
+    protected $fillable = ['user_id', 'token', 'provider', 'platform', 'last_seen_at'];
 
     protected function casts(): array
     {

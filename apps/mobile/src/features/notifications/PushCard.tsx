@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { Button, Card, Icon, Text } from '@/components/ui';
 import { disablePush, enablePush, type PushStatus, pushStatus, sendTestPush } from '@/lib/push';
@@ -17,7 +17,10 @@ const TEXT: Record<PushStatus, { title: string; body: string }> = {
     title: 'Adicione o Ministre à Tela de Início',
     body: 'No iPhone, os avisos só chegam pelo app da Tela de Início: toque em Compartilhar › "Adicionar à Tela de Início" e abra o Ministre por lá.',
   },
-  unsupported: { title: 'Este navegador não recebe avisos', body: 'Use o app pelo celular, adicionado à Tela de Início.' },
+  unsupported:
+    Platform.OS === 'web'
+      ? { title: 'Este navegador não recebe avisos', body: 'Use o app pelo celular, adicionado à Tela de Início.' }
+      : { title: 'Avisos em breve neste celular', body: 'Os avisos no celular chegam numa próxima versão do app.' },
 };
 
 type Props = {

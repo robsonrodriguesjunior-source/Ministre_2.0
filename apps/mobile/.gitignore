@@ -45,3 +45,7 @@ example
 # env do app (o endereço da API varia por máquina)
 .env
 
+
+# CÃ³digo nativo gerado pelo "expo prebuild" (nÃ£o versionar)
+/android
+/ios

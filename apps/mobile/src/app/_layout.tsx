@@ -10,6 +10,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AppFrame } from '@/components/nav/DesktopShell';
 import { useDesktop } from '@/lib/layout';
+import { useNotificationRoutes } from '@/lib/push';
 import { useSession } from '@/stores/session';
 import { colors } from '@/theme/tokens';
 
@@ -74,6 +75,9 @@ function AppNavigator() {
   const segments = useSegments();
   const pathname = usePathname();
   const area = segments[0] ?? '';
+
+  // App nativo: tocou num aviso, abre a escala ou o aviso certo.
+  useNotificationRoutes(!!token && hasMinistry);
 
   useEffect(() => {
     if (area === 'convite' || area === 'termos' || area === 'privacidade') return; // abertos sem login

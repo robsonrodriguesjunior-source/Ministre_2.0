@@ -49,6 +49,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/push/config', [PushController::class, 'config']);
         Route::post('/push/subscriptions', [PushController::class, 'subscribe'])->middleware('throttle:20,1');
         Route::delete('/push/subscriptions', [PushController::class, 'unsubscribe']);
+        Route::post('/push/devices', [PushController::class, 'registerDevice'])->middleware('throttle:20,1');
+        Route::delete('/push/devices', [PushController::class, 'unregisterDevice']);
         Route::post('/push/test', [PushController::class, 'test'])->middleware('throttle:5,1');
 
         Route::post('/churches', [ChurchController::class, 'store']);
