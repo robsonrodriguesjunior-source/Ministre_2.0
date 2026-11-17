@@ -76,6 +76,14 @@ robocopy (Join-Path $root 'apps\site') 'C:\Sites\ministre\site' /MIR /NFL /NDL /
 if ($LASTEXITCODE -ge 8) { throw "Falhou ao copiar a pagina de download (robocopy $LASTEXITCODE)" }
 $global:LASTEXITCODE = 0
 
+# App Android de teste (APK): fica fora do Git, em C:\Android\builds\Ministre.apk (gerado na VPS).
+$apk = 'C:\Android\builds\Ministre.apk'
+if (Test-Path $apk) {
+  New-Item -ItemType Directory -Force 'C:\Sites\ministre\site\baixar' | Out-Null
+  Copy-Item $apk 'C:\Sites\ministre\site\baixar\Ministre.apk' -Force
+  Write-Host "    APK publicado em ministreapp.com.br/baixar/Ministre.apk"
+}
+
 Step 'Conferindo se esta no ar'
 $ok = $true
 foreach ($url in @('https://api.ministreapp.com.br/api/v1/health', 'https://app.ministreapp.com.br/', 'https://ministreapp.com.br/')) {

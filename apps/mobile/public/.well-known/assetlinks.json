@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "br.com.ministre.app",
+      "sha256_cert_fingerprints": ["5A:8F:C6:19:BB:6D:41:9D:F0:A9:D5:24:E0:E6:CA:EF:FC:77:26:9A:BE:7F:D3:C8:27:3F:2D:72:6D:A2:AD:B4"]
+    }
+  }
+]
