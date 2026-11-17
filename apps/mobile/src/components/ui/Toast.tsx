@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: space.lg,
     right: space.lg,
-    backgroundColor: colors.card2,
+    backgroundColor: colors.surface,
     borderRadius: radius.button,
     paddingVertical: space.md,
     paddingHorizontal: space.lg,

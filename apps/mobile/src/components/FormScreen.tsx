@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { IconButton, Logo, Text } from '@/components/ui';
+import { Glow, IconButton, Logo, Text } from '@/components/ui';
 import { colors, size, space } from '@/theme/tokens';
 
 type Props = {
@@ -25,6 +25,7 @@ type Props = {
 export function FormScreen({ title, question, subtitle, children, footer, back = true, action, logo = false }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
+      <Glow calm />
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <View style={styles.bar}>
           {back ? (

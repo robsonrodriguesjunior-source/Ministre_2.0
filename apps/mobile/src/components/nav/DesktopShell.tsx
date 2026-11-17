@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   sidebar: {
     width: size.sidebar,
-    backgroundColor: colors.card,
+    backgroundColor: colors.surface,
     borderRightWidth: 1,
     borderRightColor: colors.line,
     paddingHorizontal: space.lg,
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: space.lg,
     paddingHorizontal: space.xxl + space.sm,
-    backgroundColor: colors.card,
+    backgroundColor: colors.surface,
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
   },

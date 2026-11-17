@@ -4,6 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors, size, space } from '@/theme/tokens';
 
+
+import { Glow } from './Glow';
+
 type Props = {
   children: ReactNode;
   /** Rola o conteúdo (padrão). */
@@ -18,7 +21,7 @@ type Props = {
   overlay?: ReactNode;
 };
 
-// Tela: fundo `bg`, padding horizontal 16, respeita a área segura (notch, barra de status).
+// Tela: fundo `bg` com o brilho do Vidro escuro, padding horizontal 16, respeita a área segura (notch, barra de status).
 export function Screen({
   children,
   scroll = true,
@@ -30,6 +33,7 @@ export function Screen({
 }: Props) {
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.safe}>
+      <Glow />
       {scroll ? (
         <ScrollView
           style={styles.flex}
@@ -42,7 +46,7 @@ export function Screen({
                 onRefresh={onRefresh}
                 tintColor={colors.orange}
                 colors={[colors.orange]}
-                progressBackgroundColor={colors.card}
+                progressBackgroundColor={colors.surface}
               />
             ) : undefined
           }

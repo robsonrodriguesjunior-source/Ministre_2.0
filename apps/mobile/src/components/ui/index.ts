@@ -3,6 +3,7 @@ export { BottomSheet } from './BottomSheet';
 export { Button } from './Button';
 export { Card } from './Card';
 export { DateBadge } from './DateBadge';
+export { Glow } from './Glow';
 export { EmptyState } from './EmptyState';
 export { EventRow } from './EventRow';
 export { Icon, type IconName } from './Icon';

@@ -2,13 +2,14 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button, Logo, Text } from '@/components/ui';
+import { Button, Glow, Logo, Text } from '@/components/ui';
 import { colors, space } from '@/theme/tokens';
 
 // Abertura (manual Light): fundo claro, logo oficial vertical no centro, decoração mínima.
 export default function Welcome() {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
+      <Glow />
       <View style={styles.center}>
         <View accessibilityRole="header">
           <Logo variant="vertical" width={220} />

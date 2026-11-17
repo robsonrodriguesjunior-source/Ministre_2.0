@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 
 import { api } from '@/lib/api';
+import { colors } from '@/theme/tokens';
 import { getItem, setItem } from '@/lib/storage';
 
 // Avisos no app nativo (APK/lojas): direto pelo Firebase (FCM).
@@ -31,7 +32,7 @@ async function ensureChannel() {
     // eslint-disable-next-line import/namespace -- existe no módulo nativo; o lint não enxerga
     importance: Notifications.AndroidImportance.HIGH,
     vibrationPattern: [0, 250, 250, 250],
-    lightColor: '#B83B10',
+    lightColor: colors.orange,
   });
 }
 

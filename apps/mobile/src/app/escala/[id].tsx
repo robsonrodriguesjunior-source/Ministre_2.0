@@ -9,6 +9,7 @@ import {
   Card,
   DateBadge,
   EmptyState,
+  Glow,
   Icon,
   IconButton,
   KeyBadge,
@@ -258,6 +259,7 @@ export default function Escala() {
   if (query.isLoading || !event) {
     return (
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
+        <Glow calm />
         <View style={styles.bar}>
           <IconButton icon="back" label="Voltar" onPress={() => goBack('/agenda')} />
           <Text variant="barTitle">Escala</Text>
@@ -330,6 +332,7 @@ export default function Escala() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
+      <Glow calm />
       <View style={styles.bar}>
         <IconButton icon="back" label="Voltar" onPress={() => (router.canGoBack() ? router.back() : router.replace('/agenda'))} />
         <Text variant="barTitle">Escala</Text>

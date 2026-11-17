@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BottomSheet, Button, Card, EmptyState, IconButton, KeyBadge, Pill, Skeleton, Text } from '@/components/ui';
+import { BottomSheet, Button, Card, EmptyState, Glow, IconButton, KeyBadge, Pill, Skeleton, Text } from '@/components/ui';
 import { songKeys, songsApi } from '@/features/songs/api';
 import { ChordSheet } from '@/features/songs/ChordSheet';
 import { SheetControls } from '@/features/songs/SheetControls';
@@ -113,6 +113,7 @@ export default function Musica() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
+      <Glow calm />
       <View style={styles.bar}>
         <IconButton icon="back" label="Voltar" onPress={back} />
         <Text variant="barTitle">Música</Text>

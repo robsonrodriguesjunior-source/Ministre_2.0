@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Icon, type IconName, Text } from '@/components/ui';
+import { Glow, Icon, type IconName, Text } from '@/components/ui';
 import { useSession } from '@/stores/session';
 import { colors, radius, space } from '@/theme/tokens';
 
@@ -34,6 +34,7 @@ export default function Onboarding() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
+      <Glow />
       <View style={styles.content}>
         <Text variant="meta" color="dim">
           {firstName ? `Olá, ${firstName}` : 'Olá'}

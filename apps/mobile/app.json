@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "ministre",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "ios": {
       "icon": "./assets/images/icon.png",
       "bundleIdentifier": "br.com.ministre.app"
@@ -44,15 +44,15 @@
       "favicon": "./public/app-icons/icon-192.png",
       "name": "Ministre",
       "shortName": "Ministre",
-      "backgroundColor": "#FAFAF9",
-      "themeColor": "#FAFAF9"
+      "backgroundColor": "#070B16",
+      "themeColor": "#070B16"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#FAFAF9",
+          "backgroundColor": "#070B16",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200
         }
@@ -79,6 +79,6 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "backgroundColor": "#FAFAF9"
+    "backgroundColor": "#070B16"
   }
 }

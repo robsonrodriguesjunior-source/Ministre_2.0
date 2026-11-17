@@ -1,90 +1,96 @@
-// Tokens de design do Ministre: visual "Light" do manual da marca (MINISTRE_Light_Especificacao_Claude.docx, seção 04).
+// Tokens de design do Ministre: visual "Vidro escuro" (aprovado em 17/11/2026, versão compacta).
+// Fundo azul-noite com brilho laranja e azul; cartões de vidro (branco translúcido); texto claro.
 // Nunca use cor ou tamanho solto num componente: use sempre um token daqui.
-// O modo escuro ficou fora desta etapa (decisão do manual).
 
 import { Platform, type TextStyle } from 'react-native';
 
 export const colors = {
-  bg: '#FAFAF9', // fundo principal
-  card: '#FFFFFF', // superfície
-  card2: '#F5F2E9', // marfim: fundos de ícone, campos, segmentado
-  line: '#E1DDD5', // borda
-  lineStrong: '#CBC5B9',
-  tabBar: '#FFFFFF',
-  ink: '#0B1F3B', // marca / texto forte (azul-marinho)
-  inkSoft: '#2A3B52',
-  inkMuted: '#2A3B52', // rótulo dos atalhos (QuickAction)
-  dim: '#526174', // texto secundário
-  tabInactive: '#5B6878',
-  // "orange" = ação: laranja escuro com texto branco (contraste AA). O laranja da marca fica em `brand`.
-  orange: '#B83B10',
-  orangeSoft: '#FCEDE5', // destaque suave
-  orangeBorder: 'rgba(184,59,16,0.35)',
+  bg: '#070B16', // fundo principal (azul-noite)
+  card: 'rgba(255,255,255,0.07)', // vidro: cartões, campos, botões secundários
+  card2: 'rgba(255,255,255,0.06)', // vidro mais leve: fundos de ícone, segmentado
+  surface: '#111A2C', // superfície opaca: folhas que sobem, aviso flutuante, barra de abas, menu lateral
+  line: 'rgba(255,255,255,0.12)', // borda do vidro
+  lineStrong: 'rgba(255,255,255,0.24)',
+  tabBar: 'rgba(17,26,44,0.94)',
+  ink: '#FFFFFF', // texto forte
+  inkSoft: '#C9D1E0',
+  inkMuted: '#C9D1E0', // rótulo dos atalhos (QuickAction)
+  dim: '#93A0B8', // texto secundário
+  tabInactive: '#8A96AD',
+  // "orange" = ação: laranja da marca com texto branco.
+  orange: '#E5571F',
+  orangeSoft: 'rgba(229,87,31,0.18)', // destaque suave
+  orangeBorder: 'rgba(255,179,142,0.45)',
+  orangeText: '#FFB38E', // laranja claro para texto e ícones sobre o vidro
   onOrange: '#FFFFFF',
-  brand: '#E5571F', // laranja da bandeira (só decoração: nunca texto pequeno)
-  ivory: '#F5F2E9',
-  success: '#166534',
-  successBg: '#EAF6EC',
-  danger: '#B42318',
-  dangerBg: '#FDECEA',
-  stageBg: '#FAFAF9',
-  backdrop: 'rgba(11,31,59,0.45)',
+  brand: '#E5571F', // laranja da bandeira
+  ivory: 'rgba(255,255,255,0.08)',
+  success: '#4ADE80',
+  successBg: 'rgba(74,222,128,0.14)',
+  warning: '#FBBF24',
+  warningBg: 'rgba(251,191,36,0.14)',
+  danger: '#F87171',
+  dangerBg: 'rgba(248,113,113,0.14)',
+  stageBg: '#070B16',
+  backdrop: 'rgba(0,0,0,0.6)',
+  glowOrange: '#E5571F', // brilho do fundo (alto à esquerda)
+  glowBlue: '#2F5BA8', // brilho do fundo (meio à direita)
   transparent: 'transparent',
 } as const;
 
 // Tons fixos para avatar sem foto (texto branco por cima; todos com contraste AA).
 export const avatarTones = ['#8C5A3C', '#3F5670', '#7A5C45', '#4E4743', '#6B4F5E', '#5C6B4A', '#6A5A4C'] as const;
 
-// Inter (manual: pesos 400/500/600/700). "extrabold" ficou como 700 para não exagerar no negrito.
+// Plus Jakarta Sans (modelo Vidro escuro): 400/500/600/700/800.
 export const fonts = {
-  regular: 'Inter_400Regular',
-  medium: 'Inter_500Medium',
-  semibold: 'Inter_600SemiBold',
-  bold: 'Inter_700Bold',
-  extrabold: 'Inter_700Bold',
+  regular: 'PlusJakartaSans_400Regular',
+  medium: 'PlusJakartaSans_500Medium',
+  semibold: 'PlusJakartaSans_600SemiBold',
+  bold: 'PlusJakartaSans_700Bold',
+  extrabold: 'PlusJakartaSans_800ExtraBold',
   // Cifras: monoespaçada do sistema (Menlo no iOS, monospace no Android e na web).
   mono: Platform.select({ ios: 'Menlo', default: 'monospace' }),
 } as const;
 
 // Escala tipográfica (seção 3.2). fontFamily já carrega o peso; não use fontWeight junto.
 export const type = {
-  screenTitle: { fontFamily: fonts.extrabold, fontSize: 28, letterSpacing: -0.5 },
-  cardTitle: { fontFamily: fonts.extrabold, fontSize: 22, letterSpacing: -0.2 },
-  headerTitle: { fontFamily: fonts.extrabold, fontSize: 20, letterSpacing: -0.2 },
-  greetingName: { fontFamily: fonts.extrabold, fontSize: 17 },
-  barTitle: { fontFamily: fonts.bold, fontSize: 16 },
-  sectionTitle: { fontFamily: fonts.bold, fontSize: 15 },
-  listName: { fontFamily: fonts.bold, fontSize: 14 },
-  eventTitle: { fontFamily: fonts.bold, fontSize: 14.5 },
-  body: { fontFamily: fonts.regular, fontSize: 14.5 },
-  bodySm: { fontFamily: fonts.regular, fontSize: 13.5 },
-  meta: { fontFamily: fonts.regular, fontSize: 12.5 },
+  screenTitle: { fontFamily: fonts.extrabold, fontSize: 24, letterSpacing: -0.5 },
+  cardTitle: { fontFamily: fonts.extrabold, fontSize: 19, letterSpacing: -0.2 },
+  headerTitle: { fontFamily: fonts.extrabold, fontSize: 18, letterSpacing: -0.2 },
+  greetingName: { fontFamily: fonts.extrabold, fontSize: 16 },
+  barTitle: { fontFamily: fonts.bold, fontSize: 15 },
+  sectionTitle: { fontFamily: fonts.bold, fontSize: 14 },
+  listName: { fontFamily: fonts.bold, fontSize: 13.5 },
+  eventTitle: { fontFamily: fonts.bold, fontSize: 14 },
+  body: { fontFamily: fonts.regular, fontSize: 14 },
+  bodySm: { fontFamily: fonts.regular, fontSize: 13 },
+  meta: { fontFamily: fonts.regular, fontSize: 12 },
   link: { fontFamily: fonts.semibold, fontSize: 13 },
-  button: { fontFamily: fonts.bold, fontSize: 14.5 },
+  button: { fontFamily: fonts.bold, fontSize: 14 },
   segment: { fontFamily: fonts.bold, fontSize: 13 },
-  cardLabel: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 0.7, textTransform: 'uppercase' },
+  cardLabel: { fontFamily: fonts.bold, fontSize: 11, letterSpacing: 0.7, textTransform: 'uppercase' },
   pill: { fontFamily: fonts.bold, fontSize: 11.5 },
   quickAction: { fontFamily: fonts.semibold, fontSize: 11.5 },
   tabLabel: { fontFamily: fonts.semibold, fontSize: 10.5 },
   dayLetter: { fontFamily: fonts.semibold, fontSize: 11 },
   dayNumber: { fontFamily: fonts.bold, fontSize: 16 },
   weekday: { fontFamily: fonts.bold, fontSize: 10.5, letterSpacing: 0.6 },
-  eventDay: { fontFamily: fonts.extrabold, fontSize: 20 },
-  dateDay: { fontFamily: fonts.extrabold, fontSize: 24 },
+  eventDay: { fontFamily: fonts.extrabold, fontSize: 18 },
+  dateDay: { fontFamily: fonts.extrabold, fontSize: 21 },
   dateMonth: { fontFamily: fonts.extrabold, fontSize: 11, letterSpacing: 0.6 },
-  sheetTitle: { fontFamily: fonts.extrabold, fontSize: 20, letterSpacing: -0.4 },
-  tileTitle: { fontFamily: fonts.bold, fontSize: 15 },
+  sheetTitle: { fontFamily: fonts.extrabold, fontSize: 18, letterSpacing: -0.4 },
+  tileTitle: { fontFamily: fonts.bold, fontSize: 14 },
   tileSub: { fontFamily: fonts.regular, fontSize: 12 },
   logo: { fontFamily: fonts.extrabold, fontSize: 40, letterSpacing: -1 },
-  question: { fontFamily: fonts.extrabold, fontSize: 26, letterSpacing: -0.6, lineHeight: 30 },
-  fieldLabel: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 0.7, textTransform: 'uppercase' },
+  question: { fontFamily: fonts.extrabold, fontSize: 23, letterSpacing: -0.6, lineHeight: 28 },
+  fieldLabel: { fontFamily: fonts.bold, fontSize: 11, letterSpacing: 0.7, textTransform: 'uppercase' },
   input: { fontFamily: fonts.medium, fontSize: 15 },
   chip: { fontFamily: fonts.semibold, fontSize: 14 },
   code: { fontFamily: fonts.extrabold, fontSize: 24, letterSpacing: 6 },
   // Músicas e cifra (5.7) e Modo Palco (5.8).
   songTitle: { fontFamily: fonts.semibold, fontSize: 16 },
   songName: { fontFamily: fonts.semibold, fontSize: 15 },
-  songHeader: { fontFamily: fonts.extrabold, fontSize: 26, letterSpacing: -0.6 },
+  songHeader: { fontFamily: fonts.extrabold, fontSize: 23, letterSpacing: -0.6 },
   lyric: { fontFamily: fonts.semibold, fontSize: 18, lineHeight: 24 },
   chord: { fontFamily: fonts.mono, fontWeight: '700', fontSize: 15, lineHeight: 20 },
   section: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 2, textTransform: 'uppercase' },
@@ -95,7 +101,7 @@ export const type = {
   nav: { fontFamily: fonts.medium, fontSize: 15 },
   navActive: { fontFamily: fonts.semibold, fontSize: 15 },
   headerName: { fontFamily: fonts.semibold, fontSize: 15 },
-  desktopTitle: { fontFamily: fonts.bold, fontSize: 30, letterSpacing: -0.6 },
+  desktopTitle: { fontFamily: fonts.bold, fontSize: 26, letterSpacing: -0.6 },
 } satisfies Record<string, TextStyle>;
 
 export type TypeToken = keyof typeof type;
@@ -112,13 +118,13 @@ export const space = {
 
 export const radius = {
   segmentIndicator: 9,
-  button: 12,
+  button: 14,
   tag: 14,
   eventRow: 12,
   quickAction: 12,
   pill: 20,
   key: 10, // selo do tom
-  card: 16, // manual: 12–16 em cards
+  card: 18, // vidro: cantos mais arredondados
   sheet: 20,
   round: 999,
 } as const;

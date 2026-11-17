@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   sheet: {
     width: '100%',
     maxWidth: size.maxContentWidth,
-    backgroundColor: colors.card,
+    backgroundColor: colors.surface,
     borderTopLeftRadius: radius.sheet,
     borderTopRightRadius: radius.sheet,
     paddingHorizontal: space.lg,

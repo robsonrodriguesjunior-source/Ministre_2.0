@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { BottomSheet, Button, Card, Chip, EmptyState, Icon, IconButton, Notice, Skeleton, Text, TextField } from '@/components/ui';
+import { BottomSheet, Button, Card, Chip, EmptyState, Glow, Icon, IconButton, Notice, Skeleton, Text, TextField } from '@/components/ui';
 import { songKeys, songsApi } from '@/features/songs/api';
 import { ChordSheet } from '@/features/songs/ChordSheet';
 import { chordsOverLyricsToChordPro, KEYS, looksLikeChordsOverLyrics } from '@/features/songs/chordpro';
@@ -100,6 +100,7 @@ export default function EditarMusica() {
   if (membership && membership.role !== 'leader') {
     return (
       <SafeAreaView style={styles.safe}>
+        <Glow calm />
         <EmptyState icon="music" message="Só líderes do ministério cadastram músicas." actionLabel="Voltar" onAction={() => goBack('/musicas')} />
       </SafeAreaView>
     );
@@ -164,6 +165,7 @@ export default function EditarMusica() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
+      <Glow calm />
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <View style={styles.bar}>
           <IconButton icon="close" label="Fechar" onPress={close} />

@@ -5,7 +5,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 're
 import Animated, { SlideInLeft, SlideInRight } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { BottomSheet, Button, EmptyState, IconButton, Notice, Skeleton, Text } from '@/components/ui';
+import { BottomSheet, Button, EmptyState, Glow, IconButton, Notice, Skeleton, Text } from '@/components/ui';
 import { eventsApi } from '@/features/events/api';
 import { manageApi, manageKeys } from '@/features/manage/api';
 import { ProgressBar } from '@/features/events/wizard/ProgressBar';
@@ -101,6 +101,7 @@ export default function NovaEscala() {
   if (membership && membership.role !== 'leader') {
     return (
       <SafeAreaView style={styles.safe}>
+        <Glow calm />
         <EmptyState icon="calendar" message="Só líderes do ministério montam escalas." actionLabel="Voltar" onAction={() => goBack('/agenda')} />
       </SafeAreaView>
     );
@@ -168,6 +169,7 @@ export default function NovaEscala() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
+      <Glow calm />
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <View style={styles.bar}>
           <IconButton icon="close" label="Fechar" onPress={close} />
