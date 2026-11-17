@@ -1,124 +1,957 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Ministre — escalas do seu ministério</title>
-  <meta name="description" content="As escalas do seu ministério, em ordem. Escalas, repertório com cifra, Modo Palco e avisos para a equipe de louvor.">
-  <meta name="theme-color" content="#FAFAF9">
-  <link rel="icon" href="/icon.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      /* Visual Light do manual da marca (mesmos valores de apps/mobile/src/theme/tokens.ts). */
-      --bg: #FAFAF9; --card: #FFFFFF; --card2: #F5F2E9; --line: #E1DDD5;
-      --ink: #0B1F3B; --soft: #2A3B52; --dim: #526174; --orange: #B83B10; --brand: #E5571F; --orange-soft: #FCEDE5;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--ink); font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; }
-    .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 48px; }
-    header { display: flex; align-items: center; gap: 12px; }
-    header img { height: 44px; width: auto; display: block; }
-    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; margin-top: 56px; }
-    h1 { font-size: clamp(34px, 6vw, 56px); font-weight: 700; letter-spacing: -1.5px; line-height: 1.05; }
-    h1 span { color: var(--orange); }
-    .lead { color: var(--soft); font-size: 18px; margin-top: 18px; max-width: 34ch; }
-    .cta { display: inline-flex; align-items: center; justify-content: center; margin-top: 28px; min-height: 52px; padding: 0 28px; border-radius: 14px; background: var(--orange); color: #FFFFFF; font-weight: 700; font-size: 16px; text-decoration: none; }
-    .cta:focus-visible, a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-    .qr { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 28px; text-align: center; }
-    .qr img { width: 100%; max-width: 240px; border-radius: 16px; background: #fff; display: block; margin: 0 auto; }
-    .qr p { color: var(--soft); margin-top: 16px; }
-    .qr small { display: block; color: var(--dim); margin-top: 6px; }
-    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 72px; }
-    .feature { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
-    .feature b { display: block; font-size: 17px; margin-bottom: 6px; }
-    .feature span { color: var(--dim); font-size: 15px; }
-    h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-top: 72px; }
-    .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
-    .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
-    .step.here { border-color: var(--orange); background: var(--orange-soft); }
-    .step h3 { font-size: 18px; margin-bottom: 12px; }
-    .step ol { padding-left: 20px; color: var(--soft); }
-    .step li { margin: 6px 0; }
-    .step li b { color: var(--ink); }
-    .tag { display: inline-block; font-size: 12px; font-weight: 700; color: var(--orange); border: 1px solid var(--orange); border-radius: 999px; padding: 2px 10px; margin-left: 8px; vertical-align: middle; }
-    footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--dim); font-size: 14px; }
-    footer a { color: var(--soft); }
-    @media (max-width: 760px) {
-      .hero { grid-template-columns: 1fr; gap: 32px; margin-top: 36px; }
-      .qr { display: none; } /* no celular, o botão abre direto */
-      .features, .steps { grid-template-columns: 1fr; }
-      h2, .features { margin-top: 48px; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ministre · Escalas e gestão dos departamentos da igreja</title>
+<meta name="description" content="O Ministre organiza as escalas de todos os departamentos da igreja. O pastor ou gestor sabe quem estará em cada culto, o que cada um faz e com que frequência serve. Começando pelo Louvor, com cifra no tom certo e Modo Palco sem internet.">
+<meta name="theme-color" content="#070B16">
+<meta property="og:title" content="Ministre · Organize quem serve. Cuide de quem serve.">
+<meta property="og:description" content="Escalas, confirmação de presença e gestão dos departamentos da igreja em um só app. Feito no Brasil, para a igreja local.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ministreapp.com.br/">
+<meta property="og:image" content="https://ministreapp.com.br/logo-claro.png">
+<link rel="icon" href="/icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* Ministre · landing. Escuro (palco) no topo e no download; claro (luz do dia) no meio, para leitura. */
+:root{
+  --night:#070B16; --navy:#0B1F3B; --navy2:#13284A;
+  --paper:#F5F6F9; --white:#FFFFFF; --line:#E2E6EE; --ink:#0B1F3B; --text:#33425A; --dim:#5D6B80;
+  --or:#E5571F; --or-d:#B83B10; --or-l:#FFB38E; --or-soft:#FDEEE6;
+  --ok:#15803D; --ok-l:#4ADE80; --wait:#B45309; --wait-l:#FBBF24; --no:#B42318; --no-l:#F87171;
+  --f-disp:"Bricolage Grotesque","Plus Jakarta Sans",system-ui,sans-serif;
+  --f-body:"Plus Jakarta Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --max:1180px;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--paper);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img,svg{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--or);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-disp);color:var(--ink);letter-spacing:-.02em;line-height:1.08;text-wrap:balance}
+h2{font-size:clamp(30px,4.2vw,46px);font-weight:800}
+h3{font-size:20px;font-weight:700;letter-spacing:-.01em}
+p{text-wrap:pretty}
+.eyebrow{font-size:12.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--or-d)}
+.lead{font-size:18.5px;color:var(--text);max-width:58ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:52px;padding:0 24px;border-radius:14px;font-weight:800;font-size:15.5px;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-or{background:var(--or);color:#fff;box-shadow:0 10px 26px -10px rgba(229,87,31,.7)}
+.btn-or:hover{background:#D24C17}
+.btn-white{background:#fff;color:var(--navy)}
+.btn-glass{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18)}
+.btn-glass:hover{background:rgba(255,255,255,.14)}
+.btn-line{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn-line:hover{border-color:var(--ink)}
+.ico{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ── Topo ── */
+.nav{position:fixed;inset:0 0 auto;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:background .25s ease,box-shadow .25s ease}
+.nav.scrolled{background:rgba(7,11,22,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.08)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.nav .logo img{height:38px;width:auto}
+.nav ul{display:flex;gap:26px;list-style:none;margin-left:12px}
+.nav ul a{color:#C9D1E0;text-decoration:none;font-size:14.5px;font-weight:600}
+.nav ul a:hover{color:#fff}
+.nav .sp{flex:1}
+.nav .enter{color:#fff;text-decoration:none;font-weight:700;font-size:14.5px;display:inline-flex;gap:7px;align-items:center}
+.nav .btn{min-height:42px;padding:0 18px;font-size:14px;border-radius:12px}
+
+/* ── Hero (palco) ── */
+.hero{position:relative;background:var(--night);color:#fff;overflow:hidden;padding:140px 0 0}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.hero::before{width:900px;height:900px;left:-280px;top:-380px;background:radial-gradient(circle,rgba(229,87,31,.55) 0%,rgba(229,87,31,0) 62%)}
+.hero::after{width:820px;height:820px;right:-300px;top:120px;background:radial-gradient(circle,rgba(47,91,168,.55) 0%,rgba(47,91,168,0) 62%)}
+.hero .wrap{position:relative;z-index:1}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero-copy{padding-bottom:110px}
+.hero .eyebrow{color:var(--or-l)}
+.hero h1{color:#fff;font-size:clamp(40px,6.2vw,74px);font-weight:800;margin:16px 0 22px;letter-spacing:-.035em}
+.hero h1 em{font-style:normal;color:var(--or-l)}
+.hero .lead{color:#C9D1E0}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero .proof{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:28px;color:#AEB8CB;font-size:14px;font-weight:600}
+.hero .proof span{display:inline-flex;align-items:center;gap:8px}
+.hero .proof .ico{width:17px;height:17px;color:var(--or-l)}
+.stagephones{position:relative;height:640px}
+.stagephones .phone{position:absolute;bottom:-70px}
+.stagephones .p1{left:50%;transform:translateX(-50%);z-index:3}
+.stagephones .p2{left:0;bottom:-140px;transform:rotate(-7deg) scale(.88);z-index:2;opacity:.92}
+.stagephones .p3{right:0;bottom:-140px;transform:rotate(7deg) scale(.88);z-index:2;opacity:.92}
+.hero-fade{height:90px;background:linear-gradient(180deg,rgba(7,11,22,0),var(--night));position:relative;z-index:4;margin-top:-90px}
+
+/* ── Celular (mesmo visual do app: Vidro escuro) ── */
+.phone{--g:rgba(255,255,255,.08);--gl:rgba(255,255,255,.14);width:290px;max-width:100%;height:600px;border-radius:44px;padding:10px;background:#05070D;box-shadow:0 40px 80px -20px rgba(0,0,0,.7),inset 0 0 0 2px #2A3240}
+.scr{position:relative;height:100%;border-radius:35px;overflow:hidden;display:flex;flex-direction:column;background:#070B16;color:#fff;font-family:var(--f-body);font-size:12px;line-height:1.35}
+.scr::before{content:"";position:absolute;width:320px;height:320px;left:-70px;top:-60px;border-radius:50%;background:radial-gradient(circle,#E5571F 0%,rgba(229,87,31,0) 65%);opacity:.45}
+.scr::after{content:"";position:absolute;width:280px;height:280px;right:-120px;top:250px;border-radius:50%;background:radial-gradient(circle,#2F5BA8 0%,rgba(47,91,168,0) 65%);opacity:.5}
+.scr.calm::before{opacity:.2}.scr.calm::after{opacity:.28}
+.st{display:flex;justify-content:space-between;align-items:center;padding:12px 22px 6px;font-size:11.5px;font-weight:700;position:relative;z-index:2}
+.st i{width:80px;height:22px;border-radius:20px;background:#000}
+.sb{flex:1;padding:4px 14px 0;display:flex;flex-direction:column;gap:10px;position:relative;z-index:1;overflow:hidden}
+.gl{border-radius:16px;padding:11px 12px;background:var(--g);border:1px solid var(--gl);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.r{display:flex;align-items:center;gap:9px}.f1{flex:1}
+.mu{color:#93A0B8}.so{color:#C9D1E0}
+.eb{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--or-l);font-weight:800}
+.t1{font-size:19px;font-weight:800;letter-spacing:-.01em}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:#DDE3EE;padding:4px 8px;border-radius:10px;background:var(--g)}
+.chip .ico{width:13px;height:13px}
+.pb{padding:9px;border-radius:12px;background:#fff;color:#0B1F3B;text-align:center;font-weight:800;font-size:12.5px}
+.ch{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-weight:900;font-size:9.5px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2)}
+.av{width:26px;height:26px;border-radius:50%;flex:none;position:relative;overflow:hidden;background:var(--a)}
+.av::before{content:"";position:absolute;width:42%;height:42%;left:29%;top:18%;border-radius:50%;background:rgba(255,255,255,.75)}
+.av::after{content:"";position:absolute;width:78%;height:60%;left:11%;top:64%;border-radius:50% 50% 0 0;background:rgba(255,255,255,.75)}
+.a1{--a:linear-gradient(135deg,#C98B6B,#7A4A35)}.a2{--a:linear-gradient(135deg,#7E95B0,#3F5670)}.a3{--a:linear-gradient(135deg,#B9A27F,#6A5A4C)}.a4{--a:linear-gradient(135deg,#9C7F91,#5B3F51)}.a5{--a:linear-gradient(135deg,#8DA27A,#4E5E3E)}
+.stk{display:flex}.stk .av{margin-left:-8px;box-shadow:0 0 0 2px #121A2D}.stk .av:first-child{margin-left:0}
+.more{width:26px;height:26px;border-radius:50%;margin-left:-8px;display:grid;place-items:center;font-size:9.5px;font-weight:800;background:#26314A;box-shadow:0 0 0 2px #121A2D}
+.li{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.li:last-child{border-bottom:0}
+.li b{display:block;font-size:12px}.li small{font-size:10.5px;color:#93A0B8}
+.pl{display:inline-flex;align-items:center;gap:4px;font-size:9.5px;font-weight:800;padding:3px 7px;border-radius:20px;white-space:nowrap}
+.pl .ico{width:12px;height:12px;stroke-width:2.6}
+.pl.ok{background:rgba(74,222,128,.14);color:var(--ok-l)}.pl.wt{background:rgba(251,191,36,.14);color:var(--wait-l)}.pl.no{background:rgba(248,113,113,.14);color:var(--no-l)}
+.sg{display:grid;grid-template-columns:1fr 1fr;padding:3px;border-radius:12px;background:var(--g);border:1px solid var(--gl);font-size:11px;font-weight:800;text-align:center}
+.sg span{padding:6px 0;border-radius:9px;color:#93A0B8}.sg .on{background:rgba(255,255,255,.14);color:#fff}
+.tb{margin:0 12px 12px;border-radius:20px;padding:8px 6px;background:var(--g);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(14px);display:flex;justify-content:space-around;font-size:9.5px;color:#9AA6BC;position:relative;z-index:2}
+.tb span{display:grid;justify-items:center;gap:3px}.tb .ico{width:18px;height:18px}.tb .on{color:#fff;font-weight:800}.tb .on .ico{color:var(--or-l)}
+.ib{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:var(--g);border:1px solid var(--gl);flex:none}
+.ib .ico{width:16px;height:16px}
+.lyr{font-family:var(--f-mono);font-size:15px;line-height:1.4;white-space:pre;color:#E9EDF5}
+.lyr .c{color:var(--or-l);font-weight:700}.lyr .d{opacity:.33}
+
+/* ── Seções claras ── */
+section.sec{padding:120px 0}
+.sec-head{display:grid;gap:16px;max-width:760px;margin-bottom:56px}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center;justify-items:center}
+
+/* Antes x depois */
+.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:center}
+.chat{background:#EFE7DD;border-radius:24px;padding:18px;display:grid;gap:8px;box-shadow:0 20px 50px -30px rgba(11,31,59,.35);position:relative;min-width:0}
+.chat-h{display:flex;align-items:center;gap:10px;padding:2px 4px 10px;border-bottom:1px solid rgba(0,0,0,.07);margin-bottom:4px}
+.chat-h .gi{width:36px;height:36px;border-radius:50%;background:#9DB0A3;display:grid;place-items:center;color:#fff;flex:none}
+.chat-h b{color:#1F2C2A;font-size:14.5px;display:block;line-height:1.2}.chat-h small{color:#5B6B66;font-size:12px}
+.msg{max-width:84%;padding:8px 11px 6px;border-radius:12px;background:#fff;color:#1F2C2A;font-size:14px;line-height:1.4;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.msg i{display:block;font-style:normal;font-size:11.5px;font-weight:700;margin-bottom:1px}
+.msg time{display:block;text-align:right;font-size:10.5px;color:#8A948F;margin-top:2px}
+.msg.me{justify-self:end;background:#D8F5C8}
+.n1{color:#C2410C}.n2{color:#1D4ED8}.n3{color:#7C3AED}.n4{color:#0F766E}
+.chat .unread{justify-self:center;font-size:11.5px;font-weight:700;color:#5B6B66;background:rgba(255,255,255,.7);padding:3px 10px;border-radius:10px}
+.arrow{width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center}
+.after{background:var(--night);border-radius:24px;padding:22px;color:#fff;position:relative;overflow:hidden;box-shadow:0 30px 60px -30px rgba(7,11,22,.8);min-width:0}
+.after::before{content:"";position:absolute;width:420px;height:420px;left:-140px;top:-180px;border-radius:50%;background:radial-gradient(circle,rgba(229,87,31,.45),rgba(229,87,31,0) 65%)}
+.after>*{position:relative}
+.after .t1{font-size:22px;margin:4px 0 2px}
+.after .li b{font-size:14px}.after .li small{font-size:12px}.after .av{width:32px;height:32px}
+.after .pl{font-size:11px;padding:4px 9px}
+.after .foot{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:#C9D1E0}
+.after .foot b{color:#fff}
+.after .btnmini{margin-left:auto;padding:8px 12px;border-radius:10px;background:#fff;color:var(--navy);font-weight:800;font-size:12.5px}
+.pains{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:64px}
+.pain{display:grid;gap:8px;padding-top:20px;border-top:2px solid var(--ink);align-content:start}
+.pain h3{font-size:18.5px}
+.pain p{color:var(--dim);font-size:15px}
+
+/* Departamentos */
+.depts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dept{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:22px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-content:start;position:relative}
+.dept .di{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#EEF1F6;color:var(--navy);grid-row:span 2}
+.dept h3{font-size:18px}
+.dept p{color:var(--dim);font-size:14.5px;margin-top:4px}
+.dept .badge{grid-column:2;justify-self:start;margin-top:6px;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:20px;background:#EEF1F6;color:var(--dim)}
+.dept.live{background:var(--navy);border-color:var(--navy)}
+.dept.live h3{color:#fff}.dept.live p{color:#C9D1E0}
+.dept.live .di{background:var(--or);color:#fff}
+.dept .badge.on{background:rgba(74,222,128,.16);color:var(--ok-l)}
+.packs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.pack{border:1.5px dashed #C8CFDB;border-radius:20px;padding:22px 24px;display:grid;gap:4px}
+.pack b{font-family:var(--f-disp);font-size:19px;color:var(--ink)}
+.pack span{color:var(--dim);font-size:15px}
+.pack.full{border:1.5px solid var(--or);background:var(--or-soft)}
+/* Gestão */
+.dm{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.1);color:var(--or-l);flex:none}
+.dm .ico{width:17px;height:17px}
+.freq-h{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:6px}
+.freq{display:grid;grid-template-columns:28px 110px 1fr 64px;gap:10px;align-items:center;padding:6px 0;font-size:12.5px}
+.freq .av{width:28px;height:28px}
+.freq .nm{font-weight:700;line-height:1.2}.freq .nm small{display:block;font-weight:500;color:#93A0B8;font-size:11px}
+.freq .bar{height:6px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden}
+.freq .bar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,#E5571F,#FFB38E)}
+.freq .bar.warn i{background:#FBBF24}
+.freq .v{text-align:right;color:#C9D1E0;font-variant-numeric:tabular-nums}
+
+/* Recursos (linhas alternadas) */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;padding:56px 0}
+.feat+.feat{border-top:1px solid var(--line)}
+.feat.flip .copy{order:2}
+.copy{display:grid;gap:16px;align-content:start;min-width:0}
+.copy h3{font-size:clamp(26px,3vw,34px);font-weight:800}
+.copy p{font-size:17px}
+.ticks{list-style:none;display:grid;gap:10px;margin-top:4px}
+.ticks li{display:flex;gap:10px;font-size:15.5px;color:var(--text)}
+.ticks li .ico{width:20px;height:20px;color:var(--or);margin-top:2px;stroke-width:2.4}
+.for{display:inline-flex;justify-self:start;gap:6px;align-items:center;padding:5px 11px;border-radius:20px;background:var(--or-soft);color:var(--or-d);font-weight:800;font-size:12.5px}
+.panel{background:var(--night);border-radius:26px;padding:26px;color:#fff;position:relative;overflow:hidden;box-shadow:0 30px 70px -36px rgba(7,11,22,.75);min-height:340px;display:grid;align-content:center;gap:12px;min-width:0}
+.panel::before{content:"";position:absolute;width:460px;height:460px;right:-200px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(229,87,31,.38),rgba(229,87,31,0) 65%)}
+.panel::after{content:"";position:absolute;width:420px;height:420px;left:-200px;bottom:-240px;border-radius:50%;background:radial-gradient(circle,rgba(47,91,168,.42),rgba(47,91,168,0) 65%)}
+.panel>*{position:relative;z-index:1}
+.panel .gl{padding:14px 16px;border-radius:16px}
+.panel .li b{font-size:14px}.panel .li small{font-size:12px}.panel .av{width:32px;height:32px}.panel .pl{font-size:11px;padding:4px 9px}
+/* indisponibilidade */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:12px}
+.cal .h{color:#93A0B8;font-weight:800;font-size:10.5px;letter-spacing:.06em;background:none}
+.cal span{padding:8px 0;border-radius:10px;background:rgba(255,255,255,.05);color:#DDE3EE;font-weight:600}
+.cal .x{background:rgba(248,113,113,.16);color:var(--no-l);text-decoration:line-through}
+.cal .s{background:rgba(229,87,31,.25);color:#fff;font-weight:800}
+.cal .o{opacity:.3}
+.alertbox{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#FDE2D4;background:rgba(229,87,31,.14);border:1px solid rgba(255,179,142,.35);padding:12px 14px;border-radius:14px}
+.alertbox .ico{color:var(--or-l);margin-top:1px}
+/* transposição */
+.tp-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tp-head h4{font-family:var(--f-disp);font-size:20px;font-weight:700}
+.tp-head small{display:block;color:#93A0B8;font-size:12.5px}
+.tp-ctl{margin-left:auto;display:flex;align-items:center;gap:6px}
+.tp-ctl button{width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font-size:20px;font-weight:700;cursor:pointer;font-family:var(--f-body)}
+.tp-ctl button:hover{background:rgba(255,255,255,.16)}
+.tp-key{min-width:54px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(229,87,31,.22);color:var(--or-l);font-family:var(--f-mono);font-weight:700;font-size:16px}
+.sheet{font-family:var(--f-mono);font-size:15px;line-height:1.5;white-space:pre;color:#E9EDF5;overflow-x:auto}
+.sheet .c{color:var(--or-l);font-weight:700}
+.sheet .lbl{font-family:var(--f-body);font-size:11px;letter-spacing:.14em;color:#93A0B8;font-weight:800}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links span{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:12.5px;color:#DDE3EE;font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%}
+/* avisos */
+.noti{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;border-radius:16px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(14px)}
+.noti .ap{width:34px;height:34px;border-radius:9px;overflow:hidden;flex:none}
+.noti .ap img{width:100%;height:100%}
+.noti b{font-size:13.5px;display:block}.noti p{font-size:13px;color:#C9D1E0;line-height:1.4}
+.noti time{margin-left:auto;font-size:11px;color:#93A0B8;white-space:nowrap}
+.noti.s2{margin-left:18px;opacity:.86}.noti.s3{margin-left:36px;opacity:.72}
+
+/* Palco (faixa escura) */
+.stage{background:var(--night);color:#fff;position:relative;overflow:hidden}
+.stage::before{content:"";position:absolute;width:1000px;height:1000px;left:50%;top:-520px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(229,87,31,.35),rgba(229,87,31,0) 60%)}
+.stage .wrap{position:relative;z-index:1}
+.stage h2,.stage h3{color:#fff}
+.stage .eyebrow{color:var(--or-l)}
+.stage .lead{color:#C9D1E0}
+.stage-grid{display:grid;grid-template-columns:1fr auto;gap:72px;align-items:center}
+.sfacts{display:grid;grid-template-columns:1fr 1fr;gap:28px 36px;margin-top:40px}
+.sfact{display:grid;gap:6px;align-content:start}
+.sfact .ico{width:26px;height:26px;color:var(--or-l);stroke-width:1.8}
+.sfact h3{font-size:18px}
+.sfact p{color:#AEB8CB;font-size:15px}
+.offline{align-self:center;display:inline-flex;gap:6px;align-items:center;font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:20px;background:rgba(251,191,36,.16);color:var(--wait-l);white-space:nowrap}
+
+/* Quem usa */
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.role{background:var(--white);border:1px solid var(--line);border-radius:24px;padding:36px;display:grid;gap:18px;align-content:start}
+.role .ri{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--navy);color:#fff}
+.role .ri .ico{width:26px;height:26px}
+.role h3{font-size:26px;font-weight:800}
+.role ul{list-style:none;display:grid;gap:12px}
+.role li{display:flex;gap:10px;font-size:15.5px}
+.role li .ico{color:var(--or);margin-top:2px;stroke-width:2.4}
+
+/* Comparação */
+.cmp-wrap{overflow-x:auto;border-radius:24px;border:1px solid var(--line);background:var(--white)}
+table.cmp{width:100%;border-collapse:collapse;min-width:760px;font-size:15px}
+.cmp th,.cmp td{padding:18px 22px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+.cmp thead th{font-family:var(--f-disp);font-size:16px;color:var(--ink);font-weight:700;background:#FAFBFC}
+.cmp thead th.us{background:var(--navy);color:#fff}
+.cmp thead th.us img{height:28px;width:auto}
+.cmp td.us{background:#F7F9FC;font-weight:700;color:var(--ink)}
+.cmp tbody tr:last-child td{border-bottom:0}
+.cmp td:first-child{color:var(--ink);font-weight:600}
+.y,.n,.m{display:inline-flex;align-items:center;gap:7px;font-size:14px}
+.y .ico{color:var(--ok);stroke-width:2.6}.n{color:#8A94A6}.n .ico{color:#B8C0CC;stroke-width:2.4}.m{color:var(--wait)}
+
+/* Como começar */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step{background:var(--white);border:1px solid var(--line);border-radius:24px;padding:32px;display:grid;gap:12px;align-content:start}
+.step .n{font-family:var(--f-disp);font-size:44px;font-weight:800;color:var(--or);line-height:1}
+.step p{color:var(--dim);font-size:15.5px}
+.steps-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:44px}
+
+/* Baixar */
+.get{background:var(--night);color:#fff;position:relative;overflow:hidden}
+.get::before{content:"";position:absolute;width:900px;height:900px;right:-300px;top:-400px;border-radius:50%;background:radial-gradient(circle,rgba(229,87,31,.4),rgba(229,87,31,0) 62%)}
+.get::after{content:"";position:absolute;width:800px;height:800px;left:-300px;bottom:-500px;border-radius:50%;background:radial-gradient(circle,rgba(47,91,168,.45),rgba(47,91,168,0) 62%)}
+.get .wrap{position:relative;z-index:1}
+.get h2{color:#fff}.get .eyebrow{color:var(--or-l)}.get .lead{color:#C9D1E0}
+.dl{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.dlc{border-radius:24px;padding:28px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:grid;gap:16px;align-content:start;scroll-margin-top:100px;transition:border-color .3s,box-shadow .3s}
+.dlc.here{border-color:var(--or-l);box-shadow:0 0 0 4px rgba(229,87,31,.25)}
+.dlc .top{display:flex;align-items:center;gap:12px}
+.dlc .top .ico{width:28px;height:28px;color:var(--or-l);stroke-width:1.7}
+.dlc h3{color:#fff;font-size:21px}
+.dlc .tag{margin-left:auto;font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px;background:var(--or);color:#fff;display:none}
+.dlc.here .tag{display:inline-block}
+.qr{background:#fff;border-radius:18px;padding:12px;width:180px;max-width:100%}
+.qr img{width:100%;height:auto}
+.dlc ol{padding-left:20px;color:#C9D1E0;font-size:14.5px;display:grid;gap:6px}
+.dlc ol b{color:#fff}
+.dlc .url{font-family:var(--f-mono);font-size:13.5px;color:var(--or-l)}
+.dlc .btn{justify-self:start}
+.note-sm{font-size:13px;color:#93A0B8}
+.only-phone{display:none!important}
+
+/* Dúvidas */
+.faq{display:grid;gap:12px;max-width:860px;margin:0 auto}
+details{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:0 24px}
+summary{list-style:none;cursor:pointer;padding:22px 0;display:flex;align-items:center;gap:16px;font-family:var(--f-disp);font-weight:700;font-size:18.5px;color:var(--ink)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";margin-left:auto;font-size:26px;font-weight:500;color:var(--or);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 0 22px;color:var(--text);font-size:16px;max-width:70ch}
+
+/* Chamada final + rodapé */
+.final{padding:0 0 120px}
+.final .box{background:var(--navy);border-radius:32px;padding:72px 56px;color:#fff;position:relative;overflow:hidden;display:grid;grid-template-columns:1.4fr auto;gap:40px;align-items:center}
+.final .box::before{content:"";position:absolute;width:640px;height:640px;right:-200px;top:-300px;border-radius:50%;background:radial-gradient(circle,rgba(229,87,31,.5),rgba(229,87,31,0) 62%)}
+.final .box>*{position:relative}
+.final h2{color:#fff;font-size:clamp(30px,4vw,48px)}
+.final p{color:#C9D1E0;font-size:18px;margin-top:14px;max-width:46ch}
+.final .ctas{display:grid;gap:12px}
+footer{background:var(--night);color:#93A0B8;padding:56px 0 calc(40px + env(safe-area-inset-bottom,0px));font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center}
+footer img{height:34px;width:auto}
+footer nav{display:flex;flex-wrap:wrap;gap:10px 24px}
+footer a{color:#C9D1E0;text-decoration:none}
+footer a:hover{color:#fff}
+footer .sp{flex:1}
+
+/* ── Telas menores ── */
+@media (max-width:1060px){
+  .nav ul{display:none}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-copy{text-align:center;display:grid;justify-items:center;padding-bottom:24px}
+  .hero .ctas,.hero .proof{justify-content:center}
+  .stagephones{height:560px;max-width:620px;width:100%;margin:0 auto}
+  .feat,.feat.flip{grid-template-columns:1fr;gap:36px}
+  .feat.flip .copy{order:0}
+  .stage-grid{grid-template-columns:1fr}
+  .stage-grid .phone{margin:0 auto}
+  .dl{grid-template-columns:1fr}
+  .depts{grid-template-columns:1fr 1fr}
+  .final .box{grid-template-columns:1fr;padding:56px 32px}
+  .ba{grid-template-columns:1fr}
+  .arrow{justify-self:center;transform:rotate(90deg)}
+}
+@media (max-width:760px){
+  section.sec{padding:84px 0}
+  .hero{padding-top:112px}
+  .nav .wrap{gap:16px}
+  .nav .enter span{display:none}
+  .stagephones{height:520px}
+  .stagephones .p2,.stagephones .p3{display:none}
+  .pains,.roles,.steps,.sfacts,.depts,.packs{grid-template-columns:1fr}
+  .freq{grid-template-columns:28px 1fr 56px}.freq .bar{display:none}
+  .role,.step{padding:26px}
+  .panel{padding:18px}
+  .qr{display:none}
+  .only-phone{display:inline-flex!important}
+  .final .box{padding:44px 24px;border-radius:24px}
+  .btn{white-space:normal;text-align:center}
+}
+</style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c2 .7 3.2 2.4 3.5 5.2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.2 3.9-6.5 8-6.5s7.2 2.3 8 6.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 10 17.5 19 7"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-guitar" viewBox="0 0 24 24"><path d="M14.5 9.5 20 4M18 2.5l3.5 3.5"/><path d="M11.8 7.6c-1.6-.4-3.4 0-4.5 1.2-.6.6-.7 1.6-1.6 2-1.5.6-3.3.7-4 2.4-.7 1.8.4 4.1 2.4 6.1s4.3 3.1 6.1 2.4c1.7-.7 1.8-2.5 2.4-4 .4-.9 1.4-1 2-1.6 1.2-1.1 1.6-2.9 1.2-4.5"/><circle cx="9" cy="15" r="1.6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
+  <symbol id="i-wifioff" viewBox="0 0 24 24"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.2-2.8M19 13a10 10 0 0 0-2.2-1.6M2 8.8a15 15 0 0 1 4.2-2.6M22 8.8A15 15 0 0 0 10.5 5"/><circle cx="12" cy="20" r=".8"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-scroll" viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6"/></symbol>
+  <symbol id="i-swipe" viewBox="0 0 24 24"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></symbol>
+  <symbol id="i-lead" viewBox="0 0 24 24"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 15.4 7.2 17.9l.9-5.4L4.2 8.7l5.4-.8z"/><path d="M5 21h14"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path d="M15.6 3.5c.2 1.2-.3 2.4-1 3.2-.8.8-1.8 1.3-2.8 1.2-.2-1.1.4-2.3 1.1-3 .7-.8 1.8-1.4 2.7-1.4z"/><path d="M18.6 16.2c-.5 1.1-.7 1.6-1.4 2.6-.9 1.3-2.1 2.9-3.6 2.9-1.4 0-1.7-.9-3.5-.9s-2.2.9-3.6.9c-1.5 0-2.6-1.5-3.5-2.8C1.4 15.4 1.1 11 2.8 8.6 3.9 7 5.5 6 7.1 6c1.6 0 2.7.9 4.1.9 1.3 0 2.2-.9 4.1-.9 1.4 0 3 .8 4.1 2.2-3.6 2-3 7 .2 8z"/></symbol>
+  <symbol id="i-android" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="3"/><path d="M8 9a4 4 0 0 1 8 0M7 4.5l1.6 2.4M17 4.5l-1.6 2.4"/><circle cx="9.5" cy="13.5" r=".6"/><circle cx="14.5" cy="13.5" r=".6"/></symbol>
+  <symbol id="i-desktop" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="13" rx="2.5"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.5 21.5 7v10l-6-3.5"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1.5 14h5M9.5 8h5M17.5 16h5"/></symbol>
+  <symbol id="i-door" viewBox="0 0 24 24"><path d="M4 21h16M6 21V4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21"/><circle cx="14.5" cy="12.5" r=".9"/></symbol>
+  <symbol id="i-kids" viewBox="0 0 24 24"><circle cx="8" cy="6" r="2.5"/><circle cx="16.5" cy="8" r="2"/><path d="M4 21v-4.5A3.5 3.5 0 0 1 7.5 13h1A3.5 3.5 0 0 1 12 16.5V21M13 21v-3.5a3 3 0 0 1 3-3h1a3 3 0 0 1 3 3V21"/></symbol>
+  <symbol id="i-hands" viewBox="0 0 24 24"><path d="M12 21s-7-4.3-7-10V6.5L8 4l2 2.5V11M12 21s7-4.3 7-10V6.5L16 4l-2 2.5V11M10 11l2 2 2-2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5M9 3h6l-1 6 3 3v2H7v-2l3-3z"/></symbol>
+</svg>
+
+<header class="nav" id="nav">
   <div class="wrap">
-    <header>
-      <img src="/logo.png" alt="Ministre" width="151" height="44">
-    </header>
+    <a class="logo" href="#topo" aria-label="Ministre, início"><img src="logo-escuro.png" alt="Ministre" width="154" height="38"></a>
+    <ul>
+      <li><a href="#departamentos">Departamentos</a></li>
+      <li><a href="#gestao">Gestão</a></li>
+      <li><a href="#recursos">Louvor</a></li>
+      <li><a href="#comparar">Por que o Ministre</a></li>
+      <li><a href="#duvidas">Dúvidas</a></li>
+    </ul>
+    <span class="sp"></span>
+    <a class="enter" href="https://app.ministreapp.com.br/entrar"><svg class="ico"><use href="#i-user"/></svg><span>Entrar</span></a>
+    <a class="btn btn-or" href="#baixar">Baixar o app</a>
+  </div>
+</header>
 
-    <section class="hero">
-      <div>
-        <h1>As escalas do seu ministério, <span>em ordem.</span></h1>
-        <p class="lead">Quem serve em cada culto, o repertório com cifra no tom certo e os avisos da liderança, num app só.</p>
-        <a class="cta" href="https://app.ministreapp.com.br">Abrir o Ministre</a>
-      </div>
-      <div class="qr">
-        <img src="/qr-app.svg" alt="QR code para abrir o Ministre no celular" width="240" height="240">
-        <p>Aponte a câmera do celular</p>
-        <small>app.ministreapp.com.br</small>
-      </div>
-    </section>
+<main id="topo">
 
-    <section class="features" aria-label="O que tem no Ministre">
-      <div class="feature"><b>Escalas</b><span>Confirme ou avise que não pode com um toque. O líder vê na hora quem falta responder.</span></div>
-      <div class="feature"><b>Repertório e Modo Palco</b><span>Cifra no tom da escala, letra grande, rolagem automática e funciona sem internet.</span></div>
-      <div class="feature"><b>Avisos</b><span>Notificações no celular quando você é escalado, lembretes do culto e recados do líder.</span></div>
-    </section>
-
-    <h2 id="instalar">Como instalar</h2>
-    <div class="steps">
-      <div class="step" id="ios">
-        <h3>iPhone e iPad</h3>
-        <ol>
-          <li>Abra <b>app.ministreapp.com.br</b> no <b>Safari</b>.</li>
-          <li>Toque em <b>Compartilhar</b> (o quadrado com a seta para cima).</li>
-          <li>Escolha <b>Adicionar à Tela de Início</b> e toque em <b>Adicionar</b>.</li>
-          <li>Abra o Ministre pelo ícone e, no sino, toque em <b>Ativar avisos</b>.</li>
-        </ol>
+<!-- ═════════ HERO ═════════ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Gestão de escalas para a igreja</span>
+      <h1>Organize quem serve. <em>Cuide</em> de quem serve.</h1>
+      <p class="lead">O Ministre tira as escalas do grupo do WhatsApp e coloca todos os departamentos da igreja em ordem. O pastor ou gestor sabe quem estará em cada culto, o que cada pessoa faz e com que frequência serve. Começamos pelo Louvor, com repertório no tom certo e cifra no palco mesmo sem internet.</p>
+      <div class="ctas">
+        <a class="btn btn-or" href="https://app.ministreapp.com.br/criar-conta">Começar agora <svg class="ico"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-glass" href="#recursos">Ver como funciona</a>
       </div>
-      <div class="step" id="android">
-        <h3>Android</h3>
-        <ol>
-          <li>Abra <b>app.ministreapp.com.br</b> no <b>Chrome</b>.</li>
-          <li>Toque no menu <b>⋮</b> e escolha <b>Instalar app</b> (ou <b>Adicionar à tela inicial</b>).</li>
-          <li>Abra o Ministre pelo ícone e, no sino, toque em <b>Ativar avisos</b>.</li>
-        </ol>
+      <div class="proof">
+        <span><svg class="ico"><use href="#i-check"/></svg>Louvor disponível agora</span>
+        <span><svg class="ico"><use href="#i-desktop"/></svg>iPhone, Android e computador</span>
+        <span><svg class="ico"><use href="#i-flag"/></svg>Feito no Brasil</span>
       </div>
     </div>
 
-    <footer>
-      <span>© 2026 Ministre</span>
-      <a href="https://app.ministreapp.com.br/privacidade">Política de Privacidade</a>
-      <a href="https://app.ministreapp.com.br/termos">Termos de Uso</a>
-      <a href="mailto:contato@ministreapp.com.br">contato@ministreapp.com.br</a>
-    </footer>
+    <div class="stagephones" aria-hidden="true">
+      <div class="phone p2"><div class="scr calm">
+        <div class="st"><span>9:41</span><i></i><span>100%</span></div>
+        <div class="sb">
+          <div class="r"><span class="ib"><svg class="ico"><use href="#i-back"/></svg></span><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg>Confirmado</span></div>
+          <div><span class="eb">Qui, 20 nov · 19h30</span><div class="t1">Culto de Ensino</div></div>
+          <div class="sg"><span class="on">Equipe</span><span>Repertório</span></div>
+          <div>
+            <div class="li"><span class="av a2"></span><div><b>Pr. Lucas ★</b><small>Ministro · Vocal</small></div><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg></span></div>
+            <div class="li"><span class="av a1"></span><div><b>Rafael</b><small>Violão</small></div><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg></span></div>
+            <div class="li"><span class="av a4"></span><div><b>Ana Clara</b><small>Vocal</small></div><span class="f1"></span><span class="pl wt"><svg class="ico"><use href="#i-clock"/></svg></span></div>
+            <div class="li"><span class="av a3"></span><div><b>João Pedro</b><small>Bateria</small></div><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg></span></div>
+            <div class="li"><span class="av a5"></span><div><b>Beatriz</b><small>Teclado</small></div><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg></span></div>
+          </div>
+        </div>
+      </div></div>
+      <div class="phone p1"><div class="scr">
+        <div class="st"><span>9:41</span><i></i><span>100%</span></div>
+        <div class="sb">
+          <div class="r"><span class="ch">IGR</span><span class="f1"></span><svg class="ico so" style="width:18px;height:18px"><use href="#i-bell"/></svg><span class="av a1"></span></div>
+          <div class="so" style="font-size:12px">Boa noite,<div style="font-size:19px;color:#fff;font-weight:800">Rafael</div></div>
+          <div class="gl" style="display:grid;gap:10px">
+            <span class="eb">Próxima escala</span>
+            <div style="font-size:17px;font-weight:800">Culto da Família</div>
+            <div class="r" style="gap:6px;flex-wrap:wrap"><span class="chip"><svg class="ico"><use href="#i-clock"/></svg>Dom · 18h</span><span class="chip"><svg class="ico"><use href="#i-guitar"/></svg>Violão</span></div>
+            <div class="stk"><span class="av a2"></span><span class="av a3"></span><span class="av a4"></span><span class="more">+5</span></div>
+            <div class="pb">Confirmar presença</div>
+          </div>
+          <div class="gl r"><svg class="ico" style="color:#FFB38E;width:18px;height:18px"><use href="#i-music"/></svg><div><b style="font-size:12px">Repertório</b><div class="mu" style="font-size:10.5px">5 músicas para ensaiar</div></div><span class="f1"></span><svg class="ico mu" style="width:16px;height:16px"><use href="#i-chev"/></svg></div>
+          <div class="gl r"><svg class="ico" style="color:#FFB38E;width:18px;height:18px"><use href="#i-cal"/></svg><div><b style="font-size:12px">Ensaio</b><div class="mu" style="font-size:10.5px">Sábado, 22 nov · 16h</div></div></div>
+        </div>
+        <div class="tb"><span class="on"><svg class="ico"><use href="#i-home"/></svg>Início</span><span><svg class="ico"><use href="#i-cal"/></svg>Agenda</span><span><svg class="ico"><use href="#i-music"/></svg>Músicas</span><span><svg class="ico"><use href="#i-user"/></svg>Perfil</span></div>
+      </div></div>
+      <div class="phone p3"><div class="scr calm" style="background:#04060C">
+        <div class="st"><span>9:41</span><i></i><span>100%</span></div>
+        <div class="sb">
+          <div class="r"><span class="ib"><svg class="ico"><use href="#i-x"/></svg></span><div style="text-align:center;flex:1"><b style="font-size:12px">Canção de Exemplo</b><div class="mu" style="font-size:10px">1 de 5 · Tom G</div></div><span class="ib"><svg class="ico"><use href="#i-music"/></svg></span></div>
+<div class="lyr"><span class="d"><span class="c">G</span>         <span class="c">C</span>
+Senhor, eu venho
+a Ti</span>
+<span class="c">Em</span>        <span class="c">D</span>
+com tudo o que
+sou
+<span class="c">G</span>         <span class="c">C</span>
+Tua luz me
+alcançou</div>
+        </div>
+      </div></div>
+    </div>
   </div>
-  <script>
-    // Destaca o passo a passo do aparelho de quem está vendo.
-    (function () {
-      var ua = navigator.userAgent;
-      var ios = /iPhone|iPad|iPod/.test(ua) || (ua.indexOf('Macintosh') > -1 && navigator.maxTouchPoints > 1);
-      var el = document.getElementById(ios ? 'ios' : /Android/.test(ua) ? 'android' : '');
-      if (!el) return;
-      el.classList.add('here');
-      el.querySelector('h3').insertAdjacentHTML('beforeend', '<span class="tag">seu aparelho</span>');
-    })();
-  </script>
+  <div class="hero-fade"></div>
+</section>
+
+<!-- ═════════ PROBLEMA ═════════ -->
+<section class="sec" id="problema">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">A véspera de todo culto</span>
+      <h2>A escala da igreja não pode morar no meio de 200 mensagens.</h2>
+      <p class="lead">Grupo de WhatsApp avisa, mas não confirma. Planilha organiza, mas ninguém abre. E o pastor só descobre quem faltou quando o culto já começou.</p>
+    </div>
+
+    <div class="ba">
+      <div class="chat" aria-label="Exemplo de conversa no grupo do louvor">
+        <div class="chat-h"><span class="gi"><svg class="ico"><use href="#i-users"/></svg></span><div><b>Escalas da Igreja 🙏</b><small>Ana, João, Bia, Pr. Lucas e mais 9</small></div></div>
+        <span class="unread">87 mensagens não lidas</span>
+        <div class="msg"><i class="n1">Pr. Lucas</i>Pessoal, quem serve no culto de quinta? Mandei a escala lá em cima 👆<time>21:14</time></div>
+        <div class="msg"><i class="n2">João</i>qual escala? 😅 não achei<time>21:32</time></div>
+        <div class="msg"><i class="n3">Bia</i>Aquela música é em G ou em A? Mandaram dois PDFs<time>22:05</time></div>
+        <div class="msg"><i class="n4">Ana</i>gente, esqueci de avisar, na vigília de sexta não posso 🙏<time>23:48</time></div>
+        <div class="msg me">alguém cobre a bateria??<time>23:51</time></div>
+      </div>
+
+      <div class="arrow" aria-hidden="true"><svg class="ico"><use href="#i-arrow"/></svg></div>
+
+      <div class="after">
+        <span class="eb">Com o Ministre</span>
+        <div class="t1">Culto de Ensino · Qui 19h30</div>
+        <div class="mu" style="font-size:13px;margin-bottom:8px">Cada pessoa sabe onde serve e já respondeu</div>
+        <div class="li"><span class="av a2"></span><div><b>Pr. Lucas ★</b><small>Ministro · Vocal</small></div><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg>Vai</span></div>
+        <div class="li"><span class="av a3"></span><div><b>João Pedro</b><small>Bateria</small></div><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg>Vai</span></div>
+        <div class="li"><span class="av a5"></span><div><b>Beatriz</b><small>Teclado</small></div><span class="f1"></span><span class="pl wt"><svg class="ico"><use href="#i-clock"/></svg>Falta</span></div>
+        <div class="li"><span class="av a4"></span><div><b>Ana Clara</b><small>Avisou que não pode</small></div><span class="f1"></span><span class="pl no"><svg class="ico"><use href="#i-x"/></svg>Fora</span></div>
+        <div class="foot"><span><b>1</b> pendente</span><span class="btnmini">Lembrar pendentes</span></div>
+      </div>
+    </div>
+
+    <div class="pains">
+      <div class="pain"><h3>Ninguém confirma</h3><p>No Ministre, cada pessoa responde "vou" ou "não posso" com um toque, e o líder vê na hora quem falta.</p></div>
+      <div class="pain"><h3>Escalam quem não pode</h3><p>Quem avisou que vai viajar, ou que não pode em certo dia da semana, fica fora da escala. O app não deixa escalar.</p></div>
+      <div class="pain"><h3>O pastor não enxerga</h3><p>Quem serve demais, quem sumiu, quem está em dois lugares ao mesmo tempo. No Ministre isso aparece na gestão.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ DEPARTAMENTOS ═════════ -->
+<section class="sec" id="departamentos" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Um app para a igreja inteira</span>
+      <h2>Cada departamento com a sua escala. O pastor com a visão do todo.</h2>
+      <p class="lead">O Ministre foi criado para todos os departamentos da igreja. O pastor ou o gestor da igreja contrata o acesso e escolhe: departamentos separados, conforme a necessidade, ou o pacote completo com todos eles.</p>
+    </div>
+    <div class="depts">
+      <div class="dept live"><span class="di"><svg class="ico"><use href="#i-music"/></svg></span><div><h3>Louvor</h3><p>Escala, repertório com cifra, tom por culto e Modo Palco.</p></div><span class="badge on">Disponível agora</span></div>
+      <div class="dept"><span class="di"><svg class="ico"><use href="#i-video"/></svg></span><div><h3>Mídia e transmissão</h3><p>Câmeras, projeção, redes sociais e transmissão ao vivo.</p></div><span class="badge">Em breve</span></div>
+      <div class="dept"><span class="di"><svg class="ico"><use href="#i-sliders"/></svg></span><div><h3>Som e técnica</h3><p>Mesa de som, iluminação e montagem.</p></div><span class="badge">Em breve</span></div>
+      <div class="dept"><span class="di"><svg class="ico"><use href="#i-door"/></svg></span><div><h3>Recepção e acolhimento</h3><p>Portas, boas-vindas e visitantes.</p></div><span class="badge">Em breve</span></div>
+      <div class="dept"><span class="di"><svg class="ico"><use href="#i-kids"/></svg></span><div><h3>Ministério infantil</h3><p>Professores e auxiliares de cada sala.</p></div><span class="badge">Em breve</span></div>
+      <div class="dept"><span class="di"><svg class="ico"><use href="#i-hands"/></svg></span><div><h3>Diaconia e intercessão</h3><p>Ceia, ofertas, oração e apoio no culto.</p></div><span class="badge">Em breve</span></div>
+    </div>
+    <div class="packs">
+      <div class="pack"><b>Departamentos separados</b><span>A igreja começa só com o que precisa e acrescenta outros quando quiser.</span></div>
+      <div class="pack full"><b>Pacote completo</b><span>Todos os departamentos organizados juntos, com a visão completa para os gestores.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ GESTÃO DO PASTOR ═════════ -->
+<section class="sec" id="gestao" style="padding-top:20px">
+  <div class="wrap">
+    <div class="feat" style="padding-top:0">
+      <div class="copy">
+        <span class="for">Para o pastor e os gestores</span>
+        <h3>Quem estará no culto, o que faz e com que frequência serve.</h3>
+        <p>Na Gestão do Ministre, o pastor ou quem administra a igreja acompanha todos os cultos, oficiais ou não: domingo, meio de semana, vigílias, ensaios e eventos especiais.</p>
+        <ul class="ticks">
+          <li><svg class="ico"><use href="#i-check"/></svg>Veja, culto a culto, quem está escalado em cada departamento e quem já confirmou.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Saiba com que frequência cada pessoa é escalada e quantas vezes compareceu.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Perceba quem está sobrecarregado e quem está afastado, antes que vire problema.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Cada líder cuida só da própria equipe. Os gestores enxergam e gerenciam todos os departamentos.</li>
+        </ul>
+      </div>
+      <div class="panel" aria-hidden="true">
+        <div class="r"><div><span class="eb">Qui, 20 nov · 19h30</span><div class="t1" style="font-size:22px">Culto de Ensino</div></div><span class="f1"></span><span class="pl ok" style="font-size:11px">14 de 16 confirmados</span></div>
+        <div class="gl">
+          <div class="li"><span class="dm"><svg class="ico"><use href="#i-music"/></svg></span><div><b>Louvor</b><small>Ministro: Pr. Lucas</small></div><span class="f1"></span><span class="pl ok">6 de 6</span></div>
+          <div class="li"><span class="dm"><svg class="ico"><use href="#i-video"/></svg></span><div><b>Mídia</b><small>Líder: Carla</small></div><span class="f1"></span><span class="pl ok">3 de 3</span></div>
+          <div class="li"><span class="dm"><svg class="ico"><use href="#i-door"/></svg></span><div><b>Recepção</b><small>Líder: Márcio</small></div><span class="f1"></span><span class="pl wt">3 de 4</span></div>
+          <div class="li"><span class="dm"><svg class="ico"><use href="#i-kids"/></svg></span><div><b>Infantil</b><small>Líder: Débora</small></div><span class="f1"></span><span class="pl wt">2 de 3</span></div>
+        </div>
+        <div class="gl">
+          <div class="freq-h"><b>Frequência no mês</b><span class="mu">escalas · presença</span></div>
+          <div class="freq"><span class="av a1"></span><span class="nm">Rafael<small>Louvor · Mídia</small></span><span class="bar"><i style="width:92%"></i></span><span class="v">6 · 100%</span></div>
+          <div class="freq"><span class="av a4"></span><span class="nm">Ana Clara<small>Louvor</small></span><span class="bar"><i style="width:60%"></i></span><span class="v">4 · 75%</span></div>
+          <div class="freq"><span class="av a3"></span><span class="nm">João Pedro<small>Som</small></span><span class="bar warn"><i style="width:22%"></i></span><span class="v">1 · 50%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ RECURSOS ═════════ -->
+<section class="sec" id="recursos" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Departamento de Louvor · disponível agora</span>
+      <h2>Do culto ao palco, sem trocar de app.</h2>
+      <p class="lead">O Louvor é o primeiro departamento do Ministre, e já vem completo: escala, confirmação, repertório com cifra e Modo Palco.</p>
+    </div>
+
+    <div class="feat">
+      <div class="copy">
+        <span class="for">Para o líder</span>
+        <h3>Escala pronta em 3 passos. Confirmação em 1 toque.</h3>
+        <p>Vale para todos os cultos: domingo, meio de semana, vigílias, ensaios e eventos especiais. Escolha quem serve e o que vai tocar. Ao publicar, cada pessoa recebe o aviso no celular e responde ali mesmo.</p>
+        <ul class="ticks">
+          <li><svg class="ico"><use href="#i-check"/></svg>Veja quem confirmou, quem falta e quem não pode, com o motivo.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>"Lembrar pendentes" cobra só quem ainda não respondeu.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Escala oficial, que todos veem, ou temporária, só para os escalados. Monte como rascunho e publique quando estiver pronta.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Coloque o ensaio dentro da escala e duplique o culto para outra data.</li>
+        </ul>
+      </div>
+      <div class="panel" aria-hidden="true">
+        <div class="r"><div><span class="eb">Sex, 21 nov · 23h</span><div class="t1" style="font-size:22px">Vigília de Oração</div></div><span class="f1"></span><span class="pl ok" style="font-size:11px">3 de 4 responderam</span></div>
+        <div class="gl">
+          <div class="li"><span class="av a2"></span><div><b>Pr. Lucas <svg class="ico" style="width:13px;height:13px;display:inline;vertical-align:-2px;fill:#FBBF24;stroke:#FBBF24"><use href="#i-star"/></svg></b><small>Ministro · Vocal</small></div><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg>Vai</span></div>
+          <div class="li"><span class="av a1"></span><div><b>Rafael</b><small>Violão</small></div><span class="f1"></span><span class="pl ok"><svg class="ico"><use href="#i-check"/></svg>Vai</span></div>
+          <div class="li"><span class="av a3"></span><div><b>João Pedro</b><small>Bateria</small></div><span class="f1"></span><span class="pl no"><svg class="ico"><use href="#i-x"/></svg>Viagem</span></div>
+          <div class="li"><span class="av a5"></span><div><b>Beatriz</b><small>Teclado</small></div><span class="f1"></span><span class="pl wt"><svg class="ico"><use href="#i-clock"/></svg>Falta</span></div>
+        </div>
+        <div class="pb" style="font-size:13.5px;padding:12px">Lembrar 1 pendente</div>
+      </div>
+    </div>
+
+    <div class="feat flip">
+      <div class="copy">
+        <span class="for">Para a equipe</span>
+        <h3>"Não posso nesse dia" fica registrado antes da escala.</h3>
+        <p>O músico marca um dia, um período ou um dia fixo da semana. O líder vê tudo no mês, e o app não deixa escalar quem avisou.</p>
+        <ul class="ticks">
+          <li><svg class="ico"><use href="#i-check"/></svg>Se a pessoa já estava escalada, o líder é avisado na hora.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Avisa também quando alguém já está em outro culto no mesmo horário.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Uma pessoa pode servir em mais de uma função no mesmo culto.</li>
+        </ul>
+      </div>
+      <div class="panel" aria-hidden="true">
+        <div class="r"><div class="t1" style="font-size:20px">Dezembro</div><span class="f1"></span><span class="mu" style="font-size:12.5px">Ana Clara · Vocal</span></div>
+        <div class="cal">
+          <span class="h">D</span><span class="h">S</span><span class="h">T</span><span class="h">Q</span><span class="h">Q</span><span class="h">S</span><span class="h">S</span>
+          <span class="o">29</span><span class="o">30</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+          <span class="s">6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+          <span class="x">13</span><span class="x">14</span><span class="x">15</span><span class="x">16</span><span class="x">17</span><span class="x">18</span><span class="x">19</span>
+          <span class="x">20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span>
+        </div>
+        <div class="alertbox"><svg class="ico"><use href="#i-x"/></svg><span><b>Ana Clara não pode de 13 a 20 de dezembro.</b> Motivo: viagem em família. Ela não aparece para escalar nesses dias.</span></div>
+      </div>
+    </div>
+
+    <div class="feat">
+      <div class="copy">
+        <span class="for">Para quem toca e canta</span>
+        <h3>A cifra já abre no tom do culto.</h3>
+        <p>Cada escala guarda o tom de cada música. Se precisar, o músico muda o tom na hora, com ♯ ou ♭. Experimente ao lado.</p>
+        <ul class="ticks">
+          <li><svg class="ico"><use href="#i-check"/></svg>Cole o link do YouTube, Spotify ou Deezer, e o título, o cantor e a letra vêm sozinhos.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Biblioteca do ministério com busca, mais tocadas e quantas vezes cada uma já foi usada.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Botão "Ouvir" abre a música para ensaiar em casa.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>O ministro da escala ★ monta o repertório daquele culto, e o líder continua no controle.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <div class="tp-head">
+          <div><h4>Canção de Exemplo</h4><small>Letra de exemplo · 72 bpm</small></div>
+          <div class="tp-ctl">
+            <button type="button" id="tpDown" aria-label="Descer meio tom">−</button>
+            <span class="tp-key" id="tpKey" aria-live="polite">G</span>
+            <button type="button" id="tpUp" aria-label="Subir meio tom">+</button>
+          </div>
+        </div>
+        <div class="gl"><div class="sheet" id="tpSheet"></div></div>
+        <div class="links" aria-hidden="true"><span><i class="dot" style="background:#FF3D3D"></i>YouTube</span><span><i class="dot" style="background:#1DB954"></i>Spotify</span><span><i class="dot" style="background:#A238FF"></i>Deezer</span><span><svg class="ico" style="width:14px;height:14px"><use href="#i-link"/></svg>Importar pelo link</span></div>
+      </div>
+    </div>
+
+    <div class="feat flip">
+      <div class="copy">
+        <span class="for">Para todos</span>
+        <h3>O aviso chega no celular, não se perde no grupo.</h3>
+        <p>Escalado, escala alterada, culto cancelado, lembrete do dia: cada coisa chega como notificação, no momento certo.</p>
+        <ul class="ticks">
+          <li><svg class="ico"><use href="#i-check"/></svg>Lembrete automático 2 dias antes para quem não respondeu e 3 horas antes do culto para todos.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Recados do líder fixados no topo, mostrando quantas pessoas já leram.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Resumo da semana para o líder toda segunda-feira.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Cada pessoa escolhe quais avisos quer receber.</li>
+        </ul>
+      </div>
+      <div class="panel" aria-hidden="true">
+        <div class="noti"><span class="ap"><img src="icon.png" alt=""></span><div><b>Você foi escalado</b><p>Culto de Ensino · Qui, 20 nov às 19h30 · Violão</p></div><time>agora</time></div>
+        <div class="noti s2"><span class="ap"><img src="icon.png" alt=""></span><div><b>Você é o ministro deste culto ★</b><p>Monte o repertório do Culto de Oração.</p></div><time>2 min</time></div>
+        <div class="noti s3"><span class="ap"><img src="icon.png" alt=""></span><div><b>Lembrete: culto hoje às 19h30</b><p>Passagem de som às 18h30 no templo.</p></div><time>15h</time></div>
+        <div class="gl r" style="margin-top:6px"><svg class="ico" style="color:#FFB38E"><use href="#i-pin"/></svg><div style="font-size:13px"><b>Recado fixado</b><div class="mu">Lido por 12 de 14 pessoas</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ MODO PALCO ═════════ -->
+<section class="sec stage" id="palco">
+  <div class="wrap stage-grid">
+    <div>
+      <span class="eyebrow">Modo Palco</span>
+      <h2 style="margin-top:14px">Internet da igreja caiu? A cifra continua na tela.</h2>
+      <p class="lead" style="margin-top:18px">O Modo Palco guarda no aparelho as músicas da escala. Na hora do culto, letra e cifra aparecem grandes, rolando no ritmo da música, sem papel e sem depender do Wi-Fi.</p>
+      <div class="sfacts">
+        <div class="sfact"><svg class="ico"><use href="#i-wifioff"/></svg><h3>Funciona sem internet</h3><p>As músicas do culto ficam guardadas no celular e abrem mesmo sem sinal.</p></div>
+        <div class="sfact"><svg class="ico"><use href="#i-scroll"/></svg><h3>Rolagem automática</h3><p>A letra desce sozinha. A velocidade fica salva para cada música.</p></div>
+        <div class="sfact"><svg class="ico"><use href="#i-sun"/></svg><h3>Tela sempre acesa</h3><p>O celular não apaga no meio do louvor.</p></div>
+        <div class="sfact"><svg class="ico"><use href="#i-swipe"/></svg><h3>Deslize para a próxima</h3><p>Troque de música e de tom sem sair do palco.</p></div>
+      </div>
+    </div>
+    <div class="phone" aria-hidden="true" style="position:relative"><div class="scr calm" style="background:#04060C">
+      <div class="st"><span>9:41</span><i></i><span>100%</span></div>
+      <div class="sb">
+        <div class="r"><span class="ib"><svg class="ico"><use href="#i-x"/></svg></span><div style="text-align:center;flex:1"><b style="font-size:12px">Canção de Exemplo</b><div class="mu" style="font-size:10px">2 de 5 · Tom D</div></div><span class="ib"><svg class="ico"><use href="#i-music"/></svg></span></div>
+        <span class="offline"><svg class="ico" style="width:12px;height:12px"><use href="#i-wifioff"/></svg>Sem internet · cópia guardada</span>
+<div class="lyr" style="font-size:16px"><span class="d"><span class="c">D</span>         <span class="c">G</span>
+Senhor, eu venho
+a Ti</span>
+<span class="c">Bm</span>        <span class="c">A</span>
+com tudo o que
+sou
+<span class="c">D</span>         <span class="c">G</span>
+Tua luz me
+alcançou
+<span class="c">Bm</span>       <span class="c">A</span>
+e me fez
+recomeçar</div>
+      </div>
+      <div class="r" style="padding:0 22px 24px;justify-content:space-between;position:relative;z-index:2">
+        <span class="ib" style="width:42px;height:42px;border-radius:50%"><svg class="ico"><use href="#i-back"/></svg></span>
+        <span style="width:54px;height:54px;border-radius:50%;background:#fff;display:grid;place-items:center"><svg class="ico" style="width:24px;height:24px;fill:#0B1F3B;stroke:none"><use href="#i-play"/></svg></span>
+        <span class="ib" style="width:42px;height:42px;border-radius:50%"><svg class="ico"><use href="#i-chev"/></svg></span>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ═════════ PARA QUEM ═════════ -->
+<section class="sec" id="quem">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Feito para os dois lados</span>
+      <h2>O pastor ganha visão. Quem serve ganha tranquilidade.</h2>
+    </div>
+    <div class="roles">
+      <div class="role">
+        <span class="ri"><svg class="ico"><use href="#i-lead"/></svg></span>
+        <h3>Para o pastor, gestores e líderes</h3>
+        <ul>
+          <li><svg class="ico"><use href="#i-check"/></svg>Sabe com dias de antecedência quem vai estar em cada culto, e em qual função.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Convida a equipe com um link no WhatsApp. Ninguém precisa ser cadastrado à mão.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Escala Oficial para todos ou Temporária, que só os escalados veem.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Gestores administram todos os departamentos; cada líder cuida só da própria equipe.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Cuida de vários ministérios ou igrejas na mesma conta.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Monta a escala no computador, com tela grande.</li>
+        </ul>
+      </div>
+      <div class="role">
+        <span class="ri" style="background:var(--or)"><svg class="ico"><use href="#i-guitar"/></svg></span>
+        <h3>Para quem serve</h3>
+        <ul>
+          <li><svg class="ico"><use href="#i-check"/></svg>Abre o app e vê na hora quando serve, em qual função e com quem.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Confirma ou avisa que não pode em um toque, sem textão no grupo.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Registra os dias em que não pode e não é escalado neles.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>No Louvor, ensaia com a cifra no tom certo e usa o celular no palco, mesmo sem internet.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>Acompanha o próprio histórico: quantas escalas e quantas presenças.</li>
+          <li><svg class="ico"><use href="#i-check"/></svg>É simples o bastante para o irmão que tem pouca intimidade com o celular.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ COMPARAÇÃO ═════════ -->
+<section class="sec" id="comparar" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Por que o Ministre</span>
+      <h2>Feito para a rotina da igreja, não adaptado para ela.</h2>
+      <p class="lead">Compare com o que a maioria das igrejas usa hoje.</p>
+    </div>
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead><tr><th scope="col"><span style="position:absolute;left:-9999px">Recurso</span></th><th scope="col">Grupo de WhatsApp + planilha</th><th scope="col">Sistemas gerais de igreja</th><th scope="col" class="us"><img src="logo-escuro.png" alt="Ministre" width="114" height="28"></th></tr></thead>
+        <tbody>
+          <tr><td>Confirmação de presença de cada pessoa</td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>Some no grupo</span></td><td><span class="m">Às vezes</span></td><td class="us"><span class="y"><svg class="ico"><use href="#i-check"/></svg>Um toque, com lembrete</span></td></tr>
+          <tr><td>Não escalar quem avisou que não pode</td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>Depende da memória</span></td><td><span class="m">Às vezes</span></td><td class="us"><span class="y"><svg class="ico"><use href="#i-check"/></svg>Bloqueado na hora de escalar</span></td></tr>
+          <tr><td>Cifra no tom definido para o culto</td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>PDF e print</span></td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>Raramente</span></td><td class="us"><span class="y"><svg class="ico"><use href="#i-check"/></svg>Tom por escala e por música</span></td></tr>
+          <tr><td>Letra e cifra no palco sem internet</td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>Não</span></td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>Não</span></td><td class="us"><span class="y"><svg class="ico"><use href="#i-check"/></svg>Modo Palco</span></td></tr>
+          <tr><td>Lembretes automáticos antes do culto</td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>O líder cobra um por um</span></td><td><span class="m">Às vezes</span></td><td class="us"><span class="y"><svg class="ico"><use href="#i-check"/></svg>2 dias e 3 horas antes</span></td></tr>
+          <tr><td>Importar música pelo link</td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>Não</span></td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>Não</span></td><td class="us"><span class="y"><svg class="ico"><use href="#i-check"/></svg>YouTube, Spotify e Deezer</span></td></tr>
+          <tr><td>Visão do gestor: quem serve, onde e com que frequência</td><td><span class="n"><svg class="ico"><use href="#i-x"/></svg>Não existe</span></td><td><span class="m">Relatórios gerais</span></td><td class="us"><span class="y"><svg class="ico"><use href="#i-check"/></svg>Por culto e por pessoa</span></td></tr>
+          <tr><td>Simples para voluntário</td><td><span class="y"><svg class="ico"><use href="#i-check"/></svg>Todo mundo já usa</span></td><td><span class="m">Cheio de módulos</span></td><td class="us"><span class="y"><svg class="ico"><use href="#i-check"/></svg>Só o que cada departamento usa</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ COMO COMEÇAR ═════════ -->
+<section class="sec" id="comecar" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Comece hoje</span>
+      <h2>Sua equipe usando o Ministre já no próximo culto.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h3>Crie a igreja</h3><p>Cadastre a igreja e o departamento. O Louvor já começa com as funções mais comuns (Vocal, Violão, Bateria…).</p></div>
+      <div class="step"><span class="n">2</span><h3>Mande o convite</h3><p>Envie o link no grupo do WhatsApp. Cada pessoa entra com o próprio e-mail e já aparece na equipe.</p></div>
+      <div class="step"><span class="n">3</span><h3>Publique a escala</h3><p>Escolha o culto e quem serve. A equipe recebe o aviso e confirma pelo celular.</p></div>
+    </div>
+    <div class="steps-cta">
+      <a class="btn btn-or" href="https://app.ministreapp.com.br/criar-conta">Começar agora <svg class="ico"><use href="#i-arrow"/></svg></a>
+      <a class="btn btn-line" href="#baixar">Baixar o app</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ BAIXAR ═════════ -->
+<section class="sec get" id="baixar">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Baixe e acesse</span>
+      <h2>No celular, no tablet e no computador.</h2>
+      <p class="lead">Aponte a câmera do celular para o código do seu aparelho. O app não ocupa espaço como os de loja e se atualiza sozinho.</p>
+    </div>
+    <div class="dl">
+      <div class="dlc" id="iphone">
+        <div class="top"><svg class="ico"><use href="#i-apple"/></svg><h3>iPhone e iPad</h3><span class="tag">seu aparelho</span></div>
+        <div class="qr"><img src="qr-iphone.svg" alt="QR code para instalar o Ministre no iPhone" width="180" height="180"></div>
+        <ol>
+          <li>Abra <b>app.ministreapp.com.br</b> no <b>Safari</b>.</li>
+          <li>Toque em <b>Compartilhar</b> (quadrado com a seta).</li>
+          <li>Escolha <b>Adicionar à Tela de Início</b>.</li>
+          <li>Abra pelo ícone e ative os avisos no sino.</li>
+        </ol>
+        <a class="btn btn-white only-phone" href="https://app.ministreapp.com.br">Abrir no Safari</a>
+      </div>
+      <div class="dlc" id="android">
+        <div class="top"><svg class="ico"><use href="#i-android"/></svg><h3>Android</h3><span class="tag">seu aparelho</span></div>
+        <div class="qr"><img src="qr-android.svg" alt="QR code para instalar o Ministre no Android" width="180" height="180"></div>
+        <ol>
+          <li>Abra <b>app.ministreapp.com.br</b> no <b>Chrome</b>.</li>
+          <li>Toque no menu <b>⋮</b>.</li>
+          <li>Escolha <b>Instalar app</b> (ou <b>Adicionar à tela inicial</b>).</li>
+          <li>Abra pelo ícone e ative os avisos no sino.</li>
+        </ol>
+        <a class="btn btn-white only-phone" href="https://app.ministreapp.com.br">Abrir no Chrome</a>
+      </div>
+      <div class="dlc" id="computador">
+        <div class="top"><svg class="ico"><use href="#i-desktop"/></svg><h3>Computador</h3></div>
+        <p style="color:#C9D1E0;font-size:15px">Para montar escalas e cuidar do repertório com tela grande. Use pelo navegador, sem instalar nada.</p>
+        <span class="url">app.ministreapp.com.br</span>
+        <a class="btn btn-or" href="https://app.ministreapp.com.br/entrar">Acessar o sistema <svg class="ico"><use href="#i-arrow"/></svg></a>
+        <span class="note-sm">Funciona no Chrome, Edge, Safari e Firefox.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ DÚVIDAS ═════════ -->
+<section class="sec" id="duvidas">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Dúvidas</span>
+      <h2>Antes de levar para a sua equipe</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Quais departamentos o Ministre atende?</summary><p>O Louvor já está disponível e completo. Mídia, Som, Recepção, Infantil, Diaconia e outros estão chegando. A igreja poderá escolher departamentos separados ou o pacote completo.</p></details>
+      <details><summary>Quem contrata o Ministre?</summary><p>O pastor ou quem administra a igreja. Essa pessoa vira gestora, escolhe os departamentos e pode nomear outros gestores. Cada departamento tem o seu líder, que cuida só da própria equipe. Os voluntários entram pelo convite.</p></details>
+      <details><summary>O pessoal da equipe vai conseguir usar?</summary><p>Sim. O músico só precisa ver quando serve, confirmar com um toque e abrir a cifra. Ele entra pelo link que o líder manda no WhatsApp, sem cadastro complicado.</p></details>
+      <details><summary>Precisa baixar na App Store ou na Play Store?</summary><p>Não. O Ministre é instalado direto pelo navegador e fica com ícone na tela inicial, como qualquer app. Ele não ocupa espaço de loja e se atualiza sozinho. No computador, é só acessar o site.</p></details>
+      <details><summary>Vou continuar usando o grupo do WhatsApp?</summary><p>Para conversar, sim. A escala, as confirmações, o repertório e os recados importantes passam para o Ministre, onde não se perdem no meio das mensagens.</p></details>
+      <details><summary>E se a internet da igreja cair no culto?</summary><p>O Modo Palco guarda no celular as músicas da escala. Letra e cifra continuam abrindo normalmente, mesmo sem sinal.</p></details>
+      <details><summary>Já uso um sistema para a igreja. Preciso trocar?</summary><p>Não. O sistema da igreja cuida de cadastro e finanças. O Ministre cuida de quem serve: escalas, confirmações e a frequência de cada pessoa. Os dois funcionam juntos.</p></details>
+      <details><summary>As notificações chegam no iPhone?</summary><p>Chegam, no iPhone com iOS 16.4 ou mais novo, depois de adicionar o Ministre à Tela de Início pelo Safari e tocar em "Ativar avisos". No Android e no computador, basta permitir os avisos.</p></details>
+      <details><summary>Meus dados e os da equipe estão seguros?</summary><p>Sim. O acesso é protegido por senha, cada pessoa vê só o ministério em que está, e é feito backup automático criptografado todos os dias. Qualquer pessoa pode excluir a própria conta quando quiser, como prevê a LGPD.</p></details>
+      <details><summary>Uma pessoa pode servir em mais de um departamento?</summary><p>Pode. A mesma conta participa de vários departamentos e até de mais de uma igreja, e a pessoa troca entre eles no Perfil.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ CHAMADA FINAL ═════════ -->
+<section class="final">
+  <div class="wrap">
+    <div class="box">
+      <div>
+        <h2>O próximo culto pode ser o primeiro sem correria.</h2>
+        <p>Cadastre a igreja, mande o link para a equipe e publique a primeira escala hoje mesmo.</p>
+      </div>
+      <div class="ctas">
+        <a class="btn btn-or" href="https://app.ministreapp.com.br/criar-conta">Começar agora <svg class="ico"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-glass" href="https://app.ministreapp.com.br/entrar">Já tenho conta · Entrar</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="logo-escuro.png" alt="Ministre" width="138" height="34">
+    <span>© 2026 Ministre · Feito no Brasil para a igreja local</span>
+    <span class="sp"></span>
+    <nav aria-label="Rodapé">
+      <a href="https://app.ministreapp.com.br/entrar">Entrar</a>
+      <a href="https://app.ministreapp.com.br/privacidade">Privacidade</a>
+      <a href="https://app.ministreapp.com.br/termos">Termos de uso</a>
+      <a href="mailto:contato@ministreapp.com.br">contato@ministreapp.com.br</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Topo ganha fundo de vidro depois de rolar.
+  var nav = document.getElementById('nav');
+  function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 24); }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Demonstração de mudança de tom.
+  var NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  var LINES = [['VERSO'],
+    [['G',0],['C',14]], 'Senhor, eu venho a Ti',
+    [['Em',0],['D',14]], 'com tudo o que sou',
+    [['G',0],['C',14]], 'Tua luz me alcançou',
+    [['Em',0],['D',14]], 'e me fez recomeçar'];
+  var shift = 0, sheet = document.getElementById('tpSheet'), keyEl = document.getElementById('tpKey');
+  function tr(ch) {
+    var m = ch.match(/^([A-G]#?)(.*)$/), i = NOTES.indexOf(m[1]);
+    return NOTES[(i + shift + 120) % 12] + m[2];
+  }
+  function render() {
+    var out = '';
+    LINES.forEach(function (l) {
+      if (typeof l === 'string') { out += l + '\n'; return; }
+      if (l.length === 1 && typeof l[0] === 'string') { out += '<span class="lbl">' + l[0] + '</span>\n'; return; }
+      var line = '', col = 0;
+      l.forEach(function (c) { var t = tr(c[0]); while (col < c[1]) { line += ' '; col++; } line += '<span class="c">' + t + '</span>'; col += t.length; });
+      out += line + '\n';
+    });
+    sheet.innerHTML = out.replace(/\n$/, '');
+    keyEl.textContent = tr('G');
+  }
+  document.getElementById('tpUp').addEventListener('click', function () { shift++; render(); });
+  document.getElementById('tpDown').addEventListener('click', function () { shift--; render(); });
+  render();
+
+  // QR code (#iphone / #android) ou o próprio aparelho: destaca o cartão certo.
+  var ua = navigator.userAgent;
+  var isIOS = /iPhone|iPad|iPod/.test(ua) || (ua.indexOf('Macintosh') > -1 && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/.test(ua);
+  var target = location.hash === '#iphone' ? 'iphone' : location.hash === '#android' ? 'android' : isIOS ? 'iphone' : isAndroid ? 'android' : '';
+  if (target) document.getElementById(target).classList.add('here');
+})();
+</script>
 </body>
 </html>
