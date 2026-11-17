@@ -29,6 +29,10 @@ class MembershipResource extends JsonResource
                 'id' => $this->ministry->church->id,
                 'name' => $this->ministry->church->name,
                 'city' => $this->ministry->church->city,
+                // Gestor da igreja (pastor ou administrador): gestão de todos os departamentos.
+                'is_manager' => $request->user() ? \App\Services\ChurchManagers::isManager($request->user(), $this->ministry->church) : false,
+                // Quem criou a igreja: gestor que ninguém pode tirar.
+                'is_owner' => (int) $this->ministry->church->owner_user_id === (int) $request->user()?->id,
             ],
             'positions' => $this->positions->map(fn ($p) => ['id' => $p->id, 'name' => $p->name])->values(),
         ];

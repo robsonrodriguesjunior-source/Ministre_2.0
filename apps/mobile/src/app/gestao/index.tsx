@@ -6,7 +6,7 @@ import { FormScreen } from '@/components/FormScreen';
 import { Avatar, Card, EmptyState, MenuRow, Text } from '@/components/ui';
 import { manageApi, manageKeys } from '@/features/manage/api';
 import { useActiveMembership } from '@/stores/session';
-import { space } from '@/theme/tokens';
+import { colors, space } from '@/theme/tokens';
 import { goBack } from '@/lib/nav';
 
 const ITEMS = [
@@ -19,7 +19,9 @@ const ITEMS = [
 
 // Gestão do ministério (5.10, só líderes). No computador, os atalhos ficam em grade.
 export default function Gestao() {
-  const isLeader = useActiveMembership()?.role === 'leader';
+  const membership = useActiveMembership();
+  const isLeader = membership?.role === 'leader';
+  const isManager = !!membership?.church.is_manager;
   const wide = useWindowDimensions().width >= 760;
   const ministry = useQuery({ queryKey: manageKeys.ministry, queryFn: manageApi.ministry, enabled: isLeader });
   const info = ministry.data?.data;
@@ -46,6 +48,13 @@ export default function Gestao() {
         </View>
       )}
 
+      {isManager && (
+        <Card style={styles.church}>
+          <MenuRow icon="calendar" label="Visão da igreja" subtitle="Todos os departamentos, culto a culto, e a frequência de cada pessoa" onPress={() => router.push('/gestao/igreja')} divider />
+          <MenuRow icon="user" label="Gestores da igreja" subtitle="Quem administra todos os departamentos (pastor ou outra pessoa)" onPress={() => router.push('/gestao/gestores')} divider={false} />
+        </Card>
+      )}
+
       {wide ? (
         <View style={styles.grid}>
           {ITEMS.map((item) => (
@@ -70,4 +79,5 @@ const styles = StyleSheet.create({
   head: { flexDirection: 'row', alignItems: 'center', gap: space.md },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.md },
   tile: { flexBasis: '31%', flexGrow: 1, minWidth: 240, paddingVertical: space.xs },
+  church: { paddingVertical: space.xs, borderColor: colors.orangeBorder, backgroundColor: colors.orangeSoft },
 });

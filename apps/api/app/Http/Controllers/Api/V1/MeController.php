@@ -12,6 +12,7 @@ use App\Models\EventAssignment;
 use App\Models\MinistryMember;
 use App\Models\User;
 use App\Services\Availability;
+use App\Services\ChurchManagers;
 use App\Services\ImageStore;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
@@ -114,6 +115,9 @@ class MeController extends Controller
     /** Ministérios de que a pessoa participa (alimenta o seletor de ministério). */
     public function ministries(Request $request): AnonymousResourceCollection
     {
+        // Gestor da igreja enxerga (e lidera) todos os departamentos dela.
+        ChurchManagers::ensure($request->user());
+
         $memberships = $request->user()->memberships()
             ->where('status', MinistryMember::STATUS_ACTIVE)
             ->with(['ministry.church', 'positions'])

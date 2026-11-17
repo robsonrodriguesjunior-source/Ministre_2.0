@@ -61,7 +61,31 @@ export const meApi = {
   remove: (confirm: string) => api<{ message: string }>('/me', { method: 'DELETE', body: { confirm } }),
 };
 
+export type OverviewPerson = {
+  user_id: number; name: string; avatar_url: string | null; ministries: string[];
+  scheduled: number; confirmed: number; declined: number; pending: number; past: number; confirmed_rate: number | null;
+};
+export type OverviewDepartment = {
+  event_id: number; ministry_id: number; ministry: string; type: string; title: string; visibility: string; minister: string | null;
+  total: number; confirmed: number; pending: number; declined: number;
+  people: { name: string; avatar_url: string | null; user_id: number | null; position: string | null; status: 'pending' | 'confirmed' | 'declined'; is_minister: boolean }[];
+};
+export type ChurchOverview = {
+  month: string;
+  church: { id: number; name: string };
+  ministries: { id: number; name: string; type: string }[];
+  summary: { services: number; people_serving: number; people_idle: number; confirmed_rate: number | null };
+  services: { starts_at: string; title: string; total: number; confirmed: number; departments: OverviewDepartment[] }[];
+  people: OverviewPerson[];
+};
+
+export type ChurchManager = { user_id: number; name: string; avatar_url: string | null; is_owner: boolean; is_me: boolean };
+
 export const manageApi = {
+  churchManagers: () => api<{ data: ChurchManager[]; candidates: ChurchManager[] }>('/church/managers', m),
+  addChurchManager: (userId: number) => api<{ message: string }>('/church/managers', { ...m, method: 'POST', body: { user_id: userId } }),
+  removeChurchManager: (userId: number) => api<{ message: string }>('/church/managers/' + userId, { ...m, method: 'DELETE' }),
+  churchOverview: (month: string) => api<ChurchOverview>(`/church/overview?month=${month}`, m),
   members: () => api<{ data: Member[] }>('/members', m),
   updateMember: (id: number, body: { role?: Role; position_ids?: number[] }) =>
     api<{ data: Member }>(`/members/${id}`, { ...m, method: 'PATCH', body }),
@@ -93,6 +117,8 @@ export const manageKeys = {
   positions: ['manage', 'positions'] as const,
   ministry: ['manage', 'ministry'] as const,
   unavailability: (month: string) => ['manage', 'unavailability', month] as const,
+  churchOverview: (month: string) => ['manage', 'church-overview', month] as const,
+  churchManagers: ['manage', 'church-managers'] as const,
   stats: ['me', 'stats'] as const,
 };
 

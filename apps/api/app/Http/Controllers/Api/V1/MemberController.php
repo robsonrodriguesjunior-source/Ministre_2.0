@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 use App\Models\EventAssignment;
 use App\Models\MinistryMember;
 use App\Models\Position;
+use App\Services\ChurchManagers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +43,9 @@ class MemberController extends Controller
             'position_ids.*' => ['integer'],
         ]);
 
+        if (($data['role'] ?? null) === MinistryMember::ROLE_MEMBER && ChurchManagers::isManagerMember($member)) {
+            throw ValidationException::withMessages(['role' => 'Gestor da igreja é líder em todos os departamentos. Para mudar, tire-o dos gestores primeiro.']);
+        }
         if (($data['role'] ?? null) === MinistryMember::ROLE_MEMBER && $member->isLeader()) {
             $this->ensureAnotherLeader($member, 'role', 'O ministério precisa de pelo menos um líder.');
         }
@@ -65,6 +69,9 @@ class MemberController extends Controller
     {
         $membership = $this->leader($request);
         $this->sameMinistry($membership, $member);
+        if (ChurchManagers::isManagerMember($member)) {
+            throw ValidationException::withMessages(['member' => 'Gestor da igreja participa de todos os departamentos. Para tirar, remova-o dos gestores primeiro.']);
+        }
         if ($member->isLeader()) {
             $this->ensureAnotherLeader($member, 'member', 'O ministério precisa de pelo menos um líder.');
         }

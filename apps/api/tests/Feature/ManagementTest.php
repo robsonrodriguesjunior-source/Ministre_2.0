@@ -114,11 +114,17 @@ it('changes role and positions of a member', function () {
     lead($this->marcos, $this)->getJson('/api/v1/members')->assertOk();
 });
 
-it('never leaves the ministry without a leader', function () {
+it('never leaves the ministry without a leader (the church manager can not be demoted or removed)', function () {
     $danielMember = $this->daniel->memberships()->first();
     lead($this->daniel, $this)->patchJson("/api/v1/members/{$danielMember->id}", ['role' => 'member'])
-        ->assertUnprocessable()->assertJsonValidationErrors(['role' => 'O ministério precisa de pelo menos um líder.']);
+        ->assertUnprocessable()->assertJsonValidationErrors(['role']);
     lead($this->daniel, $this)->deleteJson("/api/v1/members/{$danielMember->id}")->assertUnprocessable();
+});
+
+it('still requires another leader before demoting a leader who is not a church manager', function () {
+    lead($this->daniel, $this)->patchJson("/api/v1/members/{$this->marcosMember->id}", ['role' => 'leader'])->assertOk();
+    // Marcos pode voltar a membro porque o Daniel continua líder.
+    lead($this->daniel, $this)->patchJson("/api/v1/members/{$this->marcosMember->id}", ['role' => 'member'])->assertOk();
 });
 
 it('removes a member from future schedules but keeps the history', function () {

@@ -150,12 +150,27 @@ it('blocks access to a ministry the user does not belong to', function () {
 it('a removed member loses access', function () {
     $leader = User::factory()->create();
     $membership = createMinistryFor($leader);
+    $other = User::factory()->create();
+    $removed = MinistryMember::create([
+        'ministry_id' => $membership->ministry_id, 'user_id' => $other->id,
+        'role' => MinistryMember::ROLE_LEADER, 'status' => MinistryMember::STATUS_REMOVED, 'joined_at' => now(),
+    ]);
+
+    $this->actingAs($other)
+        ->withHeader('X-Ministry-Id', (string) $removed->ministry_id)
+        ->getJson('/api/v1/invites')
+        ->assertForbidden();
+});
+
+it('the church creator is always a manager and gets the access back', function () {
+    $leader = User::factory()->create();
+    $membership = createMinistryFor($leader);
     $membership->update(['status' => MinistryMember::STATUS_REMOVED]);
 
     $this->actingAs($leader)
         ->withHeader('X-Ministry-Id', (string) $membership->ministry_id)
         ->getJson('/api/v1/invites')
-        ->assertForbidden();
+        ->assertOk();
 });
 
 it('loads the demo data from section 8', function () {

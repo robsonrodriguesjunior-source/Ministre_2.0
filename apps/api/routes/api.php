@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\V1\AssignmentController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CatalogController;
 use App\Http\Controllers\Api\V1\ChurchController;
+use App\Http\Controllers\Api\V1\ChurchManagerController;
+use App\Http\Controllers\Api\V1\ChurchOverviewController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\HomeController;
@@ -60,6 +62,12 @@ Route::prefix('v1')->group(function () {
 
             Route::get('/home', HomeController::class);
             Route::get('/me/stats', [MeController::class, 'stats']);
+
+            // Gestores da igreja (pastor ou administrador): todos os departamentos
+            Route::get('/church/overview', [ChurchOverviewController::class, 'show']);
+            Route::get('/church/managers', [ChurchManagerController::class, 'index']);
+            Route::post('/church/managers', [ChurchManagerController::class, 'store']);
+            Route::delete('/church/managers/{user}', [ChurchManagerController::class, 'destroy'])->whereNumber('user');
 
             // Gestão do ministério (só líderes)
             Route::get('/members', [MemberController::class, 'index']);

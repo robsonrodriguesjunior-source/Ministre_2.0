@@ -16,7 +16,7 @@ class MinistryMember extends Model
     public const STATUS_ACTIVE = 'active';
     public const STATUS_REMOVED = 'removed';
 
-    protected $fillable = ['ministry_id', 'user_id', 'role', 'status', 'joined_at'];
+    protected $fillable = ['ministry_id', 'user_id', 'role', 'granted_by_manager', 'status', 'joined_at'];
 
     protected function casts(): array
     {

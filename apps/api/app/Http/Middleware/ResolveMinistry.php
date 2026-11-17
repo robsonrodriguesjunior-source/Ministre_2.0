@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Ministry;
 use App\Models\MinistryMember;
+use App\Services\ChurchManagers;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +26,22 @@ class ResolveMinistry
 
         /** @var \App\Models\User $user */
         $user = $request->user();
-        $membership = MinistryMember::query()
+        $find = fn () => MinistryMember::query()
             ->where('ministry_id', $ministryId)
             ->where('user_id', $user->id)
             ->where('status', MinistryMember::STATUS_ACTIVE)
             ->with('ministry')
             ->first();
+        $membership = $find();
+
+        // O Gestor da igreja (pastor ou administrador) é líder em todos os departamentos dela.
+        if (! $membership?->isLeader()) {
+            $ministry = Ministry::with('church')->find($ministryId);
+            if ($ministry && ChurchManagers::isManager($user, $ministry->church)) {
+                ChurchManagers::ensure($user);
+                $membership = $find();
+            }
+        }
 
         if (! $membership) {
             return response()->json(['message' => 'Você não participa deste ministério.'], 403);
