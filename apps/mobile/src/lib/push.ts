@@ -71,11 +71,32 @@ export async function enablePush(): Promise<PushStatus> {
   const timeout = new Promise<never>((_, reject) =>
     setTimeout(() => reject(new Error('Não foi possível ativar agora. Tente de novo.')), 60_000),
   );
-  const subscription =
-    (await reg.pushManager.getSubscription()) ??
-    (await Promise.race([reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(public_key) }), timeout]));
+  const subscription = await Promise.race([currentSubscription(reg, public_key), timeout]);
   await api('/push/subscriptions', { method: 'POST', body: subscription.toJSON() });
   return 'on';
+}
+
+/** A inscrição foi feita com esta chave do servidor? */
+function sameKey(sub: PushSubscription, publicKey: string) {
+  const mine = sub.options?.applicationServerKey;
+  if (!mine) return false;
+  const a = new Uint8Array(mine);
+  const b = keyBytes(publicKey);
+  return a.length === b.length && a.every((v, i) => v === b[i]);
+}
+
+/**
+ * Inscrição válida para a chave atual. Uma inscrição antiga (de outra versão do app, com outra chave)
+ * faz o Google/Apple recusar todos os avisos ("Forbidden"): ela é cancelada e uma nova é criada.
+ */
+async function currentSubscription(reg: ServiceWorkerRegistration, publicKey: string): Promise<PushSubscription> {
+  const existing = await reg.pushManager.getSubscription();
+  if (existing && sameKey(existing, publicKey)) return existing;
+  if (existing) {
+    await api('/push/subscriptions', { method: 'DELETE', body: { endpoint: existing.endpoint } }).catch(() => undefined);
+    await existing.unsubscribe().catch(() => undefined);
+  }
+  return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(publicKey) });
 }
 
 export async function disablePush(): Promise<PushStatus> {
@@ -100,8 +121,16 @@ export async function forgetPushOnServer(): Promise<void> {
 export async function refreshPushSubscription(): Promise<void> {
   if (!web() || !('Notification' in window) || Notification.permission !== 'granted') return;
   const reg = await registration();
-  const subscription = await reg?.pushManager.getSubscription();
-  if (subscription) await api('/push/subscriptions', { method: 'POST', body: subscription.toJSON() }).catch(() => undefined);
+  const existing = await reg?.pushManager.getSubscription();
+  if (!reg || !existing) return;
+  // Confere a chave: inscrição antiga é refeita aqui mesmo (a permissão já foi dada, não pergunta de novo).
+  try {
+    const { public_key } = await api<{ public_key: string | null }>('/push/config');
+    const subscription = public_key ? await currentSubscription(reg, public_key) : existing;
+    await api('/push/subscriptions', { method: 'POST', body: subscription.toJSON() });
+  } catch {
+    // Sem internet ou serviço de avisos fora: tenta de novo na próxima abertura.
+  }
 }
 
 export const sendTestPush = () => api<{ message: string }>('/push/test', { method: 'POST' });

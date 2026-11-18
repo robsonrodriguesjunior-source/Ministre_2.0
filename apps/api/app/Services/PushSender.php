@@ -56,7 +56,9 @@ class PushSender
         foreach ($webPush->flush() as $report) {
             if ($report->isSuccess()) {
                 $sent++;
-            } elseif ($report->isSubscriptionExpired()) {
+            } elseif ($report->isSubscriptionExpired() || $report->getResponse()?->getStatusCode() === 403) {
+                // 403 = inscrição feita com outra chave (versão antiga do app): nunca vai funcionar.
+                // Apaga; o app refaz a inscrição com a chave certa na próxima vez que abrir.
                 WebPushSubscription::where('endpoint_hash', WebPushSubscription::hash($report->getEndpoint()))->delete();
             } else {
                 Log::warning('Web Push falhou', ['reason' => $report->getReason()]);
