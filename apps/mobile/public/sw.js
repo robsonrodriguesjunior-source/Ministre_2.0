@@ -3,7 +3,7 @@
 // Só cuida dos arquivos do próprio app: a API (api.ministreapp.com.br) não passa por aqui.
 // Também mostra os avisos que chegam no celular (Web Push) e abre a tela certa ao tocar.
 
-const CACHE = 'ministre-app-v3';
+const CACHE = 'ministre-app-v4';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

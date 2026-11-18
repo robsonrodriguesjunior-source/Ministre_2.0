@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { PhotoSheet } from '@/components/PhotoSheet';
 import { Avatar, Card, Chip, Icon, MenuRow, Pill, Screen, SectionHeader, Text } from '@/components/ui';
+import { appVersion } from '@/lib/appVersion';
 import { manageKeys, meApi } from '@/features/manage/api';
 import { useActiveMembership, useSession } from '@/stores/session';
 import { colors, radius, space } from '@/theme/tokens';
@@ -121,6 +122,11 @@ export default function PerfilScreen() {
         <MenuRow icon="close" label="Excluir minha conta" onPress={() => router.push('/perfil/excluir')} danger divider={false} />
       </View>
 
+      {/* Para conferir qual versão está aberta (suporte). */}
+      <Text variant="meta" color="dim" style={styles.version}>
+        Ministre · versão {appVersion()}
+      </Text>
+
       <PhotoSheet
         visible={photoOpen}
         onClose={() => setPhotoOpen(false)}
@@ -134,6 +140,7 @@ export default function PerfilScreen() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
+  version: { textAlign: 'center', marginTop: space.xl, marginBottom: space.lg },
   who: { flexDirection: 'row', alignItems: 'center', gap: space.lg, marginVertical: space.xl },
   photo: { position: 'relative' },
   camera: {

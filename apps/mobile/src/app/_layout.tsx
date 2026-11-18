@@ -18,6 +18,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppFrame } from '@/components/nav/DesktopShell';
 import { useDesktop } from '@/lib/layout';
 import { useNotificationRoutes } from '@/lib/push';
+import { watchForNewVersion } from '@/lib/appVersion';
 import { useSession } from '@/stores/session';
 import { colors } from '@/theme/tokens';
 
@@ -45,6 +46,9 @@ export default function RootLayout() {
     if (location.protocol !== 'https:') return;
     navigator.serviceWorker.register('/sw.js').catch(() => undefined);
   }, []);
+
+  // Web: saiu versão nova? Ao voltar para a aba, recarrega sozinho (ninguém fica preso na versão antiga).
+  useEffect(() => watchForNewVersion(), []);
 
   const ready = (fontsLoaded || !!fontError) && sessionReady;
 

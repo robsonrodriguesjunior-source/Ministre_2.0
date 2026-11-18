@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, Switch, TextInput, View } from 'react-native';
 
 import { Icon, Text, TextField } from '@/components/ui';
 import { isoDay, monthYear, sameDay } from '@/lib/dates';
+import { useDesktop } from '@/lib/layout';
 import { fonts, colors, radius, space, type } from '@/theme/tokens';
 
 import type { Visibility } from '../types';
@@ -164,6 +165,7 @@ function DateTimePicker({
   marks?: number[];
   timePlaceholder: string;
 }) {
+  const side = useDesktop();
   const [text, setText] = useState(fmtDay(date));
   // Escolheu no calendário: o campo mostra a data escolhida (ajuste durante a renderização, sem efeito).
   const [seen, setSeen] = useState(date);
@@ -184,9 +186,12 @@ function DateTimePicker({
           : undefined;
 
   return (
-    <View style={styles.picker}>
-      <MonthCalendar value={date} onPick={onDate} min={min} max={max} marks={marks} label={label} />
-      <View style={styles.inputs}>
+    // Tela larga (computador/tablet): data e hora ao lado do calendário. Celular: embaixo dele.
+    <View style={[styles.picker, side && styles.pickerSide]}>
+      <View style={side ? styles.calSide : undefined}>
+        <MonthCalendar value={date} onPick={onDate} min={min} max={max} marks={marks} label={label} />
+      </View>
+      <View style={[styles.inputs, side && styles.inputsSide]}>
         <View style={styles.flex}>
           <TextField
             label={`${label}: data`}
@@ -386,7 +391,10 @@ const styles = StyleSheet.create({
   } as object,
   // Calendário do mês + campos.
   picker: { gap: space.md, maxWidth: 420 },
+  pickerSide: { flexDirection: 'row', alignItems: 'flex-start', maxWidth: '100%' },
+  calSide: { width: 420, flexShrink: 0 },
   inputs: { flexDirection: 'row', gap: space.sm },
+  inputsSide: { flex: 1, minWidth: 0 },
   time: { width: 110 },
   cal: { borderWidth: 1, borderColor: colors.line, borderRadius: radius.eventRow, padding: space.sm, backgroundColor: colors.card },
   calHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
