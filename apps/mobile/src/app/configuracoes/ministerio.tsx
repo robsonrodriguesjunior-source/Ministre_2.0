@@ -33,7 +33,7 @@ function Form({ info }: { info: MinistryInfo }) {
     setError(null);
     try {
       await updated((await manageApi.updateMinistry({ name: name.trim(), default_location: place.trim() || null, worship_days: days })).data);
-      goBack('/gestao');
+      goBack('/configuracoes');
     } catch (e) {
       if (e instanceof ApiError && Object.keys(e.fieldErrors).length) setErrors({ name: e.field('name'), default_location: e.field('default_location') });
       else setError(e instanceof ApiError ? e.message : 'Não foi possível salvar. Tente de novo.');
@@ -84,7 +84,7 @@ function Form({ info }: { info: MinistryInfo }) {
   );
 }
 
-// Gestão › Ministério (5.10): nome, logo, local padrão e dias de culto.
+// Configurações › Ministério (5.10): nome, logo, local padrão e dias de culto.
 export default function Ministerio() {
   const query = useQuery({ queryKey: manageKeys.ministry, queryFn: manageApi.ministry });
   const info = query.data?.data;

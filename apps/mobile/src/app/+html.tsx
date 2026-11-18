@@ -32,7 +32,17 @@ export default function Root({ children }: PropsWithChildren) {
         <link rel="apple-touch-icon" href="/app-icons/apple-touch-icon.png" />
 
         <ScrollViewStyleReset />
-        <style dangerouslySetInnerHTML={{ __html: `html,body{background-color:${colors.bg};}` }} />
+        {/* Barra de rolagem fina e escura (no computador mostra que a tela rola). */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `html,body{background-color:${colors.bg};}
+*{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.22) transparent;}
+*::-webkit-scrollbar{width:8px;height:8px;}
+*::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.22);border-radius:8px;}
+*::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.38);}
+*::-webkit-scrollbar-track{background:transparent;}`,
+          }}
+        />
       </head>
       <body {...bodyAttributes}>
         {children}

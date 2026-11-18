@@ -53,7 +53,7 @@ export default function CriarMinisterio() {
   return (
     <FormScreen
       question="Criar meu ministério"
-      subtitle="Você poderá mudar tudo isso depois, na Gestão do ministério."
+      subtitle="Você poderá mudar tudo isso depois, em Configurações."
       footer={<Button label="Criar ministério" onPress={submit} loading={formState.isSubmitting} />}
     >
       {!!formError && <Notice tone="error" message={formError} />}

@@ -44,7 +44,7 @@ export function FormScreen({ title, question, subtitle, children, footer, back =
           style={styles.flex}
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={Platform.OS === 'web'}
         >
           {logo && (
             <View style={styles.logo}>

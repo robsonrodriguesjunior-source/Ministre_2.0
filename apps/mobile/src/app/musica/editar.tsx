@@ -186,7 +186,7 @@ export default function EditarMusica() {
             )}
           </View>
         ) : (
-          <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+          <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={Platform.OS === 'web'}>
             <LinkImport onResult={fromLink} />
             {!!duplicate && (
               <Card style={styles.convert}>

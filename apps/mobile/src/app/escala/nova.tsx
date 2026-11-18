@@ -14,6 +14,7 @@ import { StepWhen, type WhenState } from '@/features/events/wizard/StepWhen';
 import { StepWho, type TeamPick } from '@/features/events/wizard/StepWho';
 import { ApiError } from '@/lib/api';
 import { isoDay } from '@/lib/dates';
+import { useDesktop } from '@/lib/layout';
 import { useActiveMembership } from '@/stores/session';
 import { useReduceMotion } from '@/theme/motion';
 import { colors, motion, size, space } from '@/theme/tokens';
@@ -48,6 +49,7 @@ export default function NovaEscala() {
   const { id: rawId } = useLocalSearchParams<{ id?: string }>();
   const editId = rawId ? Number(rawId) : null;
   const membership = useActiveMembership();
+  const desktop = useDesktop();
   const qc = useQueryClient();
   const reduce = useReduceMotion();
 
@@ -62,7 +64,7 @@ export default function NovaEscala() {
   const [error, setError] = useState<string | null>(null);
   const [loadedEdit, setLoadedEdit] = useState(false);
 
-  // Dias de culto do ministério (Gestão › Ministério) para sugerir as datas.
+  // Dias de culto do ministério (Configurações › Ministério) para sugerir as datas.
   const ministry = useQuery({ queryKey: manageKeys.ministry, queryFn: manageApi.ministry, enabled: membership?.role === 'leader' });
   const songList = useQuery({ queryKey: ['songs-options'], queryFn: eventsApi.songs, enabled: step === 3 });
   const existing = useQuery({ queryKey: ['event', editId], queryFn: () => eventsApi.get(editId!), enabled: !!editId });
@@ -187,7 +189,7 @@ export default function NovaEscala() {
             <Skeleton height={50} />
           </View>
         ) : (
-          <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+          <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={Platform.OS === 'web'}>
             <Animated.View key={step} entering={entering}>
               {step === 1 && <StepWhen value={when} onChange={change(setWhen)} worshipDays={ministry.data?.data.worship_days ?? []} />}
               {step === 2 && date && (
@@ -198,25 +200,36 @@ export default function NovaEscala() {
           </ScrollView>
         )}
 
-        <View style={styles.footer}>
+        <View style={[styles.footer, desktop && styles.footerDesktop]}>
           {!!error && <Notice tone="error" message={error} />}
-          {step < 3 ? (
-            <Button
-              label="Continuar"
-              disabled={!!stepError}
-              accessibilityHint={stepError ?? undefined}
-              onPress={() => go(step + 1)}
-            />
-          ) : (
-            <Button label={ev?.status === 'published' ? 'Salvar alterações' : 'Publicar escala'} onPress={() => save(true)} loading={saving === 'publish'} />
-          )}
-          <View style={styles.row}>
-            {step > 1 && <Button label="Voltar" variant="secondary" onPress={() => go(step - 1)} style={styles.flex} />}
-            {(!ev || ev.status === 'draft') && (
-              <Button label="Salvar rascunho" variant="secondary" onPress={() => save(false)} loading={saving === 'draft'} disabled={!start || !when.title.trim()} style={styles.flex} />
+          {/* Computador: todos os botões numa linha só (sobra mais espaço para o formulário). Celular: empilhados. */}
+          <View style={desktop ? styles.rowDesktop : styles.stack}>
+            {desktop && !!stepError && (
+              <Text variant="meta" color="dim" style={styles.hintInline}>
+                {stepError}
+              </Text>
+            )}
+            {(desktop || step > 1 || !ev || ev.status === 'draft') && (
+              <View style={[styles.row, desktop && styles.rowAuto]}>
+                {step > 1 && <Button label="Voltar" variant="secondary" onPress={() => go(step - 1)} style={desktop ? styles.secondaryDesktop : styles.flex} />}
+                {(!ev || ev.status === 'draft') && (
+                  <Button label="Salvar rascunho" variant="secondary" onPress={() => save(false)} loading={saving === 'draft'} disabled={!start || !when.title.trim()} style={desktop ? styles.secondaryDesktop : styles.flex} />
+                )}
+              </View>
+            )}
+            {step < 3 ? (
+              <Button
+                label="Continuar"
+                disabled={!!stepError}
+                accessibilityHint={stepError ?? undefined}
+                onPress={() => go(step + 1)}
+                style={desktop ? styles.primaryDesktop : undefined}
+              />
+            ) : (
+              <Button label={ev?.status === 'published' ? 'Salvar alterações' : 'Publicar escala'} onPress={() => save(true)} loading={saving === 'publish'} style={desktop ? styles.primaryDesktop : undefined} />
             )}
           </View>
-          {!!stepError && (
+          {!desktop && !!stepError && (
             <Text variant="meta" color="dim" style={styles.hint}>
               {stepError}
             </Text>
@@ -248,5 +261,13 @@ const styles = StyleSheet.create({
   footer: { paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: space.lg, gap: space.sm },
   row: { flexDirection: 'row', gap: space.sm },
   hint: { textAlign: 'center' },
+  // Celular: column-reverse deixa o botão principal em cima e os secundários embaixo (como antes).
+  stack: { flexDirection: 'column-reverse', gap: space.sm },
+  footerDesktop: { borderTopWidth: 1, borderTopColor: colors.line, paddingTop: space.md, paddingBottom: space.md },
+  rowDesktop: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  rowAuto: { flexShrink: 0 },
+  primaryDesktop: { minWidth: 200 },
+  secondaryDesktop: { minWidth: 170, paddingHorizontal: space.lg },
+  hintInline: { flex: 1 },
   sheetActions: { gap: space.sm, marginTop: space.lg },
 });

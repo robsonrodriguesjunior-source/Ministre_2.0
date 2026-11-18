@@ -10,7 +10,7 @@ import { colors, size, space } from '@/theme/tokens';
 
 const errorOf = (e: unknown) => (e instanceof ApiError ? (e.field('name') ?? e.message) : 'Não foi possível salvar. Tente de novo.');
 
-// Gestão › Funções (5.10): criar, renomear, ordenar e arquivar. Arquivada some das escolhas, mas o histórico fica.
+// Configurações › Funções (5.10): criar, renomear, ordenar e arquivar. Arquivada some das escolhas, mas o histórico fica.
 export default function Funcoes() {
   const qc = useQueryClient();
   const query = useQuery({ queryKey: manageKeys.positions, queryFn: manageApi.positions });

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BottomSheet, Button, Card, EmptyState, Glow, IconButton, KeyBadge, Pill, Skeleton, Text } from '@/components/ui';
@@ -30,7 +30,7 @@ function SongBody({ song, startKey }: { song: SongDetail; startKey: string | nul
 
   return (
     <>
-      <ScrollView contentContainerStyle={[styles.content, { paddingBottom: 110 + insets.bottom }]} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={[styles.content, { paddingBottom: 110 + insets.bottom }]} showsVerticalScrollIndicator={Platform.OS === 'web'}>
         <Text variant="songHeader" accessibilityRole="header">
           {song.title}
         </Text>

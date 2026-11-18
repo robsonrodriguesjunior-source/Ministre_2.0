@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { router, usePathname, type Href } from 'expo-router';
 import { type ReactNode, useState } from 'react';
-import { Platform, Pressable, StyleSheet, View, type PressableStateCallbackType } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, View, type PressableStateCallbackType } from 'react-native';
 
 import { ActionSheet } from '@/components/nav/ActionSheet';
 import { handleQuickAction } from '@/components/nav/quickActions';
@@ -20,6 +20,7 @@ const MAIN: NavItem[] = [
   { label: 'Avisos', icon: 'megaphone', href: '/avisos', match: ['/avisos', '/aviso'] },
   { label: 'Indisponibilidade', icon: 'unavailable', href: '/indisponibilidade', match: ['/indisponibilidade'] },
   { label: 'Gestão', icon: 'list', href: '/gestao', match: ['/gestao'], leaderOnly: true },
+  { label: 'Configurações', icon: 'sliders', href: '/configuracoes', match: ['/configuracoes'], leaderOnly: true },
 ];
 const ACCOUNT: NavItem = { label: 'Perfil', icon: 'user', href: '/perfil', match: ['/perfil', '/ajustes-notificacoes'] };
 
@@ -59,6 +60,8 @@ function Sidebar() {
 
   return (
     <View style={styles.sidebar} accessibilityRole="navigation" aria-label="Menu principal">
+      {/* Em telas baixas o menu rola, em vez de um item ficar por cima do outro. */}
+      <ScrollView style={styles.flex} contentContainerStyle={styles.sidebarContent} showsVerticalScrollIndicator={false}>
       <Pressable onPress={() => router.navigate('/')} accessibilityRole="link" accessibilityLabel="Ministre, ir para o Início" style={styles.logo}>
         <Logo variant="horizontal" width={150} />
       </Pressable>
@@ -86,6 +89,7 @@ function Sidebar() {
           </View>
         </View>
       )}
+      </ScrollView>
 
       <ActionSheet
         visible={actions}
@@ -133,11 +137,11 @@ function Header() {
  */
 export function AppFrame({ desktop, children }: { desktop: boolean; children: ReactNode }) {
   const pathname = usePathname();
-  const wideMobile = pathname.startsWith('/gestao');
+  const wideMobile = pathname.startsWith('/gestao') || pathname.startsWith('/configuracoes');
   const maxWidth = desktop
     ? pathname === '/'
       ? size.desktopHome
-      : pathname.startsWith('/gestao')
+      : wideMobile
         ? size.maxWideWidth
         : size.desktopPage
     : Platform.OS === 'web'
@@ -167,13 +171,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRightWidth: 1,
     borderRightColor: colors.line,
+  },
+  sidebarContent: {
+    flexGrow: 1,
     paddingHorizontal: space.lg,
-    paddingTop: space.xxl,
+    paddingTop: space.xl,
     paddingBottom: space.lg,
-    gap: space.xxl,
+    gap: space.xl,
   },
   logo: { paddingHorizontal: space.sm },
-  nav: { flex: 1, gap: space.xs },
+  nav: { flexGrow: 1, gap: space.xs },
   navItem: {
     flexDirection: 'row',
     alignItems: 'center',

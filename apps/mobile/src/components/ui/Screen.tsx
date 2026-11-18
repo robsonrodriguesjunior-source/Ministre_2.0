@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { RefreshControl, ScrollView, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Platform, RefreshControl, ScrollView, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors, size, space } from '@/theme/tokens';
@@ -38,7 +38,7 @@ export function Screen({
         <ScrollView
           style={styles.flex}
           contentContainerStyle={[styles.content, { paddingBottom: bottomInset }, contentStyle]}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={Platform.OS === 'web'}
           refreshControl={
             onRefresh ? (
               <RefreshControl

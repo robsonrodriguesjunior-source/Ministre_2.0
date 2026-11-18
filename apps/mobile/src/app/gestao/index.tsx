@@ -12,9 +12,9 @@ import { goBack } from '@/lib/nav';
 const ITEMS = [
   { icon: 'user', label: 'Membros', subtitle: 'Papel, funções e remover', href: '/gestao/membros' },
   { icon: 'plus', label: 'Convidar', subtitle: 'Código e link para mandar no WhatsApp', href: '/gestao/convites' },
-  { icon: 'music', label: 'Funções', subtitle: 'Vocal, Violão… criar, ordenar e arquivar', href: '/gestao/funcoes' },
   { icon: 'unavailable', label: 'Indisponibilidades', subtitle: 'Quem não pode, mês a mês', href: '/gestao/indisponibilidades' },
-  { icon: 'edit', label: 'Ministério', subtitle: 'Nome, logo, local e dias de culto', href: '/gestao/ministerio' },
+  // Funções e Ministério ficam em Configurações (/configuracoes).
+  { icon: 'sliders', label: 'Configurações', subtitle: 'Funções (Cantor, Bateria…) e dados do ministério', href: '/configuracoes' },
 ] as const;
 
 // Gestão do ministério (5.10, só líderes). No computador, os atalhos ficam em grade.

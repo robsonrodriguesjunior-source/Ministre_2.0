@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import { type ComponentRef, useCallback, useEffect, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, View, useWindowDimensions, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
@@ -411,7 +411,7 @@ export default function Escala() {
             key={i}
             style={{ width: pageWidth }}
             contentContainerStyle={[styles.page, { paddingBottom: (cta ? 120 : 40) + insets.bottom }]}
-            showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator={Platform.OS === 'web'}
           >
             {page}
           </ScrollView>

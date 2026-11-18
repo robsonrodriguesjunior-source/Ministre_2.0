@@ -105,7 +105,8 @@ export default function PerfilScreen() {
       {isLeader && (
         <>
           <SectionHeader title="Liderança" />
-          <MenuRow icon="list" label="Gestão do ministério" subtitle="Membros, convites, funções, ministério e indisponibilidades" onPress={() => router.push('/gestao')} divider={false} />
+          <MenuRow icon="list" label="Gestão do ministério" subtitle="Membros, convites e indisponibilidades" onPress={() => router.push('/gestao')} />
+          <MenuRow icon="sliders" label="Configurações" subtitle="Funções (Cantor, Bateria…) e dados do ministério" onPress={() => router.push('/configuracoes')} divider={false} />
         </>
       )}
 

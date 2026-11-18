@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -75,7 +75,7 @@ export function BottomSheet({ visible, onClose, title, children, scroll = false 
             </Text>
           )}
           {scroll ? (
-            <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+            <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={Platform.OS === 'web'} contentContainerStyle={styles.scrollContent}>
               {children}
             </ScrollView>
           ) : (

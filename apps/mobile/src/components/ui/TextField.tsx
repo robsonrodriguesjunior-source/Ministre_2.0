@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     gap: space.sm,
   },
   box: {
+    minWidth: 0,
     flexDirection: 'row',
     alignItems: 'center',
     height: size.input,
@@ -97,6 +98,9 @@ const styles = StyleSheet.create({
     ...type.input,
     flex: 1,
     height: '100%',
+    // No navegador o campo tem largura mínima própria (~20 letras): sem isto ele vaza de caixas estreitas (ex.: Hora).
+    minWidth: 0,
+    width: 0,
     color: colors.ink,
     outlineStyle: 'none',
   } as object,
