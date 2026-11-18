@@ -13,10 +13,10 @@ export function DateBadge({ date }: Props) {
   const month = MONTHS[date.getMonth()];
   return (
     <View style={styles.badge} accessibilityLabel={`${date.getDate()} de ${month}`}>
-      <Text variant="dateDay" color="onOrange" style={styles.line}>
+      <Text variant="dateDay" color="ink" style={styles.line}>
         {day}
       </Text>
-      <Text variant="dateMonth" color="onOrange" style={[styles.line, styles.month]}>
+      <Text variant="dateMonth" color="dim" style={[styles.line, styles.month]}>
         {month}
       </Text>
     </View>
@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
     width: size.dateBadgeW,
     height: size.dateBadgeH,
     borderRadius: radius.eventRow,
-    backgroundColor: colors.orange,
+    backgroundColor: colors.card2,
+    borderWidth: 1,
+    borderColor: colors.line,
     alignItems: 'center',
     justifyContent: 'center',
   },

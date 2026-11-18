@@ -67,7 +67,7 @@ function OfflineSets() {
               {[s.starts_at ? shortDate(new Date(s.starts_at)) : null, `${s.count} ${s.count === 1 ? 'música' : 'músicas'}`].filter(Boolean).join(' · ')}
             </Text>
           </View>
-          <Text variant="link" color="orange">
+          <Text variant="link" color="orangeText">
             Modo Palco
           </Text>
         </Pressable>

@@ -61,7 +61,7 @@ export function SheetControls({ keyLabel, onTranspose, accidental, onAccidental,
           <Icon name="minus" />
         </Round>
         <View style={styles.key} accessibilityLabel={`Tom ${keyLabel}`} accessibilityLiveRegion="polite">
-          <Text variant="sectionTitle" color="orange">
+          <Text variant="sectionTitle" color="orangeText">
             {keyLabel}
           </Text>
         </View>

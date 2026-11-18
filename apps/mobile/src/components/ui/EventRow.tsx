@@ -29,10 +29,10 @@ export function EventRow({ date, title, subtitle, mine = false, dimmed = false, 
       style={({ pressed }) => [styles.row, mine && styles.mine, dimmed && styles.dimmed, pressed && styles.pressed]}
     >
       <View style={[styles.date, mine && styles.dateMine]}>
-        <Text variant="weekday" color={mine ? 'orange' : 'dim'}>
+        <Text variant="weekday" color="dim">
           {WEEKDAYS[date.getDay()]}
         </Text>
-        <Text variant="eventDay" color={mine ? 'orange' : 'ink'}>
+        <Text variant="eventDay" color="ink">
           {String(date.getDate()).padStart(2, '0')}
         </Text>
       </View>
@@ -60,9 +60,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line,
   },
-  mine: {
-    borderColor: colors.orangeBorder,
-  },
+  // Visual sóbrio: a linha em que você está escalado não muda de cor (o status já diz).
+  mine: {},
   dimmed: {
     opacity: 0.7,
   },
@@ -77,9 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card2,
     alignItems: 'center',
   },
-  dateMine: {
-    backgroundColor: colors.orangeSoft,
-  },
+  dateMine: {},
   texts: {
     flex: 1,
     gap: space.xxs,

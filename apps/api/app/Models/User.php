@@ -21,6 +21,7 @@ class User extends Authenticatable
         'push_prefs',
         'password',
         'terms_accepted_at',
+        'is_placeholder',
     ];
 
     protected $hidden = [
@@ -35,6 +36,7 @@ class User extends Authenticatable
             'terms_accepted_at' => 'datetime',
             'push_prefs' => 'array',
             'password' => 'hashed',
+            'is_placeholder' => 'boolean',
         ];
     }
 

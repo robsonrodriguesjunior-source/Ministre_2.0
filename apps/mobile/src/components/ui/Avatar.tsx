@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/ui/Text';
-import { avatarTones, colors, fonts, size as sizes } from '@/theme/tokens';
+import { avatarTones, colors, size as sizes, weight } from '@/theme/tokens';
 
 type AvatarProps = {
   name: string;
@@ -51,7 +51,7 @@ export function Avatar({ name, photoUrl, seed, size = sizes.avatarList, ringColo
       <Text
         variant="pill"
         color="onOrange"
-        style={{ fontFamily: fonts.bold, fontSize: Math.max(9, size * 0.36) }}
+        style={{ ...weight.bold, fontSize: Math.max(9, size * 0.36) }}
       >
         {initials(name)}
       </Text>

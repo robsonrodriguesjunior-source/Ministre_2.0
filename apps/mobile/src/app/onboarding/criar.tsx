@@ -112,7 +112,7 @@ export default function CriarMinisterio() {
               ))}
             </View>
             {!!fieldState.error && (
-              <Text variant="meta" color="orange">
+              <Text variant="meta" color="orangeText">
                 {fieldState.error.message}
               </Text>
             )}

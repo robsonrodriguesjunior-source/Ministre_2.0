@@ -99,7 +99,7 @@ function TeamTab({ event, onStar }: { event: EventDetail; onStar: (memberId: num
       })}
       {!!event.notes && (
         <Card style={styles.notes}>
-          <Text variant="cardLabel" color="orange">
+          <Text variant="cardLabel" color="orangeText">
             Observações do líder
           </Text>
           <Text variant="bodySm" color="inkSoft" style={styles.notesText}>
@@ -349,7 +349,7 @@ export default function Escala() {
             {[weekdayName(date), hour(date), event.location].filter(Boolean).join(' · ')}
           </Text>
           {!!event.rehearsal_at && (
-            <Text variant="meta" color="orange">
+            <Text variant="meta" color="orangeText">
               Ensaio: {weekdayName(new Date(event.rehearsal_at))}, {dayMonth(new Date(event.rehearsal_at))} · {hour(new Date(event.rehearsal_at))}
             </Text>
           )}
@@ -359,7 +359,7 @@ export default function Escala() {
         <View style={styles.statusRow}>
           <View style={styles.ministerBanner}>
             <Icon name="star" size={16} color={colors.brand} fill={colors.brand} />
-            <Text variant="pill" color="orange">
+            <Text variant="pill" color="orangeText">
               Você é o ministro: monte o repertório
             </Text>
           </View>
@@ -378,14 +378,14 @@ export default function Escala() {
       {status === 'confirmed' && !justConfirmed && first && (
         <View style={styles.statusRow}>
           <Pill label="Presença confirmada" tone="ok" />
-          <Text variant="link" color="orange" onPress={() => setDeclineOpen(true)} accessibilityRole="button">
+          <Text variant="link" color="orangeText" onPress={() => setDeclineOpen(true)} accessibilityRole="button">
             Não posso mais
           </Text>
         </View>
       )}
       {status === 'pending' && event.status === 'published' && (
         <View style={styles.statusRow}>
-          <Text variant="link" color="orange" onPress={() => setDeclineOpen(true)} accessibilityRole="button">
+          <Text variant="link" color="orangeText" onPress={() => setDeclineOpen(true)} accessibilityRole="button">
             Não posso ir
           </Text>
         </View>

@@ -8,7 +8,7 @@ import { handleQuickAction } from '@/components/nav/quickActions';
 import { Avatar, Button, Icon, type IconName, IconButton, Logo, Text } from '@/components/ui';
 import { eventKeys, eventsApi } from '@/features/events/api';
 import { useActiveMembership, useSession } from '@/stores/session';
-import { colors, fonts, radius, size, space } from '@/theme/tokens';
+import { colors, radius, size, space, weight } from '@/theme/tokens';
 
 type NavItem = { label: string; icon: IconName; href: Href; match: string[]; leaderOnly?: boolean };
 
@@ -43,8 +43,8 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
         active && styles.navActive,
       ]}
     >
-      <Icon name={item.icon} size={20} color={active ? colors.orange : colors.inkSoft} />
-      <Text variant={active ? 'navActive' : 'nav'} color={active ? 'orange' : 'ink'}>
+      <Icon name={item.icon} size={20} color={active ? colors.orangeText : colors.inkSoft} />
+      <Text variant={active ? 'navActive' : 'nav'} color={active ? 'orangeText' : 'ink'}>
         {item.label}
       </Text>
     </Pressable>
@@ -74,7 +74,7 @@ function Sidebar() {
         <NavLink item={ACCOUNT} active={isActive(ACCOUNT, pathname)} />
       </View>
 
-      <Button label="Ações rápidas" onPress={() => setActions(true)} />
+      <Button label="Ações rápidas" variant="secondary" onPress={() => setActions(true)} />
 
       {!!membership && (
         <View style={styles.ministry}>
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line,
   },
-  ministryName: { fontFamily: fonts.semibold },
+  ministryName: weight.semibold,
   main: { flex: 1 },
   header: {
     height: size.header,

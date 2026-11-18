@@ -72,7 +72,7 @@ export function LinkImport({ onResult, autoFocus }: Props) {
       {!!message && status !== 'loading' && (
         <View style={styles.status} accessibilityLiveRegion="polite">
           <Icon name={status === 'done' ? 'check' : 'unavailable'} size={16} color={status === 'done' ? colors.orange : colors.dim} strokeWidth={2.4} />
-          <Text variant="meta" color={status === 'done' ? 'inkSoft' : 'orange'} style={styles.flex}>
+          <Text variant="meta" color={status === 'done' ? 'inkSoft' : 'orangeText'} style={styles.flex}>
             {message}
           </Text>
         </View>

@@ -126,13 +126,13 @@ export default function CriarConta() {
               accessibilityLabel="Li e aceito os Termos de Uso e a Política de Privacidade"
               label={
                 <Text variant="bodySm" color="inkSoft">
-                  Li e aceito os <Text variant="bodySm" color="orange" onPress={() => router.push('/termos')} accessibilityRole="link">Termos de Uso</Text> e a{' '}
-                  <Text variant="bodySm" color="orange" onPress={() => router.push('/privacidade')} accessibilityRole="link">Política de Privacidade</Text>.
+                  Li e aceito os <Text variant="bodySm" color="orangeText" onPress={() => router.push('/termos')} accessibilityRole="link">Termos de Uso</Text> e a{' '}
+                  <Text variant="bodySm" color="orangeText" onPress={() => router.push('/privacidade')} accessibilityRole="link">Política de Privacidade</Text>.
                 </Text>
               }
             />
             {!!fieldState.error && (
-              <Text variant="meta" color="orange">
+              <Text variant="meta" color="orangeText">
                 {fieldState.error.message}
               </Text>
             )}

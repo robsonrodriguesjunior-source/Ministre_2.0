@@ -34,7 +34,8 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->input('email'))->first();
 
-        if (! $user || ! Hash::check($request->input('password'), $user->password)) {
+        // Conta provisória (cadastro pelo líder) nunca entra: a pessoa usa o convite e cria a própria conta.
+        if (! $user || $user->is_placeholder || ! Hash::check($request->input('password'), $user->password)) {
             throw ValidationException::withMessages(['email' => __('auth.failed')]);
         }
 

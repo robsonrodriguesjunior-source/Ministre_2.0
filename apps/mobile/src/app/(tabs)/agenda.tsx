@@ -8,7 +8,7 @@ import { Card, EmptyState, Icon, Screen, SectionHeader, Segmented, Skeleton, Tex
 import { AgendaRow as Row } from '@/features/events/AgendaRow';
 import { eventsApi } from '@/features/events/api';
 import { isoDay, monthYear, sameDay, weekDays } from '@/lib/dates';
-import { fonts, colors, space } from '@/theme/tokens';
+import { colors, space, weight } from '@/theme/tokens';
 
 type Filter = 'all' | 'mine';
 
@@ -140,7 +140,7 @@ export default function Agenda() {
 }
 
 const styles = StyleSheet.create({
-  semibold: { fontFamily: fonts.semibold },
+  semibold: weight.semibold,
   month: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: space.sm },
   arrows: { flexDirection: 'row', gap: 14 },
   week: { marginTop: space.md },

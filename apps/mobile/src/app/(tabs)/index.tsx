@@ -24,7 +24,7 @@ import { ago, hour, weekdayName } from '@/lib/dates';
 import { useDesktop, useWideDesktop } from '@/lib/layout';
 import { setAppBadge } from '@/lib/push';
 import { useSession } from '@/stores/session';
-import { fonts, colors, radius, size, space } from '@/theme/tokens';
+import { colors, radius, size, space, weight } from '@/theme/tokens';
 
 function WeekItem({ icon, title, subtitle, onPress }: { icon: IconName; title: string; subtitle: string; onPress: () => void }) {
   return (
@@ -197,8 +197,8 @@ export default function Inicio() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  semibold: { fontFamily: fonts.semibold },
-  bold: { fontFamily: fonts.bold },
+  semibold: weight.semibold,
+  bold: weight.bold,
   hello: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   helloDesktop: { gap: space.xs, marginTop: space.lg },
   // Computador largo: coluna principal + coluna auxiliar de largura fixa.

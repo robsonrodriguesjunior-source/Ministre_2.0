@@ -34,9 +34,9 @@ export function NextEventCard({ event }: { event: EventSummary }) {
         <View style={styles.row}>
           <View style={styles.label}>
             <View style={styles.labelIcon}>
-              <Icon name="calendar" size={16} color={colors.orange} />
+              <Icon name="calendar" size={16} color={colors.orangeText} />
             </View>
-            <Text variant="cardLabel" color="orange">
+            <Text variant="cardLabel" color="orangeText">
               Próximo culto
             </Text>
           </View>
@@ -67,7 +67,7 @@ export function NextEventCard({ event }: { event: EventSummary }) {
         </View>
         <View style={styles.hr} />
         <View style={styles.row}>
-          <AvatarStack people={event.faces.map((f) => ({ name: f.name, photoUrl: f.avatar_url, seed: f.user_id }))} backgroundColor={colors.orangeSoft} />
+          <AvatarStack people={event.faces.map((f) => ({ name: f.name, photoUrl: f.avatar_url, seed: f.user_id }))} backgroundColor={colors.card} />
           <Text variant="meta" color="dim">
             {event.team_count} {event.team_count === 1 ? 'pessoa' : 'pessoas'} na equipe
           </Text>
@@ -81,7 +81,7 @@ export function NextEventCard({ event }: { event: EventSummary }) {
               <Pill label="Você avisou que não pode" tone="declined" />
             )}
             <Pressable onPress={() => setChanging(true)} accessibilityRole="button" hitSlop={10}>
-              <Text variant="link" color="orange">
+              <Text variant="link" color="orangeText">
                 Mudar resposta
               </Text>
             </Pressable>
@@ -128,13 +128,13 @@ export function NextEventCard({ event }: { event: EventSummary }) {
 
 const styles = StyleSheet.create({
   // Destaque da próxima ação (manual Light): fundo laranja suave, borda laranja à esquerda.
-  card: { marginTop: space.lg, backgroundColor: colors.orangeSoft, borderColor: colors.orangeBorder, borderLeftWidth: 4, borderLeftColor: colors.brand },
+  card: { marginTop: space.lg },
   label: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   labelIcon: { width: 28, height: 28, borderRadius: radius.key, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   title: { marginVertical: space.sm },
   meta: { flexDirection: 'row', alignItems: 'center', gap: space.sm, marginTop: space.xs },
-  hr: { height: 1, backgroundColor: colors.orangeBorder, marginVertical: space.md },
+  hr: { height: 1, backgroundColor: colors.line, marginVertical: space.md },
   buttons: { flexDirection: 'row', gap: space.sm, marginTop: space.md },
   wide: { flex: 1.3 },
   narrow: { flex: 1 },

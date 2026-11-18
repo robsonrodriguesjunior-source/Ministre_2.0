@@ -53,14 +53,14 @@ export const TextField = forwardRef<TextFieldRef, Props>(function TextField(
             hitSlop={8}
             style={styles.toggle}
           >
-            <Text variant="link" color="orange">
+            <Text variant="link" color="orangeText">
               {visible ? 'Ocultar' : 'Mostrar'}
             </Text>
           </Pressable>
         )}
       </View>
       {!!error && (
-        <Text variant="meta" color="orange" accessibilityLiveRegion="polite">
+        <Text variant="meta" color="orangeText" accessibilityLiveRegion="polite">
           {error}
         </Text>
       )}

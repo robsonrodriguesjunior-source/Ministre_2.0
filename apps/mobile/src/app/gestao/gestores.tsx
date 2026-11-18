@@ -97,7 +97,7 @@ export default function GestoresIgreja() {
                 photoUrl={p.avatar_url}
                 seed={p.user_id}
                 onPress={p.is_owner ? undefined : () => { setError(null); setRemoving(p); }}
-                right={p.is_owner ? <Pill label="Fixo" tone="ok" /> : <Text variant="link" color="orange">Tirar</Text>}
+                right={p.is_owner ? <Pill label="Fixo" tone="ok" /> : <Text variant="link" color="orangeText">Tirar</Text>}
                 divider={i < managers.length - 1}
               />
             ))}
@@ -125,7 +125,7 @@ export default function GestoresIgreja() {
                   photoUrl={c.avatar_url}
                   seed={c.user_id}
                   onPress={busy ? undefined : () => add(c)}
-                  right={<Text variant="link" color="orange">{busy === c.user_id ? 'Salvando…' : 'Tornar gestor'}</Text>}
+                  right={<Text variant="link" color="orangeText">{busy === c.user_id ? 'Salvando…' : 'Tornar gestor'}</Text>}
                   divider={i < candidates.length - 1}
                 />
               ))}

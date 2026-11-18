@@ -100,7 +100,7 @@ export default function NovoAviso() {
           style={[styles.body, !!errors.body && styles.bodyError]}
         />
         {!!errors.body && (
-          <Text variant="meta" color="orange">
+          <Text variant="meta" color="orangeText">
             {errors.body}
           </Text>
         )}

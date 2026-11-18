@@ -16,7 +16,7 @@ export function KeyBadge({ label, tone = 'orange', accessibilityLabel, style }: 
   const orange = tone === 'orange';
   return (
     <View style={[styles.badge, orange ? styles.orange : styles.line, style]} accessibilityLabel={accessibilityLabel ?? label}>
-      <Text variant="pill" color={orange ? 'orange' : 'dim'}>
+      <Text variant="pill" color={orange ? 'orangeText' : 'dim'}>
         {label}
       </Text>
     </View>

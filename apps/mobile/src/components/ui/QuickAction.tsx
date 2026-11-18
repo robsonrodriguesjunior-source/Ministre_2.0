@@ -20,7 +20,7 @@ export function QuickAction({ icon, label, onPress }: Props) {
       style={({ pressed }) => [styles.wrap, pressed && styles.pressed]}
     >
       <View style={styles.square}>
-        <Icon name={icon} size={size.iconQuick} color={colors.orange} />
+        <Icon name={icon} size={size.iconQuick} color={colors.inkSoft} />
       </View>
       <Text variant="quickAction" color="inkMuted">
         {label}

@@ -23,6 +23,8 @@ export type InvitePreview = {
   church: { name: string; city: string | null };
   ministry: { id: number; name: string };
   positions: { id: number; name: string }[];
+  /** Convite pessoal (cadastro pelo líder): o nome e as funções já definidos. */
+  member?: { name: string; positions: string[] } | null;
 };
 
 export type AuthResponse = { token: string; user: User };

@@ -54,7 +54,7 @@ function Form({ info }: { info: MinistryInfo }) {
     >
       <Pressable onPress={() => setPhotoOpen(true)} accessibilityRole="button" accessibilityLabel="Trocar logo do ministério" style={styles.logo}>
         <Avatar name={name || info.name} photoUrl={info.logo_url} seed={info.id} size={88} />
-        <Text variant="link" color="orange">
+        <Text variant="link" color="orangeText">
           {info.logo_url ? 'Trocar logo' : 'Colocar logo'}
         </Text>
       </Pressable>

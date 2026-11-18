@@ -35,7 +35,9 @@ export default function Convite() {
     if (!token && code) setPendingInvite(code);
   }, [token, code, setPendingInvite]);
 
-  const alreadyMember = memberships.some((m) => m.ministry.id === preview.data?.ministry.id);
+  // Convite pessoal: o líder já cadastrou a pessoa (nome e funções). Vale mesmo se ela já estiver no ministério (junta tudo).
+  const personal = preview.data?.member ?? null;
+  const alreadyMember = !personal && memberships.some((m) => m.ministry.id === preview.data?.ministry.id);
 
   // Convite inválido, vencido ou de um ministério em que já está: não fica "preso" esperando.
   const dead = preview.isError || (!!token && (alreadyMember || preview.data?.usable === false));
@@ -89,8 +91,8 @@ export default function Convite() {
       {preview.data && (
         <>
           <Card>
-            <Text variant="cardLabel" color="orange">
-              Convite
+            <Text variant="cardLabel" color="orangeText">
+              {personal ? `Olá, ${personal.name.split(' ')[0]}!` : 'Convite'}
             </Text>
             <Text variant="cardTitle" style={styles.title}>
               {preview.data.ministry.name}
@@ -100,7 +102,9 @@ export default function Convite() {
               {preview.data.church.city ? ` · ${preview.data.church.city}` : ''}
             </Text>
             <Text variant="meta" color="dim" style={styles.role}>
-              Você entra como {preview.data.role === 'leader' ? 'líder' : 'membro'}.
+              {personal
+                ? `O líder já cadastrou você${personal.positions.length ? ` como ${personal.positions.join(', ')}` : ''}. É só entrar: suas escalas já estão lá.`
+                : `Você entra como ${preview.data.role === 'leader' ? 'líder' : 'membro'}.`}
             </Text>
           </Card>
 
@@ -108,7 +112,7 @@ export default function Convite() {
           {alreadyMember && <Notice message="Você já faz parte deste ministério." />}
           {!!error && <Notice tone="error" message={error} />}
 
-          {!!token && !alreadyMember && preview.data.usable && preview.data.positions.length > 0 && (
+          {!!token && !alreadyMember && !personal && preview.data.usable && preview.data.positions.length > 0 && (
             <View style={styles.group}>
               <Text variant="sectionTitle">O que você faz na equipe?</Text>
               <Text variant="meta" color="dim">

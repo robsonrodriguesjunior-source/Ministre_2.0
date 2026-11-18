@@ -8,7 +8,8 @@ import { BottomSheet, Button, Chip, IconButton, ListRow, Notice, Pill, Segmented
 import type { Role } from '@/features/auth/types';
 import { manageApi, manageKeys, type Member } from '@/features/manage/api';
 import { ApiError } from '@/lib/api';
-import { useSession } from '@/stores/session';
+import { openWhatsApp, personalInviteText } from '@/lib/whatsapp';
+import { useActiveMembership, useSession } from '@/stores/session';
 import { space } from '@/theme/tokens';
 
 // Um membro aberto: papel, funções e remover.
@@ -18,7 +19,8 @@ function MemberSheet({ member, onClose, onDone }: { member: Member | null; onClo
   const [picked, setPicked] = useState<number[]>([]);
   const [loadedFor, setLoadedFor] = useState<number | null>(null);
   const [confirmRemove, setConfirmRemove] = useState(false);
-  const [busy, setBusy] = useState<'save' | 'remove' | null>(null);
+  const [busy, setBusy] = useState<'save' | 'remove' | 'invite' | null>(null);
+  const ministryName = useActiveMembership()?.ministry.name ?? 'ministério';
   const [error, setError] = useState<string | null>(null);
 
   // Abre já com o papel e as funções da pessoa.
@@ -48,6 +50,21 @@ function MemberSheet({ member, onClose, onDone }: { member: Member | null; onClo
     }
   };
 
+  // Cadastrado pelo líder e ainda não entrou: gera um convite novo e abre o WhatsApp da pessoa.
+  const resend = async () => {
+    if (!member) return;
+    setBusy('invite');
+    setError(null);
+    try {
+      const { invite } = await manageApi.memberInvite(member.id);
+      await openWhatsApp(member.phone, personalInviteText(member.name, ministryName, invite.link, invite.code));
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : 'Não foi possível gerar o convite. Tente de novo.');
+    } finally {
+      setBusy(null);
+    }
+  };
+
   return (
     <BottomSheet visible={!!member} onClose={onClose} title={member?.is_me ? `${member.name} (você)` : member?.name}>
       {!!member && (
@@ -55,6 +72,12 @@ function MemberSheet({ member, onClose, onDone }: { member: Member | null; onClo
           <Text variant="meta" color="dim">
             {[member.email, member.phone].filter(Boolean).join(' · ')}
           </Text>
+          {member.pending && (
+            <>
+              <Notice tone="info" message={`${member.name.split(' ')[0]} ainda não entrou no app, mas já pode ser escalado(a).`} />
+              <Button label="Reenviar convite no WhatsApp" variant="secondary" onPress={resend} loading={busy === 'invite'} />
+            </>
+          )}
 
           <Text variant="fieldLabel" color="dim">
             Papel
@@ -114,7 +137,7 @@ export default function Membros() {
 
   return (
     <>
-      <FormScreen title="Membros" action={<IconButton icon="plus" label="Convidar" onPress={() => router.push('/gestao/convites')} />}>
+      <FormScreen title="Membros" action={<IconButton icon="plus" label="Cadastrar membro" onPress={() => router.push('/gestao/novo-membro')} />}>
         {members.isLoading ? (
           <View style={styles.loading}>
             <Skeleton height={56} />
@@ -133,12 +156,13 @@ export default function Membros() {
                 subtitle={m.positions.length ? m.positions.map((p) => p.name).join(', ') : 'Sem função'}
                 photoUrl={m.avatar_url}
                 seed={m.user_id}
-                right={m.role === 'leader' ? <Pill label="Líder" tone="ok" /> : undefined}
+                right={m.pending ? <Pill label="Convite enviado" tone="wait" /> : m.role === 'leader' ? <Pill label="Líder" tone="ok" /> : undefined}
                 onPress={() => setOpen(m)}
                 divider={i < list.length - 1}
               />
             ))}
-            <Button label="Convidar pessoas" variant="secondary" onPress={() => router.push('/gestao/convites')} style={styles.invite} />
+            <Button label="Cadastrar membro" onPress={() => router.push('/gestao/novo-membro')} style={styles.invite} />
+            <Button label="Link de convite para o grupo" variant="secondary" onPress={() => router.push('/gestao/convites')} style={styles.inviteLink} />
           </View>
         )}
       </FormScreen>
@@ -164,6 +188,7 @@ const styles = StyleSheet.create({
   loading: { gap: space.md },
   count: { marginBottom: space.xs },
   invite: { marginTop: space.xl },
+  inviteLink: { marginTop: space.sm },
   sheet: { gap: space.md, marginTop: space.md },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
 });

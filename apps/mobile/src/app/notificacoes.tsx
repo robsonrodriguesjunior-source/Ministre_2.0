@@ -77,7 +77,7 @@ export default function Notificacoes() {
       action={
         unread > 0 ? (
           <Pressable onPress={() => readAll.mutate()} accessibilityRole="button" hitSlop={8} style={styles.action}>
-            <Text variant="link" color="orange">
+            <Text variant="link" color="orangeText">
               Ler todas
             </Text>
           </Pressable>
@@ -111,7 +111,7 @@ export default function Notificacoes() {
       )}
 
       <Pressable onPress={() => router.push('/ajustes-notificacoes')} accessibilityRole="button" style={styles.prefs}>
-        <Text variant="link" color="orange">
+        <Text variant="link" color="orangeText">
           Escolher o que chega no celular
         </Text>
       </Pressable>

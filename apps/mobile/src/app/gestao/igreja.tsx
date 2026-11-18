@@ -200,7 +200,7 @@ export default function VisaoIgreja() {
                     <Card key={s.starts_at} style={styles.service}>
                       <View style={styles.serviceHead}>
                         <View style={styles.flex}>
-                          <Text variant="cardLabel" color="orange">
+                          <Text variant="cardLabel" color="orangeText">
                             {shortDate(d)} · {hour(d)}
                           </Text>
                           <Text variant="eventTitle">{s.title}</Text>

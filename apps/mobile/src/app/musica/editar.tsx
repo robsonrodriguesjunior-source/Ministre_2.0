@@ -210,7 +210,7 @@ export default function EditarMusica() {
                 <Chip label="Menor" selected={form.minor} onPress={() => set('minor', !form.minor)} />
               </View>
               {!!errors.original_key && (
-                <Text variant="meta" color="orange">
+                <Text variant="meta" color="orangeText">
                   {errors.original_key}
                 </Text>
               )}
@@ -260,14 +260,14 @@ export default function EditarMusica() {
                 </View>
               ))}
               {!!errors.links && (
-                <Text variant="meta" color="orange">
+                <Text variant="meta" color="orangeText">
                   {errors.links}
                 </Text>
               )}
               {form.links.length < MAX_LINKS && (
                 <Pressable onPress={() => set('links', [...form.links, ''])} accessibilityRole="button" style={styles.addLink}>
                   <Icon name="plus" size={16} color={colors.orange} />
-                  <Text variant="link" color="orange">
+                  <Text variant="link" color="orangeText">
                     Adicionar link
                   </Text>
                 </Pressable>
@@ -296,7 +296,7 @@ export default function EditarMusica() {
                 style={styles.editor}
               />
               {!!errors.chordpro && (
-                <Text variant="meta" color="orange">
+                <Text variant="meta" color="orangeText">
                   {errors.chordpro}
                 </Text>
               )}

@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, Switch, TextInput, View } from 'react-native';
 import { Icon, Text, TextField } from '@/components/ui';
 import { isoDay, monthYear, sameDay } from '@/lib/dates';
 import { useDesktop } from '@/lib/layout';
-import { fonts, colors, radius, space, type } from '@/theme/tokens';
+import { colors, radius, space, type, weight } from '@/theme/tokens';
 
 import type { Visibility } from '../types';
 
@@ -357,7 +357,7 @@ export function StepWhen({ value, onChange, worshipDays }: Props) {
 const styles = StyleSheet.create({
   wrap: { paddingBottom: space.xxl },
   flex: { flex: 1 },
-  semibold: { fontFamily: fonts.semibold },
+  semibold: weight.semibold,
   label: { marginTop: 22, marginBottom: 10 },
   on: { backgroundColor: colors.orange, borderColor: colors.orange },
   option: {

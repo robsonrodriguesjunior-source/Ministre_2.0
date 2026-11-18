@@ -121,7 +121,7 @@ export function QuickAddSong({ onSaved, onUseExisting, eventId }: Props) {
           <Chip label="Menor" selected={minor} onPress={() => setMinor((m) => !m)} />
         </View>
         {!!errors.original_key && (
-          <Text variant="meta" color="orange">
+          <Text variant="meta" color="orangeText">
             {errors.original_key}
           </Text>
         )}

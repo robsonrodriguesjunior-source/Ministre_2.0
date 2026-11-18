@@ -1,11 +1,3 @@
-import {
-  PlusJakartaSans_400Regular,
-  PlusJakartaSans_500Medium,
-  PlusJakartaSans_600SemiBold,
-  PlusJakartaSans_700Bold,
-  PlusJakartaSans_800ExtraBold,
-  useFonts,
-} from '@expo-google-fonts/plus-jakarta-sans';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { router, Stack, usePathname, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -26,13 +18,7 @@ SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 export default function RootLayout() {
   const [queryClient] = useState(() => new QueryClient({ defaultOptions: { queries: { staleTime: 30_000 } } }));
-  const [fontsLoaded, fontError] = useFonts({
-    PlusJakartaSans_400Regular,
-    PlusJakartaSans_500Medium,
-    PlusJakartaSans_600SemiBold,
-    PlusJakartaSans_700Bold,
-    PlusJakartaSans_800ExtraBold,
-  });
+  // Fonte do sistema (visual "Escuro sóbrio"): nada para baixar antes de abrir.
   const sessionReady = useSession((s) => s.ready);
   const hydrate = useSession((s) => s.hydrate);
 
@@ -50,7 +36,7 @@ export default function RootLayout() {
   // Web: saiu versão nova? Ao voltar para a aba, recarrega sozinho (ninguém fica preso na versão antiga).
   useEffect(() => watchForNewVersion(), []);
 
-  const ready = (fontsLoaded || !!fontError) && sessionReady;
+  const ready = sessionReady;
 
   useEffect(() => {
     if (ready) SplashScreen.hideAsync().catch(() => undefined);
@@ -138,6 +124,7 @@ function AppNavigator() {
         <Stack.Screen name="perfil/excluir" />
         <Stack.Screen name="gestao/index" />
         <Stack.Screen name="gestao/membros" />
+        <Stack.Screen name="gestao/novo-membro" />
         <Stack.Screen name="gestao/convites" />
         <Stack.Screen name="configuracoes/index" />
         <Stack.Screen name="configuracoes/funcoes" />

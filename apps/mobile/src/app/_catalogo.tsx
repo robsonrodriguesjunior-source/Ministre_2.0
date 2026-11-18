@@ -24,7 +24,7 @@ import {
   WeekStrip,
 } from '@/components/ui';
 import { API_URL, getHealth } from '@/lib/api';
-import { fonts, colors, space } from '@/theme/tokens';
+import { colors, space, weight } from '@/theme/tokens';
 
 // Catálogo interno (/_catalogo): todos os componentes da seção 3.3 com os dados de exemplo do design,
 // para conferir com docs/design/telas-direcoes.html. Não aparece para o usuário final.
@@ -87,7 +87,7 @@ export default function Catalogo() {
       <SectionHeader title="Card · Próximo culto" />
       <Card>
         <View style={styles.between}>
-          <Text variant="cardLabel" color="orange">
+          <Text variant="cardLabel" color="orangeText">
             Próximo culto
           </Text>
           <Pill label="em 6 dias" tone="wait" />
@@ -233,7 +233,7 @@ export default function Catalogo() {
 
       <SectionHeader title="Conexão" />
       <Card>
-        <Text variant="cardLabel" color="orange">
+        <Text variant="cardLabel" color="orangeText">
           API
         </Text>
         <Text variant="body" color="inkSoft" style={styles.gapTopSm}>
@@ -259,7 +259,7 @@ export default function Catalogo() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   push: { flex: 1 },
-  bold: { fontFamily: fonts.bold },
+  bold: weight.bold,
   bar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   barSpacer: { width: 38 },
   hello: { flexDirection: 'row', alignItems: 'center', gap: 10 },

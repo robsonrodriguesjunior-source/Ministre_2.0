@@ -61,7 +61,7 @@ export function AddSongSheet({ visible, onClose, onAdd, added, eventId }: Props)
                 <Text variant="bodySm" color="dim">
                   {q ? 'Nenhuma música com esse nome na biblioteca.' : 'A biblioteca ainda está vazia.'}
                 </Text>
-                <Text variant="link" color="orange" onPress={() => setMode('new')} accessibilityRole="button">
+                <Text variant="link" color="orangeText" onPress={() => setMode('new')} accessibilityRole="button">
                   Cadastrar pelo link
                 </Text>
               </View>

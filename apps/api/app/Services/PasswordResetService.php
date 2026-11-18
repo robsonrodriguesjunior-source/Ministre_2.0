@@ -21,7 +21,7 @@ class PasswordResetService
     public function sendCode(string $email): void
     {
         $user = User::where('email', $email)->first();
-        if (! $user) {
+        if (! $user || $user->is_placeholder) {
             return; // resposta igual para quem tem e quem não tem conta
         }
 

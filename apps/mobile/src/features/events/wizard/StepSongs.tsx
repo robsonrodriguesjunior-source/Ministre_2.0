@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { BottomSheet, Checkbox, Chip, Icon, Skeleton, Text, TextField } from '@/components/ui';
-import { fonts, colors, space } from '@/theme/tokens';
+import { colors, space, weight } from '@/theme/tokens';
 
 import { QuickAddSong } from '@/features/songs/QuickAddSong';
 import type { SongDetail } from '@/features/songs/types';
@@ -63,7 +63,7 @@ export function StepSongs({ songs, loading, picked, onChange }: Props) {
                 {p.title}
               </Text>
               <Pressable onPress={() => setKeyFor(p.song_id)} accessibilityRole="button" accessibilityLabel={`Trocar o tom de ${p.title}, hoje ${p.key}`} style={styles.key}>
-                <Text variant="pill" color="orange">
+                <Text variant="pill" color="orangeText">
                   {p.key}
                 </Text>
               </Pressable>
@@ -88,7 +88,7 @@ export function StepSongs({ songs, loading, picked, onChange }: Props) {
       <TextField label="Buscar" value={q} onChangeText={setQ} placeholder="Buscar outra música…" />
       <Pressable onPress={() => setNewOpen(true)} accessibilityRole="button" style={styles.newSong}>
         <Icon name="plus" size={16} color={colors.orange} />
-        <Text variant="link" color="orange">
+        <Text variant="link" color="orangeText">
           Nova música pelo link (YouTube, Spotify ou Deezer)
         </Text>
       </Pressable>
@@ -150,7 +150,7 @@ export function StepSongs({ songs, loading, picked, onChange }: Props) {
 const styles = StyleSheet.create({
   wrap: { paddingBottom: space.xxl },
   flex: { flex: 1 },
-  semibold: { fontFamily: fonts.semibold },
+  semibold: weight.semibold,
   label: { marginTop: 22, marginBottom: 10 },
   row: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: colors.line },
   number: { width: 22, color: colors.lineStrong },

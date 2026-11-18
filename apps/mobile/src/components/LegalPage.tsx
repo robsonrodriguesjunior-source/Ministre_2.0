@@ -32,7 +32,7 @@ export function LegalPage({ title, updated, intro, sections, other }: Props) {
             ))}
           </View>
         ))}
-        <Text variant="link" color="orange" accessibilityRole="link" onPress={() => router.push(other.href)} style={styles.other}>
+        <Text variant="link" color="orangeText" accessibilityRole="link" onPress={() => router.push(other.href)} style={styles.other}>
           {other.label}
         </Text>
       </View>

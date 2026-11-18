@@ -49,7 +49,7 @@ export function PhotoSheet({ visible, onClose, title, onUpload, onRemove }: Prop
         <Button label={Platform.OS === 'web' && !isTouch() ? 'Escolher imagem' : 'Escolher da galeria'} variant="secondary" onPress={() => run('library')} loading={busy === 'library'} />
         {!!onRemove && <Button label="Remover foto" variant="secondary" onPress={() => run('remove')} loading={busy === 'remove'} />}
         {!!error && (
-          <Text variant="meta" color="orange" accessibilityLiveRegion="polite">
+          <Text variant="meta" color="orangeText" accessibilityLiveRegion="polite">
             {error}
           </Text>
         )}

@@ -61,7 +61,7 @@ export default function PerfilScreen() {
       {active && (
         <Card>
           <View style={styles.between}>
-            <Text variant="cardLabel" color="orange">
+            <Text variant="cardLabel" color="orangeText">
               Ministério
             </Text>
             <Pill label={isLeader ? 'Líder' : 'Membro'} tone={isLeader ? 'ok' : 'wait'} />

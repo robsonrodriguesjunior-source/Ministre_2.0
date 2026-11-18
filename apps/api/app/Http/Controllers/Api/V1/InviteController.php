@@ -31,6 +31,8 @@ class InviteController extends Controller
             'church' => ['name' => $ministry->church->name, 'city' => $ministry->church->city],
             'ministry' => ['id' => $ministry->id, 'name' => $ministry->name],
             'positions' => $ministry->positions->map(fn ($p) => ['id' => $p->id, 'name' => $p->name])->values(),
+            // Convite pessoal (cadastro pelo líder): o nome e as funções já definidos pelo líder.
+            'member' => $this->personal($invite),
         ]);
     }
 
@@ -89,5 +91,19 @@ class InviteController extends Controller
     {
         /** @var MinistryMember */
         return $request->attributes->get('membership');
+    }
+
+    /** @return array{name: string, positions: list<string>}|null */
+    private function personal(\App\Models\Invite $invite): ?array
+    {
+        $member = $invite->member_id ? $invite->member()->with(['user', 'positions'])->first() : null;
+        if (! $member || ! $member->user?->is_placeholder) {
+            return null;
+        }
+
+        return [
+            'name' => $member->user->name,
+            'positions' => $member->positions->sortBy('sort_order')->pluck('name')->values()->all(),
+        ];
     }
 }

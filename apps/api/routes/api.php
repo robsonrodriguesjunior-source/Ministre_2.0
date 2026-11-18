@@ -73,6 +73,8 @@ Route::prefix('v1')->group(function () {
 
             // Gestão do ministério (só líderes)
             Route::get('/members', [MemberController::class, 'index']);
+            Route::post('/members', [MemberController::class, 'store']);
+            Route::post('/members/{member}/invite', [MemberController::class, 'invite'])->whereNumber('member');
             Route::patch('/members/{member}', [MemberController::class, 'update'])->whereNumber('member');
             Route::delete('/members/{member}', [MemberController::class, 'destroy'])->whereNumber('member');
             Route::get('/manage/positions', [SetupController::class, 'positions']);

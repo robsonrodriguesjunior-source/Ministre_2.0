@@ -34,7 +34,7 @@ function InviteCard({ invite, ministry, onToast }: { invite: Invite; ministry: s
   const text = message(invite, ministry);
   return (
     <Card style={styles.card}>
-      <Text variant="cardLabel" color="orange">
+      <Text variant="cardLabel" color="orangeText">
         Convite {invite.role === 'leader' ? 'de líder' : 'de membro'}
       </Text>
       <Text variant="code" style={styles.code} accessibilityLabel={`Código ${invite.code.split('').join(' ')}`} selectable>
@@ -147,7 +147,7 @@ export default function Convites() {
                   </Text>
                 </View>
                 <Pressable onPress={() => setCreated(i)} accessibilityRole="button" hitSlop={8}>
-                  <Text variant="link" color="orange">
+                  <Text variant="link" color="orangeText">
                     Enviar
                   </Text>
                 </Pressable>

@@ -18,7 +18,7 @@ export function SectionHeader({ title, actionLabel, onAction }: Props) {
       </Text>
       {!!actionLabel && (
         <Pressable onPress={onAction} accessibilityRole="link" hitSlop={10}>
-          <Text variant="link" color="orange">
+          <Text variant="link" color="orangeText">
             {actionLabel}
           </Text>
         </Pressable>

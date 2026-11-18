@@ -7,7 +7,9 @@ export type Member = {
   id: number;
   user_id: number;
   name: string;
-  email: string;
+  /** Cadastrado pelo líder e ainda não entrou no app (convite enviado). */
+  pending: boolean;
+  email: string | null;
   phone: string | null;
   avatar_url: string | null;
   role: Role;
@@ -90,6 +92,10 @@ export const manageApi = {
   updateMember: (id: number, body: { role?: Role; position_ids?: number[] }) =>
     api<{ data: Member }>(`/members/${id}`, { ...m, method: 'PATCH', body }),
   removeMember: (id: number) => api<{ message: string }>(`/members/${id}`, { ...m, method: 'DELETE' }),
+  /** Cadastro direto pelo líder: a pessoa já pode ser escalada; volta o convite pessoal para mandar no WhatsApp. */
+  registerMember: (body: { name: string; phone?: string; role?: Role; position_ids: number[] }) =>
+    api<{ data: Member; invite: Invite }>('/members', { ...m, method: 'POST', body }),
+  memberInvite: (id: number) => api<{ invite: Invite }>(`/members/${id}/invite`, { ...m, method: 'POST' }),
 
   invites: () => api<{ data: Invite[] }>('/invites', m),
   createInvite: (body: { role: Role; days_valid: number }) => api<{ data: Invite }>('/invites', { ...m, method: 'POST', body }),

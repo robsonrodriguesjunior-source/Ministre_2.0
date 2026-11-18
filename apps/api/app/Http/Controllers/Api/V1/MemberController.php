@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Actions\RegisterMember;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\InviteResource;
 use App\Http\Resources\UserResource;
 use App\Models\EventAssignment;
 use App\Models\MinistryMember;
@@ -30,6 +32,53 @@ class MemberController extends Controller
             ->values();
 
         return response()->json(['data' => $members->map(fn ($m) => $this->present($request, $m, $membership))]);
+    }
+
+    /** Cadastro direto pelo líder: nome, WhatsApp e funções. Devolve o membro e o convite pessoal. */
+    public function store(Request $request, RegisterMember $register): JsonResponse
+    {
+        $membership = $this->leader($request);
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'min:2', 'max:120'],
+            'phone' => ['nullable', 'string', 'max:30', 'regex:/^[0-9()+\-\s]{8,30}$/'],
+            'role' => ['sometimes', Rule::in([MinistryMember::ROLE_LEADER, MinistryMember::ROLE_MEMBER])],
+            'position_ids' => ['sometimes', 'array', 'max:40'],
+            'position_ids.*' => ['integer'],
+        ], [
+            'name.required' => 'Digite o nome da pessoa.',
+            'name.min' => 'Digite o nome da pessoa.',
+            'phone.regex' => 'Confira o número do WhatsApp.',
+        ]);
+
+        [$member, $invite] = $register->handle(
+            $membership,
+            $request->user(),
+            trim($data['name']),
+            isset($data['phone']) ? trim($data['phone']) : null,
+            $data['position_ids'] ?? [],
+            $data['role'] ?? MinistryMember::ROLE_MEMBER,
+        );
+        $member->load(['user', 'positions']);
+
+        return response()->json([
+            'data' => $this->present($request, $member, $membership),
+            'invite' => (new InviteResource($invite))->toArray($request),
+        ], 201);
+    }
+
+    /** Novo convite pessoal para quem foi cadastrado pelo líder e ainda não entrou no app. */
+    public function invite(Request $request, MinistryMember $member, RegisterMember $register): JsonResponse
+    {
+        $membership = $this->leader($request);
+        $this->sameMinistry($membership, $member);
+        if (! $member->user->is_placeholder) {
+            throw ValidationException::withMessages(['member' => 'Esta pessoa já entrou no app.']);
+        }
+
+        $invite = $register->personalInvite($member, $request->user());
+
+        return response()->json(['invite' => (new InviteResource($invite))->toArray($request)]);
     }
 
     public function update(Request $request, MinistryMember $member): JsonResponse
@@ -93,7 +142,9 @@ class MemberController extends Controller
             'id' => $m->id,
             'user_id' => $m->user_id,
             'name' => $m->user->name,
-            'email' => $m->user->email,
+            // Cadastrado pelo líder e ainda não entrou no app (conta provisória: o e-mail interno não aparece).
+            'pending' => (bool) $m->user->is_placeholder,
+            'email' => $m->user->is_placeholder ? null : $m->user->email,
             'phone' => $m->user->phone,
             'avatar_url' => (new UserResource($m->user))->toArray($request)['avatar_url'],
             'role' => $m->role,

@@ -127,7 +127,7 @@ export default function Funcoes() {
                     <Text variant="listName" color="dim" style={styles.flex}>
                       {p.name}
                     </Text>
-                    <Text variant="link" color="orange">
+                    <Text variant="link" color="orangeText">
                       Restaurar
                     </Text>
                   </Pressable>

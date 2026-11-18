@@ -87,7 +87,7 @@ export default function Entrar() {
         )}
       />
       <Pressable onPress={() => router.push('/esqueci-senha')} accessibilityRole="link" hitSlop={10} style={{ alignSelf: 'center' }}>
-        <Text variant="link" color="orange">
+        <Text variant="link" color="orangeText">
           Esqueci a senha
         </Text>
       </Pressable>

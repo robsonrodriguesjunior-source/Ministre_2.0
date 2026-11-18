@@ -45,7 +45,7 @@ function DayPicker({ value, onChange, min }: { value: Date | null; onChange: (d:
               {d.getDate()}
             </Text>
             {d.getDate() === 1 && (
-              <Text variant="pill" color={on ? 'onOrange' : 'orange'}>
+              <Text variant="pill" color={on ? 'onOrange' : 'orangeText'}>
                 {format(d, 'MMM', { locale: ptBR })}
               </Text>
             )}
@@ -157,7 +157,7 @@ export default function Indisponibilidade() {
                   )}
                 </View>
                 <Pressable onPress={() => remove.mutate(u.id)} accessibilityRole="button" accessibilityLabel={`Remover ${describe(u)}`} hitSlop={10}>
-                  <Text variant="link" color="orange">
+                  <Text variant="link" color="orangeText">
                     Remover
                   </Text>
                 </Pressable>
