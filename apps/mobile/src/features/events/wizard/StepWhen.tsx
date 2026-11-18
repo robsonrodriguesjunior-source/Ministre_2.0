@@ -124,6 +124,69 @@ function TimePicker({ label, options, value, onChange }: { label: string; option
   );
 }
 
+const WEEK_LETTER = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+
+/**
+ * Calendário compacto do "Outra data": 12 meses a partir do mês atual, um embaixo do outro,
+ * com as colunas D S T Q Q S S. Dias que já passaram ficam apagados; hoje tem contorno laranja.
+ */
+function YearCalendar({ today, selected, onPick }: { today: Date; selected: Date | null; onPick: (d: Date) => void }) {
+  const months = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, m) => {
+        const first = new Date(today.getFullYear(), today.getMonth() + m, 1);
+        const total = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+        const cells: (Date | null)[] = Array.from({ length: first.getDay() }, () => null);
+        for (let d = 1; d <= total; d++) cells.push(new Date(first.getFullYear(), first.getMonth(), d));
+        return { first, cells };
+      }),
+    [today],
+  );
+  return (
+    <View style={styles.year}>
+      {months.map(({ first, cells }) => (
+        <View key={isoDay(first)} style={styles.month}>
+          <Text variant="sectionTitle" style={styles.monthTitle}>
+            {format(first, 'MMMM yyyy', { locale: ptBR }).replace(/^./, (c) => c.toUpperCase())}
+          </Text>
+          <View style={styles.grid}>
+            {WEEK_LETTER.map((l, i) => (
+              <View key={`h${i}`} style={styles.cell}>
+                <Text variant="dayLetter" color="tabInactive">
+                  {l}
+                </Text>
+              </View>
+            ))}
+            {cells.map((d, i) => {
+              if (!d) return <View key={`e${i}`} style={styles.cell} />;
+              const past = d < today;
+              const on = !!selected && sameDay(d, selected);
+              const isToday = sameDay(d, today);
+              return (
+                <Pressable
+                  key={isoDay(d)}
+                  disabled={past}
+                  onPress={() => onPick(d)}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: on, disabled: past }}
+                  accessibilityLabel={format(d, "EEEE, d 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                  style={styles.cell}
+                >
+                  <View style={[styles.dot, isToday && styles.today, on && styles.on]}>
+                    <Text variant="bodySm" color={on ? 'onOrange' : past ? 'tabInactive' : 'ink'} style={past ? styles.past : undefined}>
+                      {d.getDate()}
+                    </Text>
+                  </View>
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 type Props = { value: WhenState; onChange: (v: WhenState) => void; worshipDays: number[] };
 
 // Passo 1: "Quando vai ser?" — data, horário, Oficial ou Temporária, ensaio e observações.
@@ -154,8 +217,6 @@ export function StepWhen({ value, onChange, worshipDays }: Props) {
     }
     return list;
   }, [value.date, today]);
-
-  const calendar = useMemo(() => Array.from({ length: 63 }, (_, i) => addDays(today, i)), [today]);
 
   return (
     <View style={styles.wrap}>
@@ -260,28 +321,15 @@ export function StepWhen({ value, onChange, worshipDays }: Props) {
         />
       </View>
 
-      <BottomSheet visible={otherDate} onClose={() => setOtherDate(false)} title="Escolha a data">
-        <View style={styles.calendar}>
-          {calendar.map((d) => (
-            <Pressable
-              key={isoDay(d)}
-              onPress={() => {
-                set('date', d);
-                setOtherDate(false);
-              }}
-              accessibilityRole="button"
-              accessibilityLabel={format(d, "EEEE, d 'de' MMMM", { locale: ptBR })}
-              style={[styles.calDay, !!value.date && sameDay(d, value.date) && styles.on]}
-            >
-              <Text variant="dayLetter" color={value.date && sameDay(d, value.date) ? 'onOrange' : 'dim'}>
-                {WEEK_SHORT[d.getDay()].slice(0, 1)}
-              </Text>
-              <Text variant="dayNumber" color={value.date && sameDay(d, value.date) ? 'onOrange' : 'ink'}>
-                {d.getDate()}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
+      <BottomSheet visible={otherDate} onClose={() => setOtherDate(false)} title="Escolha a data" scroll>
+        <YearCalendar
+          today={today}
+          selected={value.date}
+          onPick={(d) => {
+            set('date', d);
+            setOtherDate(false);
+          }}
+        />
       </BottomSheet>
     </View>
   );
@@ -329,6 +377,13 @@ const styles = StyleSheet.create({
     padding: space.lg,
     outlineStyle: 'none',
   } as object,
-  calendar: { flexDirection: 'row', flexWrap: 'wrap', gap: 4 },
-  calDay: { width: '13.4%', alignItems: 'center', paddingVertical: 6, borderRadius: radius.tag },
+  // Calendário do ano (Outra data): compacto, 7 colunas.
+  year: { gap: space.lg, paddingBottom: space.md },
+  month: { gap: 6 },
+  monthTitle: { marginLeft: 4 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap' },
+  cell: { width: `${100 / 7}%`, height: 34, alignItems: 'center', justifyContent: 'center' } as object,
+  dot: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'transparent' },
+  today: { borderColor: colors.orange },
+  past: { opacity: 0.45 },
 });
