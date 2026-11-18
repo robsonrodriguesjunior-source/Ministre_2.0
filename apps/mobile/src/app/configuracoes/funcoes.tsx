@@ -93,6 +93,9 @@ export default function Funcoes() {
             <Text variant="fieldLabel" color="dim" style={styles.label}>
               Ordem em que aparecem na escala
             </Text>
+            <Text variant="meta" color="dim" style={styles.tip}>
+              Toque no nome para renomear (ex.: Vocal → Cantor) ou arquivar. Use as setas para mudar a ordem.
+            </Text>
             {active.map((p, i) => (
               <View key={p.id} style={[styles.row, i < active.length - 1 && styles.divider]}>
                 <Pressable onPress={() => open(p)} accessibilityRole="button" accessibilityLabel={`Editar ${p.name}`} style={styles.flex}>
@@ -166,6 +169,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   add: { gap: space.sm },
   label: { marginBottom: space.xs },
+  tip: { marginBottom: space.sm },
   archivedLabel: { marginTop: space.xl },
   row: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingVertical: space.md },
   divider: { borderBottomWidth: 1, borderBottomColor: colors.line },
